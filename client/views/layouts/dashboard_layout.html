@@ -1,0 +1,12 @@
+<template name="dashboard_layout">
+  {{#if currentUser}}
+    <nav class="white" role="navigation">
+      <div class="nav-wrapper">
+        {{> top_nav }}
+      </div>
+    </nav>
+  {{/if}}
+  <main class="main-content">
+    {{> yield}}
+  </main>
+</template>

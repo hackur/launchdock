@@ -1,0 +1,18 @@
+
+<template name="stack_new">
+  <div class="container">
+    <div class="row">
+      <div class="card">
+        <div class="col s8 offset-s2 card-content stack-create">
+          {{#autoForm collection="Stacks" id="insertStackForm" type="method" meteormethod="tutum/createStack" }}
+            <h3 class="center">Create New Stack</h3>
+            <div class="row">
+              {{> afQuickField name='name'}}
+            </div>
+            <button type="submit" class="waves-effect waves-light btn right">Do it!</button>
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
