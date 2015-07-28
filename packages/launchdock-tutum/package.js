@@ -1,0 +1,25 @@
+Package.describe({
+  name: 'launchdock:tutum',
+  summary: 'Tutum integration for Launchdock.'
+});
+
+Npm.depends({
+  'ws': '0.7.2'
+});
+
+Package.onUse(function (api) {
+
+  api.versionsFrom(['METEOR@1.1.0.2']);
+
+  api.use([
+    'launchdock:lib',
+    'launchdock:settings'
+  ]);
+
+  api.addFiles([
+    'lib/server/tutum.js',
+    'lib/server/methods.js',
+    'lib/server/socket.js'
+  ], ['server']);
+
+});

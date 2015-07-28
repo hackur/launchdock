@@ -1,0 +1,43 @@
+<template name="settings">
+  <div class="container settings-page">
+    <div class="row">
+      <div class="card settings-page-form">
+        <div class="card-content">
+          {{#autoForm collection="Settings" class="col s12 offset-m2 m8" id="updateSettingsForm" type="update" doc=settings }}
+            <h3 class="form-heading center">Settings</h3>
+            <div class="row settings-group-heading">
+              <h5>Tutum</h5>
+            </div>
+            <div class="row">
+              {{> afQuickField name="tutumUsername" label="Username"}}
+            </div>
+            <div class="row">
+              {{> afQuickField name="tutumToken" label="API Token"}}
+            </div>
+
+            <div class="row settings-group-heading">
+              <h5>Rancher</h5>
+            </div>
+            <div class="row">
+              {{> afQuickField name="rancherApiKey" label="API Key"}}
+            </div>
+
+            <div class="row settings-group-heading">
+              <h5>AWS</h5>
+            </div>
+            <div class="row">
+              {{> afQuickField name="awsKey" label="Key"}}
+            </div>
+            <div class="row">
+              {{> afQuickField name="awsSecret" label="Secret" type="password"}}
+            </div>
+            <div class="row">
+              {{> afQuickField name="awsRegion" label="Region"}}
+            </div>
+            <button type="submit" class="waves-effect waves-light btn right">Save</button>
+          {{/autoForm}}
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
