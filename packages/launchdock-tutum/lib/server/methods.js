@@ -11,9 +11,11 @@ Meteor.methods({
 
     tutum.checkCredentials();
 
-    var stackId = Stacks.insert({ name: doc.name });
+    if (Stacks.findOne({ name: doc.name, userId: this.userId })) {
+      throw new Meteor.Error(410, "A stack called '" + doc.name +"' already exists.");
+    }
+    var stackId = Stacks.insert({ name: doc.name, state: "Creating" });
     var siteId = stackId.toLowerCase();
-
 
     var stackDetails = {
       "name": doc.name,
