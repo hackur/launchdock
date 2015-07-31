@@ -21,14 +21,13 @@ Meteor.startup(function() {
     socket.on('message', Meteor.bindEnvironment(function(messageStr) {
       var msg = JSON.parse(messageStr);
       // console.log(msg);
-      console.log("");
-      console.log("******************************************");
+      console.log("\n******************************************");
       console.log("Type: " + msg.type);
-      console.log("uuid: " + msg.uuid);
       console.log("Action: " + msg.action);
       console.log("State: " + msg.state);
       console.log("Resource URI: " + msg.resource_uri);
       console.log("Date: " + moment(msg.date).format('LLL'));
+      console.log("Event UUID: " + msg.uuid);
       console.log("******************************************");
 
       if (msg.type == "stack") {
