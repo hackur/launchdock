@@ -2,6 +2,7 @@
 Tutum = function Tutum (username, token) {
   this.username = username || Settings.get('tutumUsername');
   this.token = token || Settings.get('tutumToken');
+  this.apiBaseUrl = "https://dashboard.tutum.co/api/v1/";
 
   this.checkCredentials = function () {
     if (!this.username || !this.token) {
@@ -12,7 +13,7 @@ Tutum = function Tutum (username, token) {
 
 
 Tutum.prototype.create = function (resourceType, data) {
-  return HTTP.call("POST", "https://dashboard.tutum.co/api/v1/" + resourceType + "/", {
+  return HTTP.call("POST", this.apiBaseUrl + resourceType + "/", {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json",
@@ -24,7 +25,7 @@ Tutum.prototype.create = function (resourceType, data) {
 
 
 Tutum.prototype.list = function (resourceType) {
-  return HTTP.call("GET", "https://dashboard.tutum.co/api/v1/" + resourceType + "/", {
+  return HTTP.call("GET", this.apiBaseUrl + resourceType + "/", {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json"
@@ -34,7 +35,7 @@ Tutum.prototype.list = function (resourceType) {
 
 
 Tutum.prototype.get = function (resourceType, id) {
-  return HTTP.call("GET", "https://dashboard.tutum.co/api/v1/" + resourceType + "/" + id + "/", {
+  return HTTP.call("GET", this.apiBaseUrl + resourceType + "/" + id + "/", {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json"
@@ -44,7 +45,7 @@ Tutum.prototype.get = function (resourceType, id) {
 
 
 Tutum.prototype.update = function (resourceType, id, data) {
-  return HTTP.call("PATCH", "https://dashboard.tutum.co/api/v1/" + resourceType + "/" + id + "/", {
+  return HTTP.call("PATCH", this.apiBaseUrl + resourceType + "/" + id + "/", {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json",
@@ -56,7 +57,7 @@ Tutum.prototype.update = function (resourceType, id, data) {
 
 
 Tutum.prototype.start = function (resourceType, id) {
-  return HTTP.call("POST", "https://dashboard.tutum.co/api/v1/" + resourceType + "/" + id + "/start/", {
+  return HTTP.call("POST", this.apiBaseUrl + resourceType + "/" + id + "/start/", {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json"
@@ -66,7 +67,7 @@ Tutum.prototype.start = function (resourceType, id) {
 
 
 Tutum.prototype.stop = function (resourceType, id) {
-  return HTTP.call("POST", "https://dashboard.tutum.co/api/v1/" + resourceType + "/" + id + "/stop/", {
+  return HTTP.call("POST", this.apiBaseUrl + resourceType + "/" + id + "/stop/", {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json"
@@ -76,7 +77,7 @@ Tutum.prototype.stop = function (resourceType, id) {
 
 
 Tutum.prototype.redeploy = function (resourceType, id) {
-  return HTTP.call("POST", "https://dashboard.tutum.co/api/v1/" + resourceType + "/" + id + "/redeploy/", {
+  return HTTP.call("POST", this.apiBaseUrl + resourceType + "/" + id + "/redeploy/", {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json"
@@ -86,7 +87,7 @@ Tutum.prototype.redeploy = function (resourceType, id) {
 
 
 Tutum.prototype.delete = function (resourceType, id) {
-  return HTTP.call("DELETE", "https://dashboard.tutum.co/api/v1/" + resourceType + "/" + id + "/", {
+  return HTTP.call("DELETE", this.apiBaseUrl + resourceType + "/" + id + "/", {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json"
