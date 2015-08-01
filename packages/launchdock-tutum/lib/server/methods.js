@@ -152,6 +152,7 @@ Meteor.methods({
 
   },
 
+
   'tutum/deleteStack': function (id) {
 
     if (! Users.is.admin(this.userId)) {
@@ -165,7 +166,7 @@ Meteor.methods({
     var stack = Stacks.findOne(id);
 
     try {
-      var res = tutum.delete("stack", stack.uuid);
+      var res = tutum.delete(stack.uri);
 
       if (res.statusCode == 202) {
         // TODO - set stack to "terminated" and
@@ -175,8 +176,8 @@ Meteor.methods({
 
       return res;
     } catch(e) {
-      console.log(e);
       return e;
     }
   }
+
 });
