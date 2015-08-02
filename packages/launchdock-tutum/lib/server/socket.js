@@ -20,6 +20,7 @@ Meteor.startup(function() {
 
     socket.on('message', Meteor.bindEnvironment(function(messageStr) {
       var msg = JSON.parse(messageStr);
+
       // console.log(msg);
       console.log("\n******************************************");
       console.log("Type: " + msg.type);
@@ -30,10 +31,14 @@ Meteor.startup(function() {
       console.log("Event UUID: " + msg.uuid);
       console.log("******************************************");
 
-      if (msg.type == "stack") {
-        if (Stacks.findOne({ uri: msg.resource_uri })) {
-          Stacks.update({ uri: msg.resource_uri }, { $set: { state: msg.state } });
-        }
+      // If this message is for a stack that exists in the database, update its state
+      if (msg.type == "stack" && !!Stacks.findOne({ uri: msg.resource_uri })) {
+        Stacks.update({ uri: msg.resource_uri }, { $set: { state: msg.state } });
+      }
+
+      // If this message is for a service that exists in the database, update its state
+      if (msg.type == "service" && !!Services.findOne({ uri: msg.resource_uri })) {
+        Services.update({ uri: msg.resource_uri }, { $set: { state: msg.state } });
       }
     }));
 
