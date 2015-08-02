@@ -97,19 +97,40 @@ Tutum.prototype.delete = function (resourceUri) {
 };
 
 
-Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceId, linkedServiceName) {
+Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceName, linkedServiceUri) {
+  if (!linkedServiceUri || !linkedServiceName) {
+    throw new Meteor.Error(412, "Tutum.addLinkToLoadBalancer: Missing balancer details.")
+  }
+
   // TODO: find and set best load balancer here
-  return HTTP.call("PATCH", "https://dashboard.tutum.co/api/v1/service/ea464a25-4af5-4c56-a2a3-c1468f280430/", {
+  var loadBalancerUri = "/api/v1/service/ea464a25-4af5-4c56-a2a3-c1468f280430/";
+
+  // Query the chosen load balancer to get the currently linked services
+  try {
+    var lb = this.get(loadBalancerUri);
+  } catch (e) {
+    return e;
+  }
+  var currentLinks = lb.data.linked_to_service;
+
+  // Build the new link
+  var newLink = {
+    "name": linkedServiceName,
+    "to_service": linkedServiceUri
+  };
+
+  // Add new link to existing links
+  currentLinks.push(newLink)
+
+  // Update the load balancer
+  return HTTP.call("PATCH", this.apiBaseUrl + loadBalancerUri, {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json",
       "Content-Type": "application/json"
     },
     data: {
-      "linked_to_service": [{
-        "to_service": "/api/v1/service/" + linkedServiceId + "/",
-        "name": linkedServiceName
-      }]
+      "linked_to_service": currentLinks
     }
   });
 };
