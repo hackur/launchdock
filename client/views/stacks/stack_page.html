@@ -10,6 +10,9 @@
           <p><strong>Tutum uuid:</strong> {{uuid}}</p>
           <p><strong>Created:</strong> {{moment createdAt 'LLL'}}</p>
           <p><strong>State:</strong> {{state}}</p>
+          {{#if publicUrl}}
+            <p><a href="{{publicUrl}}" target="_blank">View site</a></p>
+          {{/if}}
         </div>
       </div>
       {{/with}}
