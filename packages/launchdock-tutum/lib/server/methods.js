@@ -14,13 +14,16 @@ Meteor.methods({
     if (Stacks.findOne({ name: doc.name, userId: this.userId })) {
       throw new Meteor.Error(410, "A stack called '" + doc.name +"' already exists.");
     }
+
     var stackId = Stacks.insert({ name: doc.name, state: "Creating" });
     var siteId = stackId.toLowerCase();
+    var siteUrl = "http://" + siteId + ".getreaction.io";
 
+    // configure the stack
     var stackDetails = {
       "name": doc.name,
       "services": [
-        // App
+        // app
         {
           "name": "reaction-" + stackId,
           "image": "ongoworks/reaction:latest",
@@ -36,7 +39,10 @@ Meteor.methods({
               "value": "mongodb://myAppUser:myAppPassword@mongo1:27017,mongo2:27017/myAppDatabase"
             }, {
               "key": "ROOT_URL",
-              "value": "http://" + siteId + ".getreaction.io"
+              "value": siteUrl
+            }, {
+              "key": "VIRTUAL_HOST",
+              "value": siteId + ".getreaction.io"
             }
           ],
           "linked_to_service": [
@@ -49,8 +55,8 @@ Meteor.methods({
             }
           ],
           "tags": [ "app" ],
-          "target_num_containers": 2,
-          "sequential_deployment": true,
+          // "target_num_containers": 2,
+          // "sequential_deployment": true,
           "autorestart": "ALWAYS"
         },
 
@@ -62,7 +68,6 @@ Meteor.methods({
             {
               "protocol": "tcp",
               "inner_port": 27017
-              // "outer_port": 27017
             }
           ],
           "container_envvars": [
@@ -126,30 +131,57 @@ Meteor.methods({
       ]
     };
 
+    // create the stack
     try {
       var stack = tutum.create('stack', stackDetails);
-
-      Stacks.update({ _id: stackId }, {
-        $set: {
-          uuid: stack.data.uuid,
-          uri: stack.data.resource_uri,
-          state: stack.data.state,
-          services: stack.data.services
-        }
-      });
-
-      // TODO: add better load balancer management
-      // var updateLB = tutum.addLinkToLoadBalancer(stack.data.uuid, stack.data.name);
-      // console.log("Update LB: ", updateLB);
-
-      tutum.start('stack', stack.data.uuid);
-
-      return stack.data.uuid;
     } catch(e) {
-      console.log(e);
       return e;
     }
 
+    // update local database with returned stack details
+    Stacks.update({ _id: stackId }, {
+      $set: {
+        uuid: stack.data.uuid,
+        uri: stack.data.resource_uri,
+        publicUrl: siteUrl,
+        state: stack.data.state,
+        services: stack.data.services
+      }
+    });
+
+    // add each of the stack's services to the local Services collection
+    _.each(stack.data.services, function (service_uri) {
+      try {
+        var service = tutum.get(service_uri);
+      } catch(e) {
+        return e;
+      }
+      Services.insert({
+        name: service.data.name,
+        uuid: service.data.uuid,
+        imageName: service.data.image_name,
+        stack: service.data.stack,
+        tags: service.data.tags,
+        uri: service_uri
+      });
+    });
+
+    // link the load balancer to the app service of the new stack
+    try {
+      var appService = Services.findOne({ name: "reaction-" + stackId });
+      tutum.addLinkToLoadBalancer(appService.name, appService.uri);
+    } catch (e) {
+      return e;
+    }
+
+    // start it up!
+    try {
+      tutum.start(stack.data.resource_uri);
+    } catch(e) {
+      return e;
+    }
+
+    return stack.data.uuid;
   },
 
 
