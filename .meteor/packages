@@ -8,7 +8,9 @@ jquery
 reactive-var
 reactive-dict
 
-iron:router
+kadira:flow-router
+kadira:blaze-layout
+arillo:flow-router-helpers
 zimme:active-route
 
 aldeed:simple-schema
