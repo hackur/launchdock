@@ -182,7 +182,7 @@ Meteor.methods({
       return e;
     }
 
-    return stack.data.uuid;
+    return stackId;
   },
 
 
