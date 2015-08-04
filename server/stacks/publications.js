@@ -7,9 +7,12 @@ Meteor.publish('stacks-count', function () {
 
 Meteor.publish('stack-page', function (id) {
   check(id, String);
-  var stack = Stacks.find({ _id: id });
+  var stack = Stacks.findOne({ _id: id });
   if (stack.userId == this.userId || Users.is.admin(this.userId) ) {
-    return stack;
+    return [
+      Stacks.find({ _id: id }),
+      Services.find({ stack: stack.uri })
+    ];
   } else {
     return [];
   }
