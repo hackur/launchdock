@@ -22,14 +22,14 @@ Meteor.startup(function() {
       var msg = JSON.parse(messageStr);
 
       // console.log(msg);
-      console.log("\n******************************************");
-      console.log("Type: " + msg.type);
-      console.log("Action: " + msg.action);
-      console.log("State: " + msg.state);
-      console.log("Resource URI: " + msg.resource_uri);
-      console.log("Date: " + moment(msg.date).format('LLL'));
-      console.log("Event UUID: " + msg.uuid);
-      console.log("******************************************");
+      // console.log("\n******************************************");
+      // console.log("Type: " + msg.type);
+      // console.log("Action: " + msg.action);
+      // console.log("State: " + msg.state);
+      // console.log("Resource URI: " + msg.resource_uri);
+      // console.log("Date: " + moment(msg.date).format('LLL'));
+      // console.log("Event UUID: " + msg.uuid);
+      // console.log("******************************************");
 
       // If this message is for a stack that exists in the database, update its state
       if (msg.type == "stack" && !!Stacks.findOne({ uri: msg.resource_uri })) {
