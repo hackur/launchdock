@@ -28,7 +28,7 @@ aslagle:reactive-table
 fourseven:scss
 poetic:materialize-scss
 useraccounts:core
-useraccounts:materialize
+useraccounts:materialize@1.11.1
 
 mizzao:user-status
 sacha:spin
@@ -53,4 +53,3 @@ launchdock:users
 # launchdock:theme-default
 
 
-msavin:mongol
