@@ -161,6 +161,7 @@ Meteor.methods({
         uuid: service.data.uuid,
         imageName: service.data.image_name,
         stack: service.data.stack,
+        state: service.data.state,
         tags: service.data.tags,
         uri: service_uri
       });
