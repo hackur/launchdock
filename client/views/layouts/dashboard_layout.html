@@ -7,6 +7,10 @@
     </nav>
   {{/if}}
   <main class="main-content">
-    {{>Template.dynamic template=content}}
+    {{#if subsReady}}
+      {{>Template.dynamic template=content}}
+    {{else}}
+      {{>spinner}}
+    {{/if}}
   </main>
 </template>
