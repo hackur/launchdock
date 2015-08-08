@@ -1,4 +1,3 @@
-var tutum = new Tutum();
 
 Meteor.methods({
   'tutum/createStack': function (doc) {
@@ -8,6 +7,8 @@ Meteor.methods({
     }
 
     check(doc.name, String);
+
+    var tutum = new Tutum();
 
     tutum.checkCredentials();
 
@@ -193,6 +194,8 @@ Meteor.methods({
     }
 
     check(id, String);
+
+    var tutum = new Tutum();
 
     tutum.checkCredentials();
 
