@@ -31,7 +31,7 @@ Meteor.methods({
           "container_ports": [
             {
               "protocol": "tcp",
-              "inner_port": 3000
+              "inner_port": 80
             }
           ],
           "container_envvars": [
@@ -44,6 +44,9 @@ Meteor.methods({
             }, {
               "key": "VIRTUAL_HOST",
               "value": doc.domainName || siteId + ".getreaction.io"
+            }, {
+              "key": "PORT",
+              "value": 80
             }
           ],
           "linked_to_service": [
@@ -56,8 +59,9 @@ Meteor.methods({
             }
           ],
           "tags": [ "app" ],
-          // "target_num_containers": 2,
-          // "sequential_deployment": true,
+          "target_num_containers": 2,
+          "sequential_deployment": true,
+          "deployment_strategy": "HIGH_AVAILABILITY",
           "autorestart": "ALWAYS"
         },
 
