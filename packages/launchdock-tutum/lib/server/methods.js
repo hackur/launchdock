@@ -26,8 +26,8 @@ Meteor.methods({
       "services": [
         // app
         {
-          "name": "reaction-" + stackId,
-          "image": "ongoworks/reaction:latest",
+          "name": "app-" + stackId,
+          "image": doc.appImage || "ongoworks/reaction:latest",
           "container_ports": [
             {
               "protocol": "tcp",
@@ -40,10 +40,10 @@ Meteor.methods({
               "value": "mongodb://myAppUser:myAppPassword@mongo1:27017,mongo2:27017/myAppDatabase"
             }, {
               "key": "ROOT_URL",
-              "value": siteUrl
+              "value": doc.domainName ? "http://" + doc.domainName : siteUrl
             }, {
               "key": "VIRTUAL_HOST",
-              "value": siteId + ".getreaction.io"
+              "value": doc.domainName || siteId + ".getreaction.io"
             }
           ],
           "linked_to_service": [
@@ -144,7 +144,7 @@ Meteor.methods({
       $set: {
         uuid: stack.data.uuid,
         uri: stack.data.resource_uri,
-        publicUrl: siteUrl,
+        publicUrl: doc.domainName ? "http://" + doc.domainName : siteUrl,
         state: stack.data.state,
         services: stack.data.services
       }
@@ -170,7 +170,7 @@ Meteor.methods({
 
     // link the load balancer to the app service of the new stack
     try {
-      var appService = Services.findOne({ name: "reaction-" + stackId });
+      var appService = Services.findOne({ name: "app-" + stackId });
       tutum.addLinkToLoadBalancer(appService.name, appService.uri);
     } catch (e) {
       return e;
