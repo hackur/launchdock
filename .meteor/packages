@@ -28,7 +28,8 @@ aslagle:reactive-table
 fourseven:scss
 poetic:materialize-scss
 useraccounts:core
-useraccounts:materialize@1.11.1
+useraccounts:materialize
+useraccounts:flow-routing
 
 mizzao:user-status
 sacha:spin
