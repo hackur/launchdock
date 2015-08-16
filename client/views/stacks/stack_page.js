@@ -25,10 +25,10 @@ Template.stack_page.helpers({
         return 'red'
         break;
       case 'Starting':
-        return 'yellow'
+        return 'orange'
         break;
       case 'Redeploying':
-        return 'yellow'
+        return 'orange'
         break;
       case 'Stopping':
         return 'red'

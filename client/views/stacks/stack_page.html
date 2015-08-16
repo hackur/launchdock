@@ -12,7 +12,7 @@
               <p><strong>Name:</strong> {{name}}</p>
               <p><strong>Tutum uuid:</strong> {{uuid}}</p>
               <p><strong>Created:</strong> {{moment createdAt 'LLL'}}</p>
-              <p><strong>State:</strong> {{state}}</p>
+              <p><strong>State:</strong> <span class="{{stateClass}}-text">{{state}}</span></p>
               {{#if publicUrl}}
                 <p><a href="{{publicUrl}}" target="_blank">View site</a></p>
               {{/if}}
