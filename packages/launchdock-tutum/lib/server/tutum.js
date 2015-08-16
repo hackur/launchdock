@@ -99,7 +99,7 @@ Tutum.prototype.delete = function (resourceUri) {
 
 Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceName, linkedServiceUri) {
   if (!linkedServiceUri || !linkedServiceName) {
-    throw new Meteor.Error(412, "Tutum.addLinkToLoadBalancer: Missing balancer details.")
+    throw new Meteor.Error("Tutum.addLinkToLoadBalancer: Missing balancer details.")
   }
 
   // TODO: find and set best load balancer here

@@ -3,7 +3,7 @@ Meteor.methods({
   'tutum/createStack': function (doc) {
 
     if (! Users.is.admin(this.userId)) {
-      throw new Meteor.Error(400, "Method 'tutum/createStack': Must be an admin.");
+      throw new Meteor.Error("Method 'tutum/createStack': Must be an admin.");
     }
 
     check(doc.name, String);
@@ -13,7 +13,7 @@ Meteor.methods({
     tutum.checkCredentials();
 
     if (Stacks.findOne({ name: doc.name, userId: this.userId })) {
-      throw new Meteor.Error(410, "A stack called '" + doc.name +"' already exists.");
+      throw new Meteor.Error("A stack called '" + doc.name +"' already exists.");
     }
 
     var stackId = Stacks.insert({ name: doc.name, state: "Creating" });
@@ -194,7 +194,7 @@ Meteor.methods({
   'tutum/deleteStack': function (id) {
 
     if (! Users.is.admin(this.userId)) {
-      throw new Meteor.Error(400, "Method 'tutum/deleteStack': Must be admin.");
+      throw new Meteor.Error("Method 'tutum/deleteStack': Must be admin.");
     }
 
     check(id, String);
