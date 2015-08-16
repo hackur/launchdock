@@ -2,6 +2,7 @@
 
   <div class="container">
     <div class="row">
+
       {{#each stack}}
         <h3 class="center">{{name}}</h3>
         <div class="divider"></div>
@@ -24,17 +25,16 @@
       <div class="col s12 m5 offset-m1">
         <h5 class="center">Services</h5>
         {{#each stackServices}}
-        <div class="card col s12">
-          <div class="card-content">
-            <h5>{{role}}</h5>
-            <p><strong>Name: </strong>{{name}}</p>
-            <p><strong>Image: </strong>{{imageName}}</p>
-            <p><strong>State: </strong><span class="{{stateClass}}-text">{{state}}</span></p>
+          <div class="card col s12">
+            <div class="card-content">
+              <h5>{{role}}</h5>
+              <p><strong>Name: </strong>{{name}}</p>
+              <p><strong>Image: </strong>{{imageName}}</p>
+              <p><strong>State: </strong><span class="{{stateClass}}-text">{{state}}</span></p>
+            </div>
           </div>
-        </div>
         {{/each}}
       </div>
-
 
     </div>
   </div>
