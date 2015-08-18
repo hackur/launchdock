@@ -212,6 +212,7 @@ Meteor.methods({
         // TODO - set stack to "terminated" and
         // then remove it after a minute or two delay
         Stacks.remove({ _id: id });
+        Services.remove({ stack: stack.uri });
       }
 
       return res;
