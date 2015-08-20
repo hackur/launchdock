@@ -30,6 +30,9 @@ Template.stack_page.helpers({
       case 'Redeploying':
         return 'orange'
         break;
+      case 'Partly running':
+        return 'orange'
+        break;
       case 'Stopping':
         return 'red'
         break;
