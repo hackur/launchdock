@@ -191,13 +191,13 @@ Tutum.prototype.checkMongoState = function (containerUuid, callback) {
     console.log('Tutum shell websocket opened');
   });
 
-  socket.on('message', function(messageStr) {
+  socket.on('message', Meteor.bindEnvironment(function(messageStr) {
     var msg = JSON.parse(messageStr);
     // console.log(msg.output);
     if (msg.output === 'Mongo primary is ready for connections') {
       callback(null, true);
     }
-  });
+  }));
 
   socket.on('close', function() {
     console.log('Tutum shell websocket closed');
