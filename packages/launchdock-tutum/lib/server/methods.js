@@ -20,126 +20,128 @@ Meteor.methods({
     var siteId = stackId.toLowerCase();
     var siteUrl = "http://" + siteId + ".getreaction.io";
 
+    var app = {
+      "name": "app-" + stackId,
+      "image": doc.appImage || "ongoworks/reaction:latest",
+      "container_ports": [
+        {
+          "protocol": "tcp",
+          "inner_port": 80
+        }
+      ],
+      "container_envvars": [
+        {
+          "key": "MONGO_URL",
+          "value": "mongodb://myAppUser:myAppPassword@mongo1:27017,mongo2:27017/myAppDatabase"
+        }, {
+          "key": "ROOT_URL",
+          "value": doc.domainName ? "http://" + doc.domainName : siteUrl
+        }, {
+          "key": "VIRTUAL_HOST",
+          "value": doc.domainName || siteId + ".getreaction.io"
+        }, {
+          "key": "PORT",
+          "value": 80
+        }
+      ],
+      "linked_to_service": [
+        {
+          "to_service": "mongo1-" + stackId,
+          "name": "mongo1"
+        }, {
+          "to_service": "mongo2-" + stackId,
+          "name": "mongo2"
+        }
+      ],
+      "tags": [ "app" ],
+      // "target_num_containers": 2,
+      "sequential_deployment": true,
+      "deployment_strategy": "HIGH_AVAILABILITY",
+      "autorestart": "ALWAYS"
+    };
+
+    // Mongo - primary
+    var mongo1 = {
+      "name": "mongo1-" + stackId,
+      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.6",
+      "container_ports": [
+        {
+          "protocol": "tcp",
+          "inner_port": 27017
+        }
+      ],
+      "container_envvars": [
+        {
+          "key": "MONGO_ROLE",
+          "value": "primary"
+        }, {
+          "key": "MONGO_SECONDARY",
+          "value": "mongo2-" + stackId
+        }, {
+          "key": "MONGO_ARBITER",
+          "value": "mongo3-" + stackId
+        }
+      ],
+      "linked_to_service": [
+        {
+          "to_service": "mongo2-" + stackId,
+          "name": "mongo2"
+        }, {
+          "to_service": "mongo3-" + stackId,
+          "name": "mongo3"
+        }
+      ],
+      "tags": [ "mongo1" ],
+      "autorestart": "ALWAYS"
+    };
+
+    // Mongo - secondary
+    var mongo2 = {
+      "name": "mongo2-" + stackId,
+      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.6",
+      "container_ports": [
+        {
+          "protocol": "tcp",
+          "inner_port": 27017
+        }
+      ],
+      "tags": [ "mongo2" ],
+      "autorestart": "ALWAYS"
+    };
+
+    // Mongo - arbiter
+    var mongo3 = {
+      "name": "mongo3-" + stackId,
+      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.6",
+      "container_ports": [
+        {
+          "protocol": "tcp",
+          "inner_port": 27017
+        }
+      ],
+      "container_envvars": [
+        {
+          "key": "JOURNALING",
+          "value": "no"
+        }
+      ],
+      "tags": [ "mongo3" ],
+      "autorestart": "ALWAYS"
+    };
+
+    var services = [ mongo1, mongo2, mongo3 ];
+
     // configure the stack
     var stackDetails = {
       "name": doc.name,
-      "services": [
-        // app
-        {
-          "name": "app-" + stackId,
-          "image": doc.appImage || "ongoworks/reaction:latest",
-          "container_ports": [
-            {
-              "protocol": "tcp",
-              "inner_port": 80
-            }
-          ],
-          "container_envvars": [
-            {
-              "key": "MONGO_URL",
-              "value": "mongodb://myAppUser:myAppPassword@mongo1:27017,mongo2:27017/myAppDatabase"
-            }, {
-              "key": "ROOT_URL",
-              "value": doc.domainName ? "http://" + doc.domainName : siteUrl
-            }, {
-              "key": "VIRTUAL_HOST",
-              "value": doc.domainName || siteId + ".getreaction.io"
-            }, {
-              "key": "PORT",
-              "value": 80
-            }
-          ],
-          "linked_to_service": [
-            {
-              "to_service": "mongo1-" + stackId,
-              "name": "mongo1"
-            }, {
-              "to_service": "mongo2-" + stackId,
-              "name": "mongo2"
-            }
-          ],
-          "tags": [ "app" ],
-          "target_num_containers": 2,
-          "sequential_deployment": true,
-          "deployment_strategy": "HIGH_AVAILABILITY",
-          "autorestart": "ALWAYS"
-        },
-
-        // Mongo - primary
-        {
-          "name": "mongo1-" + stackId,
-          "image": "tutum.co/ongoworks/mongo-rep-set:latest",
-          "container_ports": [
-            {
-              "protocol": "tcp",
-              "inner_port": 27017
-            }
-          ],
-          "container_envvars": [
-            {
-              "key": "MONGO_ROLE",
-              "value": "primary"
-            }, {
-              "key": "MONGO_SECONDARY",
-              "value": "mongo2-" + stackId
-            }, {
-              "key": "MONGO_ARBITER",
-              "value": "mongo3-" + stackId
-            }
-          ],
-          "linked_to_service": [
-            {
-              "to_service": "mongo2-" + stackId,
-              "name": "mongo2"
-            }, {
-              "to_service": "mongo3-" + stackId,
-              "name": "mongo3"
-            }
-          ],
-          "tags": [ "mongo1" ],
-          "autorestart": "ALWAYS"
-        },
-
-        // Mongo - secondary
-        {
-          "name": "mongo2-" + stackId,
-          "image": "tutum.co/ongoworks/mongo-rep-set:latest",
-          "container_ports": [
-            {
-              "protocol": "tcp",
-              "inner_port": 27017
-            }
-          ],
-          "tags": [ "mongo2" ],
-          "autorestart": "ALWAYS"
-        },
-
-        // Mongo - arbiter
-        {
-          "name": "mongo3-" + stackId,
-          "image": "tutum.co/ongoworks/mongo-rep-set:latest",
-          "container_ports": [
-            {
-              "protocol": "tcp",
-              "inner_port": 27017
-            }
-          ],
-          "container_envvars": [
-            {
-              "key": "JOURNALING",
-              "value": "no"
-            }
-          ],
-          "tags": [ "mongo3" ],
-          "autorestart": "ALWAYS"
-        }
-      ]
+      "services": services
     };
 
     // create the stack
     try {
       var stack = tutum.create('stack', stackDetails);
     } catch(e) {
+      console.error(e);
       return e;
     }
 
@@ -155,37 +157,68 @@ Meteor.methods({
     });
 
     // add each of the stack's services to the local Services collection
-    _.each(stack.data.services, function (service_uri) {
-      try {
-        var service = tutum.get(service_uri);
-      } catch(e) {
-        return e;
-      }
-      Services.insert({
-        name: service.data.name,
-        uuid: service.data.uuid,
-        imageName: service.data.image_name,
-        stack: service.data.stack,
-        state: service.data.state,
-        tags: service.data.tags,
-        uri: service_uri
-      });
-    });
+    tutum.updateStackServices(stack.data.services);
 
-    // link the load balancer to the app service of the new stack
-    try {
-      var appService = Services.findOne({ name: "app-" + stackId });
-      tutum.addLinkToLoadBalancer(appService.name, appService.uri);
-    } catch (e) {
-      return e;
-    }
-
-    // start it up!
+    // start the stack (currently only a mongo cluster)
     try {
       tutum.start(stack.data.resource_uri);
     } catch(e) {
+      console.error(e);
       return e;
     }
+
+    // watch for mongo stack to be running, then start trying to connect to it
+    // (stack state gets updated by persistent Tutum events websocket stream)
+    var handle = Stacks.find({ _id: stackId }).observeChanges({
+      changed: function (id, fields) {
+        if (fields.state && fields.state === 'Running') {
+
+          // get the container URI for the mongo primary
+          var mongoPrimary = Services.findOne({ name: 'mongo1-' + stackId });
+          var mongo1Containers = tutum.getServiceContainers(mongoPrimary.uri);
+
+          // parse UUID from URI
+          var mongoUuid = mongo1Containers[0].substring(18, mongo1Containers[0].length - 1);
+
+          // open websocket and try to connect to mongo
+          tutum.checkMongoState(mongoUuid, function (err, ready) {
+            if (ready) {
+              // add the app to the stack
+              try {
+                var fullStack = tutum.update(stack.data.resource_uri, {
+                  "services": [ app, mongo1, mongo2, mongo3 ]
+                });
+              } catch(e) {
+                console.error(e);
+                return e;
+              }
+
+              // update the stack services locally again
+              tutum.updateStackServices(fullStack.data.services);
+
+              // start the app service
+              var appService = Services.findOne({ name: "app-" + stackId });
+              try {
+                tutum.start(appService.uri);
+              } catch(e) {
+                console.error(e);
+                return e;
+              }
+
+              // link the load balancer to the app service
+              try {
+                tutum.addLinkToLoadBalancer(appService.name, appService.uri);
+              } catch (e) {
+                console.error(e);
+                return e;
+              }
+            }
+          });
+
+          handle.stop();
+        }
+      }
+    });
 
     return stackId;
   },
