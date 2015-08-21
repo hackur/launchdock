@@ -13,6 +13,11 @@ Template.stack_page.helpers({
   stackServices: function () {
     return Services.find();
   },
+  stackUrlReady: function () {
+    // TODO: do some health checks to make sure app is actually ready to view
+    var stack = Stacks.findOne();
+    return (stack.services.length === 4 && stack.state === 'Running');
+  },
   role: function () {
     return this.tags[0].name;
   },

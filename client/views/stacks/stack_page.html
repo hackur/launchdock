@@ -14,9 +14,15 @@
               <p><strong>Tutum uuid:</strong> {{uuid}}</p>
               <p><strong>Created:</strong> {{moment createdAt 'LLL'}}</p>
               <p><strong>State:</strong> <span class="{{stateClass}}-text">{{state}}</span></p>
-              {{#if publicUrl}}
-                <p><a href="{{publicUrl}}" target="_blank">View site</a></p>
-              {{/if}}
+              <div class="row">
+                <div class="col s4 right">
+                  {{#if stackUrlReady}}
+                    <a href="{{publicUrl}}" target="_blank">
+                      <button class="waves-effect waves-light btn">View Site</button>
+                    </a>
+                  {{/if}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
