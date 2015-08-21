@@ -199,6 +199,7 @@ Meteor.methods({
 
               // update the stack services locally again
               tutum.updateStackServices(fullStack.data.services);
+              Stacks.update({ _id: stackId }, { $set: { services: fullStack.data.services }});
 
               // start the app service
               var appService = Services.findOne({ name: "app-" + stackId });
