@@ -6,7 +6,11 @@ Meteor.methods({
       throw new Meteor.Error("Method 'tutum/createStack': Must be an admin.");
     }
 
-    check(doc.name, String);
+    check(doc, {
+      name: String,
+      appImage: Match.Optional(String),
+      domainName: Match.Optional(String)
+    });
 
     var tutum = new Tutum();
 
