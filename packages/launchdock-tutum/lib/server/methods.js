@@ -133,12 +133,10 @@ Meteor.methods({
       "autorestart": "ALWAYS"
     };
 
-    var services = [ mongo1, mongo2, mongo3 ];
-
     // configure the stack
     var stackDetails = {
       "name": doc.name,
-      "services": services
+      "services": [ mongo1, mongo2, mongo3 ]
     };
 
     // create the stack
@@ -255,6 +253,7 @@ Meteor.methods({
 
       return res;
     } catch(e) {
+      console.error(e);
       return e;
     }
   }
