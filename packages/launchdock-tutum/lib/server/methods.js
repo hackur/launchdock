@@ -26,7 +26,7 @@ Meteor.methods({
 
     var app = {
       "name": "app-" + stackId,
-      "image": doc.appImage || "ongoworks/reaction:latest",
+      "image": doc.appImage || "reactioncommerce/reaction:latest",
       "container_ports": [
         {
           "protocol": "tcp",
