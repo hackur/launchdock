@@ -4,7 +4,7 @@ Package.describe({
 });
 
 Npm.depends({
-  'ws': '0.7.2'
+  'ws': '0.8.0'
 });
 
 Package.onUse(function (api) {
