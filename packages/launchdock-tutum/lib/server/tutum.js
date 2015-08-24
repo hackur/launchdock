@@ -199,6 +199,11 @@ Tutum.prototype.checkMongoState = function (containerUuid, callback) {
     }
   }));
 
+  socket.on('error', function(e) {
+    console.error(e);
+    callback(e);
+  });
+
   socket.on('close', function() {
     console.log('Tutum shell websocket closed');
   });
