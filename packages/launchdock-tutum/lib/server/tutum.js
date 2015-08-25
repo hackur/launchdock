@@ -137,8 +137,6 @@ Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceName, linkedServi
 
 
 Tutum.prototype.updateStackServices = function (services) {
-  check(services, [String]);
-
   var self = this;
 
   _.each(services, function (service_uri) {
@@ -165,8 +163,6 @@ Tutum.prototype.updateStackServices = function (services) {
 
 
 Tutum.prototype.getServiceContainers = function (serviceUri) {
-  check(serviceUri, String);
-
   try {
     var service = this.get(serviceUri);
     return service.data.containers;
@@ -177,9 +173,6 @@ Tutum.prototype.getServiceContainers = function (serviceUri) {
 
 
 Tutum.prototype.checkMongoState = function (containerUuid, callback) {
-  check(containerUuid, String);
-  check(callback, Match.Optional(Function));
-
   var command = 'mongo --nodb /opt/mongo/upcheck.js';
   var url = 'wss://stream.tutum.co/v1/container/' + containerUuid + '/exec/?user=' + this.username + '&token=' + this.token;
       url += '&command=' + command;
