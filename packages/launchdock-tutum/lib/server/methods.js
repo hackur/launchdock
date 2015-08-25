@@ -69,7 +69,7 @@ Meteor.methods({
     // Mongo - primary
     var mongo1 = {
       "name": "mongo1-" + stackId,
-      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.6",
+      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.7",
       "container_ports": [
         {
           "protocol": "tcp",
@@ -104,7 +104,7 @@ Meteor.methods({
     // Mongo - secondary
     var mongo2 = {
       "name": "mongo2-" + stackId,
-      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.6",
+      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.7",
       "container_ports": [
         {
           "protocol": "tcp",
@@ -118,7 +118,7 @@ Meteor.methods({
     // Mongo - arbiter
     var mongo3 = {
       "name": "mongo3-" + stackId,
-      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.6",
+      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.7",
       "container_ports": [
         {
           "protocol": "tcp",
