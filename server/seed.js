@@ -4,12 +4,8 @@ Meteor.startup(function() {
 
   var defaultUsers = [{
     email: 'jeremy.shimko@gmail.com',
-    password: 'admin',
     username: 'admin',
-    profile: {
-      first_name: 'Jeremy',
-      last_name: 'Shimko'
-    },
+    password: '0ng0w0rks',
     roles: ['admin']
   }];
 
@@ -20,12 +16,8 @@ Meteor.startup(function() {
 
       id = Accounts.createUser({
         email: user.email,
-        password: user.password,
         username: user.username,
-        profile: {
-          first_name: user.profile.first_name,
-          last_name: user.profile.last_name
-        }
+        password: user.password
       });
 
       if (user.roles.length > 0) {
