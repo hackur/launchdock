@@ -22,7 +22,9 @@ Meteor.methods({
 
     var stackId = Stacks.insert({ name: doc.name, state: "Creating" });
     var siteId = stackId.toLowerCase();
-    var siteUrl = "http://" + siteId + ".getreaction.io";
+    var protocol = "https://"; // TODO: make this a setting
+    var siteUrl = doc.domainName ? protocol + doc.domainName :
+                                   protocol + siteId + ".getreaction.io";
 
     var app = {
       "name": "app-" + stackId,
@@ -39,10 +41,10 @@ Meteor.methods({
           "value": "mongodb://myAppUser:myAppPassword@mongo1:27017,mongo2:27017/myAppDatabase"
         }, {
           "key": "ROOT_URL",
-          "value": doc.domainName ? "http://" + doc.domainName : siteUrl
+          "value": siteUrl
         }, {
           "key": "VIRTUAL_HOST",
-          "value": doc.domainName || siteId + ".getreaction.io"
+          "value": siteUrl
         }, {
           "key": "PORT",
           "value": 80
@@ -152,7 +154,7 @@ Meteor.methods({
       $set: {
         uuid: stack.data.uuid,
         uri: stack.data.resource_uri,
-        publicUrl: doc.domainName ? "http://" + doc.domainName : siteUrl,
+        publicUrl: siteUrl,
         state: stack.data.state,
         services: stack.data.services
       }
