@@ -97,6 +97,38 @@ Tutum.prototype.delete = function (resourceUri) {
 };
 
 
+Tutum.prototype.logs = function (containerUuid, callback) {
+  var url = 'wss://stream.tutum.co/v1/container/' + containerUuid +
+            '/logs/?user=' + this.username + '&token=' + this.token;
+
+  var WebSocket = Npm.require('ws');
+  var socket = new WebSocket(url);
+
+  socket.on('open', function() {
+    console.log('Listening to Tutum container logs...');
+  });
+
+  socket.on('message', Meteor.bindEnvironment(function(messageStr) {
+    var msg = JSON.parse(messageStr);
+
+    if (_.isFunction(callback)) {
+      callback(null, msg);
+    } else {
+      console.log(msg.log);
+    }
+  }));
+
+  socket.on('error', function(e) {
+    console.error(e);
+    callback(e);
+  });
+
+  socket.on('close', function() {
+    console.log('Tutum container logs stopped');
+  });
+}
+
+
 Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceName, linkedServiceUri) {
   if (!linkedServiceUri || !linkedServiceName) {
     throw new Meteor.Error("Tutum.addLinkToLoadBalancer: Missing balancer details.")
