@@ -27,6 +27,8 @@ aslagle:reactive-table
 
 fourseven:scss
 poetic:materialize-scss
+lookback:tooltips
+
 useraccounts:core
 useraccounts:materialize
 useraccounts:flow-routing
