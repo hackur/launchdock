@@ -1,7 +1,54 @@
-@import "../../.meteor/local/build/programs/server/assets/packages/poetic_materialize-scss/bower_components/materialize/sass/components/mixins",
-        "../../.meteor/local/build/programs/server/assets/packages/poetic_materialize-scss/bower_components/materialize/sass/components/color",
-        "vars",
-        "../../.meteor/local/build/programs/server/assets/packages/poetic_materialize-scss/bower_components/materialize/sass/materialize.scss";
+@charset "UTF-8";
+
+/////////////////
+// Materialize //
+/////////////////
+
+// Note that prefix of import path is set in scss.json
+
+@import // Mixins
+        "materialize/sass/components/mixins",
+        "materialize/sass/components/prefixer",
+        "materialize/sass/components/color",
+
+        // Variables
+        "materialize/sass/components/variables",  // default
+        "vars",                                   // custom
+
+        // Reset
+        "materialize/sass/components/normalize",
+
+        // Ccomponents
+        "materialize/sass/components/global",
+        "materialize/sass/components/icons-material-design",
+        "materialize/sass/components/material-icons",
+        "materialize/sass/components/grid",
+        "materialize/sass/components/navbar",
+        "materialize/sass/components/roboto",
+        "materialize/sass/components/typography",
+        "materialize/sass/components/cards",
+        "materialize/sass/components/toast",
+        "materialize/sass/components/tabs",
+        "materialize/sass/components/tooltip",
+        "materialize/sass/components/buttons",
+        "materialize/sass/components/dropdown",
+        "materialize/sass/components/waves",
+        "materialize/sass/components/modal",
+        "materialize/sass/components/collapsible",
+        "materialize/sass/components/materialbox",
+        "materialize/sass/components/form",
+        "materialize/sass/components/table_of_contents",
+        "materialize/sass/components/sideNav",
+        "materialize/sass/components/preloader",
+        "materialize/sass/components/slider",
+        "materialize/sass/components/date_picker/default.scss",
+        "materialize/sass/components/date_picker/default.date.scss",
+        "materialize/sass/components/date_picker/default.time.scss";
+
+
+//////////////////////////////
+// Launchdock Custom Styles //
+//////////////////////////////
 
 @import "modules/mixins",
         "modules/breakpoints",
