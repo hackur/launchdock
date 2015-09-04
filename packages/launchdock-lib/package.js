@@ -40,11 +40,20 @@ Package.onUse(function(api) {
   ];
 
   api.use(packages);
-
   api.imply(packages);
+
+  api.addFiles([
+    'lib/core.js'
+  ], ['client', 'server']);
 
   api.addFiles([
     'lib/client/blaze.js'
   ], 'client');
+
+  api.addFiles([
+    'lib/api.js'
+  ], 'server');
+
+  api.export('Launchdock');
 
 });
