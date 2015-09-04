@@ -2,14 +2,16 @@
 Meteor.methods({
   'tutum/createStack': function (doc) {
 
-    if (! Users.is.admin(this.userId)) {
-      throw new Meteor.Error("Method 'tutum/createStack': Must be an admin.");
+    if (!Launchdock.api.authCheck(doc.token, this.userId)) {
+      throw new Meteor.Error("AUTH ERROR: Invalid credentials");
     }
 
     check(doc, {
       name: String,
       appImage: Match.Optional(String),
-      domainName: Match.Optional(String)
+      domainName: Match.Optional(String),
+      appEnvVars: Match.Optional([Object]),
+      token: Match.Optional(String)
     });
 
     var tutum = new Tutum();
@@ -64,6 +66,11 @@ Meteor.methods({
       "sequential_deployment": true,
       "deployment_strategy": "HIGH_AVAILABILITY",
       "autorestart": "ALWAYS"
+    };
+
+    // add custom environment variables to app (if any were provided)
+    if (doc.appEnvVars) {
+      app.container_envvars = app.container_envvars.concat(doc.appEnvVars);
     };
 
     // Mongo - primary
