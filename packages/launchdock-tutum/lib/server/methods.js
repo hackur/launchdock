@@ -144,7 +144,7 @@ Meteor.methods({
 
     // configure the stack
     var stackDetails = {
-      "name": doc.name,
+      "name": doc.name + "-" + stackId,
       "services": [ mongo1, mongo2, mongo3 ]
     };
 
