@@ -152,8 +152,8 @@ Meteor.methods({
     try {
       var stack = tutum.create('stack', stackDetails);
     } catch(e) {
-      console.error(e);
-      return e;
+      Stacks.remove(stackId);
+      throw new Meteor.Error(e);
     }
 
     // update local database with returned stack details
@@ -174,8 +174,7 @@ Meteor.methods({
     try {
       tutum.start(stack.data.resource_uri);
     } catch(e) {
-      console.error(e);
-      return e;
+      throw new Meteor.Error(e);
     }
 
     // watch for mongo stack to be running, then start trying to connect to it
@@ -262,8 +261,7 @@ Meteor.methods({
 
       return res;
     } catch(e) {
-      console.error(e);
-      return e;
+      throw new Meteor.Error(e);
     }
   }
 
