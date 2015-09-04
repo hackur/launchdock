@@ -205,9 +205,10 @@ Tutum.prototype.getServiceContainers = function (serviceUri) {
 
 
 Tutum.prototype.checkMongoState = function (containerUuid, callback) {
-  var command = 'mongo --nodb /opt/mongo/upcheck.js';
-  var url = 'wss://stream.tutum.co/v1/container/' + containerUuid + '/exec/?user=' + this.username + '&token=' + this.token;
-      url += '&command=' + command;
+  var command = 'bash /opt/mongo/status_check.sh';
+  var url = 'wss://stream.tutum.co/v1/container/' + containerUuid +
+            '/exec/?user=' + this.username + '&token=' + this.token +
+            '&command=' + command;
 
   var WebSocket = Npm.require('ws');
   var socket = new WebSocket(url);
@@ -218,8 +219,8 @@ Tutum.prototype.checkMongoState = function (containerUuid, callback) {
 
   socket.on('message', Meteor.bindEnvironment(function(messageStr) {
     var msg = JSON.parse(messageStr);
-    // console.log(msg.output);
-    if (msg.output === 'Mongo primary is ready for connections') {
+    console.log("MONGO: ", msg.output);
+    if (msg.output === 'Replica set is now accepting connections!') {
       callback(null, true);
     }
   }));
