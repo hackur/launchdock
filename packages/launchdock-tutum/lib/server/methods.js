@@ -14,6 +14,8 @@ Meteor.methods({
       token: Match.Optional(String)
     });
 
+    this.unblock();
+
     var tutum = new Tutum();
 
     tutum.checkCredentials();
