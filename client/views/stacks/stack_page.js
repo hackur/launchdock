@@ -6,12 +6,13 @@ Template.stack_page.onCreated(function() {
   });
 });
 
+
 Template.stack_page.helpers({
   stack: function () {
     return Stacks.find();
   },
   stackServices: function () {
-    return Services.find();
+    return Services.find({}, { sort: { name: 1 }});
   },
   stackUrlReady: function () {
     // TODO: do some health checks to make sure app is actually ready to view

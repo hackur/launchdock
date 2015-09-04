@@ -1,8 +1,8 @@
 <template name="stack_page">
 
   <div class="container">
-    <div class="row">
 
+    <div class="row">
       {{#each stack}}
         <h3 class="center">{{name}}</h3>
         <div class="divider"></div>
@@ -10,15 +10,24 @@
           <h5 class="center">Stack detail</h5>
           <div class="card">
             <div class="card-content">
-              <p><strong>Name:</strong> {{name}}</p>
-              <p><strong>Tutum uuid:</strong> {{uuid}}</p>
-              <p><strong>Created:</strong> {{moment createdAt 'LLL'}}</p>
-              <p><strong>State:</strong> <span class="{{stateClass}}-text">{{state}}</span></p>
               <div class="row">
+                <div class="col s12">
+                  <p><strong>Name:</strong> {{name}}</p>
+                  <p><strong>Tutum uuid:</strong> {{uuid}}</p>
+                  <p><strong>Created:</strong> {{moment createdAt 'LLL'}}</p>
+                  <p><strong>State:</strong> <span class="{{stateClass}}-text">{{state}}</span></p>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col s8">
+                  <a href="https://dashboard.tutum.co/stack/show/{{uuid}}/" target="_blank">
+                    View stack in Tutum
+                  </a>
+                </div>
                 <div class="col s4 right">
                   {{#if stackUrlReady}}
                     <a href="{{publicUrl}}" target="_blank">
-                      <button class="waves-effect waves-light btn">View Site</button>
+                      <button class="waves-effect waves-light btn">View App</button>
                     </a>
                   {{/if}}
                 </div>
@@ -27,22 +36,48 @@
           </div>
         </div>
       {{/each}}
-
-      <div class="col s12 m5 offset-m1">
+    </div>
+    <div class="row">
+      <div class="col s12">
         <h5 class="center">Services</h5>
-        {{#each stackServices}}
-          <div class="card col s12">
+          <div class="card">
             <div class="card-content">
-              <h5>{{role}}</h5>
-              <p><strong>Name: </strong>{{name}}</p>
-              <p><strong>Image: </strong>{{imageName}}</p>
-              <p><strong>State: </strong><span class="{{stateClass}}-text">{{state}}</span></p>
+              <table class="responsive-table">
+                <thead>
+                  <tr>
+                    <th data-field="role">Name</th>
+                    <th data-field="state">State</th>
+                    <th data-field="service-id">Tutum Service ID</th>
+                    <th data-field="image">Docker Image</th>
+                    <th data-field="links"></th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {{#each stackServices}}
+                    <tr>
+                      <td>{{role}}</td>
+                      <td><span class="{{stateClass}}-text">{{state}}</span></td>
+                      <td>{{name}}</td>
+                      <td>{{imageName}}</td>
+                      <td>{{> stack_services_links}}</td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
             </div>
           </div>
-        {{/each}}
       </div>
-
     </div>
   </div>
+  {{ > tooltips }}
+</template>
 
+
+<template name="stack_services_links">
+  <div class="stack-service-links">
+    <a href="https://dashboard.tutum.co/container/service/show/{{uuid}}/" target="_blank">
+      <i class="zmdi zmdi-arrow-right-top zmdi-hc-2x" data-tooltip="View in Tutum"></i>
+    </a>
+  </div>
 </template>
