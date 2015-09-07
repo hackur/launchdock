@@ -1,16 +1,16 @@
 <template name="dashboard_layout">
-  {{#if currentUser}}
-    <nav class="white" role="navigation">
-      <div class="nav-wrapper">
-        {{> top_nav }}
-      </div>
-    </nav>
-  {{/if}}
-  <main class="main-content">
-    {{#if subsReady}}
-      {{>Template.dynamic template=content}}
-    {{else}}
-      {{>spinner}}
+  {{#if subsReady}}
+    {{#if currentUser}}
+      <nav class="white" role="navigation">
+        <div class="nav-wrapper">
+          {{> top_nav }}
+        </div>
+      </nav>
     {{/if}}
-  </main>
+    <main class="main-content">
+        {{>Template.dynamic template=content}}
+    </main>
+  {{else}}
+    {{>spinner}}
+  {{/if}}
 </template>
