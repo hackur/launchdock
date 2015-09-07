@@ -135,7 +135,7 @@ Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceName, linkedServi
   }
 
   // TODO: find and set best load balancer here
-  var loadBalancerUri = "/api/v1/service/11167653-43ef-4049-8e05-9fb720f8f5f7/";
+  var loadBalancerUri = "/api/v1/service/56507358-5b58-4f33-a605-44d652dca9b6/";
 
   // Query the chosen load balancer to get the currently linked services
   try {
