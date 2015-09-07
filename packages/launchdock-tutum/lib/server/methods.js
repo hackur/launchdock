@@ -27,8 +27,15 @@ Meteor.methods({
     var stackId = Stacks.insert({ name: doc.name, state: "Creating" });
     var siteId = stackId.toLowerCase();
     var protocol = "https://"; // TODO: make this a setting
+    var websocketProtocol = "wss://";
+
     var siteUrl = doc.domainName ? protocol + doc.domainName :
                                    protocol + siteId + ".getreaction.io";
+
+    var websocketUrl = doc.domainName ? websocketProtocol + doc.domainName :
+                                        websocketProtocol + siteId + ".getreaction.io";
+
+    var virtualHostUrls = siteUrl + ", " + websocketUrl;
 
     var app = {
       "name": "app-" + stackId,
@@ -48,10 +55,13 @@ Meteor.methods({
           "value": siteUrl
         }, {
           "key": "VIRTUAL_HOST",
-          "value": siteUrl
+          "value": virtualHostUrls
         }, {
           "key": "PORT",
           "value": 80
+        }, {
+          "key": "NODE_TLS_REJECT_UNAUTHORIZED",
+          "value": 0
         }
       ],
       "linked_to_service": [
