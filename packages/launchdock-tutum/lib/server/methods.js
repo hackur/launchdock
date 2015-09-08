@@ -26,16 +26,15 @@ Meteor.methods({
 
     var stackId = Stacks.insert({ name: doc.name, state: "Creating" });
     var siteId = stackId.toLowerCase();
-    var protocol = "https://"; // TODO: make this a setting
-    var websocketProtocol = "wss://";
 
-    var siteUrl = doc.domainName ? protocol + doc.domainName :
-                                   protocol + siteId + ".getreaction.io";
+    var siteUrl = doc.domainName ? doc.domainName :
+                                   siteId + ".getreaction.io";
 
-    var websocketUrl = doc.domainName ? websocketProtocol + doc.domainName :
-                                        websocketProtocol + siteId + ".getreaction.io";
+    var websocketUrl = doc.domainName ? doc.domainName :
+                                        siteId + ".getreaction.io";
 
-    var virtualHostUrls = siteUrl + ", " + websocketUrl;
+    var virtualHosts = "http://" + siteUrl + ", ws://" + websocketUrl +
+                       ", https://" + siteUrl + ", wss://" + websocketUrl;
 
     var app = {
       "name": "app-" + stackId,
@@ -52,13 +51,16 @@ Meteor.methods({
           "value": "mongodb://myAppUser:myAppPassword@mongo1:27017,mongo2:27017/myAppDatabase"
         }, {
           "key": "ROOT_URL",
-          "value": siteUrl
+          "value": "https://" + siteUrl
         }, {
           "key": "VIRTUAL_HOST",
-          "value": virtualHostUrls
+          "value": virtualHosts
         }, {
           "key": "PORT",
           "value": 80
+        }, {
+          "key": "FORCE_SSL",
+          "value": "yes"
         }, {
           "key": "NODE_TLS_REJECT_UNAUTHORIZED",
           "value": 0
@@ -173,7 +175,7 @@ Meteor.methods({
       $set: {
         uuid: stack.data.uuid,
         uri: stack.data.resource_uri,
-        publicUrl: siteUrl,
+        publicUrl: "https://" + siteUrl,
         state: stack.data.state,
         services: stack.data.services
       }
