@@ -11,9 +11,9 @@ input[type=tel],
 input[type=number],
 input[type=search],
 textarea.materialize-textarea {
-    border: 1px solid $input-border-color;
-    border-radius: 3px;
-    padding-left: 12px;
+  border: 1px solid $input-border-color;
+  border-radius: 3px;
+  padding-left: 12px;
 }
 
 // Fix default form focus state styles
@@ -29,23 +29,23 @@ input[type=number],
 input[type=search],
 textarea.materialize-textarea {
 
-    &:focus:not([readonly]) {
-        border: 1px solid $input-border-color;
-        box-shadow: none;
-    }
+  &:focus:not([readonly]) {
+    border: 1px solid $input-border-color;
+    box-shadow: none;
+  }
 }
 
 // .form-heading {
-//     padding: .5em 0 1em 0 ;
+//    padding: .5em 0 1em 0 ;
 // }
 
 form {
 
-    button[type=submit] {
-        margin-top: 1.5rem;
-    }
+  button[type=submit] {
+    margin-top: 1.5rem;
+  }
 }
 
 // label {
-//     font-weight: normal;
+//    font-weight: normal;
 // }

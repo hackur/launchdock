@@ -3,46 +3,46 @@
 */
 
 code {
-    font-family: 'Source Code Pro', Monaco, Menlo, Consolas, "Courier New", monospace;
+  font-family: 'Source Code Pro', Monaco, Menlo, Consolas, "Courier New", monospace;
 }
 
 pre code {
-    // font-size: 1.08em;
+  // font-size: 1.08em;
 }
 
 .hljs {
-    background: #2E2E2E;
-    padding: 10px 30px;
+  background: #2E2E2E;
+  padding: 10px 30px;
 }
 
 .hljs-title {
-    font-weight: normal;
+  font-weight: normal;
 }
 
 .hljs-tag {
-    color: #86705A;
+  color: #86705A;
 }
 
 .hljs-tag .hljs-value {
-    color: #93a9c9;
+  color: #93a9c9;
 }
 
 .hljs-tag .hljs-title {
-    color: #62967E;
+  color: #62967E;
 }
 
 .hljs {
-    color: #666;
+  color: #666;
 }
 
 .hljs .javascript {
-    color: #dcdcdc;
+  color: #dcdcdc;
 
-    .hljs-string {
-        color: #93a9c9;
-    }
+  .hljs-string {
+    color: #93a9c9;
+  }
 
-    .hljs-literal {
-        color: #928Eaa;
-    }
+  .hljs-literal {
+    color: #928Eaa;
+  }
 }

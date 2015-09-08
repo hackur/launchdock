@@ -2,7 +2,7 @@
 
 root = true
 
-[*.{js,html}]
+[*.{js,html,css,scss,less}]
 
 charset = utf-8
 end_of_line = lf
@@ -14,11 +14,6 @@ max_line_length = 80
 quote_type = auto
 spaces_around_operators = true
 trim_trailing_whitespace = true
-
-[*.{css,scss,less}]
-
-indent_size = 4
-indent_style = space
 
 [*.md]
 

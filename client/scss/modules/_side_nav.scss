@@ -1,30 +1,30 @@
 
 .side-nav {
-    background-color: $side-nav-bg;
+  background-color: $side-nav-bg;
 
-    .logo {
-        background-color: #fff;
-        padding: 20px 15px;
+  .logo {
+    background-color: #fff;
+    padding: 20px 15px;
 
-        img {
-            display: block;
-        }
+    img {
+      display: block;
     }
+  }
 
-    &.fixed {
+  &.fixed {
 
-        a {
-            color: #eee;
+    a {
+      color: #eee;
 
-            &:hover {
-                color: $text-color;
-                text-decoration: none;
-            }
-        }
+      &:hover {
+        color: $text-color;
+        text-decoration: none;
+      }
     }
+  }
 }
 
 .button-collapse {
-    color: $text-color;
-    margin-left: 1em;
+  color: $text-color;
+  margin-left: 1em;
 }
