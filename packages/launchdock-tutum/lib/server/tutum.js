@@ -4,6 +4,7 @@ Tutum = function Tutum (username, token) {
   this.token = token || Settings.get('tutumToken');
   this.apiBaseUrl = "https://dashboard.tutum.co";
   this.apiFullUrl = this.apiBaseUrl + "/api/v1/";
+  this.loadBalancerUri = "/api/v1/service/56507358-5b58-4f33-a605-44d652dca9b6/";
 
   this.checkCredentials = function () {
     if (!this.username || !this.token) {
@@ -131,15 +132,12 @@ Tutum.prototype.logs = function (containerUuid, callback) {
 
 Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceName, linkedServiceUri) {
   if (!linkedServiceUri || !linkedServiceName) {
-    throw new Meteor.Error("Tutum.addLinkToLoadBalancer: Missing balancer details.")
+    throw new Meteor.Error("Tutum.addLinkToLoadBalancer: Missing balancer details.");
   }
-
-  // TODO: find and set best load balancer here
-  var loadBalancerUri = "/api/v1/service/56507358-5b58-4f33-a605-44d652dca9b6/";
 
   // Query the chosen load balancer to get the currently linked services
   try {
-    var lb = this.get(loadBalancerUri);
+    var lb = this.get(this.loadBalancerUri);
   } catch (e) {
     return e;
   }
@@ -155,7 +153,7 @@ Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceName, linkedServi
   currentLinks.push(newLink)
 
   // Update the load balancer
-  return HTTP.call("PATCH", this.apiBaseUrl + loadBalancerUri, {
+  return HTTP.call("PATCH", this.apiBaseUrl + this.loadBalancerUri, {
     headers: {
       "Authorization": "ApiKey " + this.username + ":" + this.token,
       "Accept": "application/json",
