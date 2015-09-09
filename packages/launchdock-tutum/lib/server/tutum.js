@@ -166,6 +166,37 @@ Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceName, linkedServi
 };
 
 
+Tutum.prototype.reloadLoadBalancers = function () {
+
+  // Query the load balancer service to get the currently running containers
+  try {
+    var lb = this.get(this.loadBalancerUri);
+  } catch (e) {
+    throw new Meteor.Error(e);
+  }
+
+  lbContainers = lb.data.containers;
+
+  var self = this;
+
+  console.log("Redeploying 1st load balancer...");
+  try {
+    self.redeploy(lbContainers[0]);
+  } catch (e) {
+    throw new Meteor.Error(e);
+  }
+
+  Meteor.setTimeout(function() {
+    console.log("Redeploying 2nd load balancer...");
+    try {
+      self.redeploy(lbContainers[1]);
+    } catch (e) {
+      throw new Meteor.Error(e);
+    }
+  }, 8000);
+};
+
+
 Tutum.prototype.updateStackServices = function (services) {
   var self = this;
 
@@ -190,6 +221,36 @@ Tutum.prototype.updateStackServices = function (services) {
     });
   });
 }
+
+
+Tutum.prototype.updateEnvVars = function (serviceUri, newEnvVars) {
+  if (!serviceUri || !newEnvVars) {
+    throw new Meteor.Error("Tutum.updateEnvVars: Missing args.");
+  }
+
+  // Query the service to get the current env vars
+  try {
+    var service = this.get(serviceUri);
+  } catch (e) {
+    throw new Meteor.Error(e);
+  }
+  var currentEnvVars = service.data.container_envvars;
+
+  // Add new env vars
+  var updatedEnvVars = currentEnvVars.concat(newEnvVars);
+
+  // Update the service
+  return HTTP.call("PATCH", this.apiBaseUrl + serviceUri, {
+    headers: {
+      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    data: {
+      "container_envvars": updatedEnvVars
+    }
+  });
+};
 
 
 Tutum.prototype.getServiceContainers = function (serviceUri) {

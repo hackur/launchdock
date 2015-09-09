@@ -229,6 +229,13 @@ Meteor.methods({
             } catch (e) {
               throw new Meteor.Error(e);
             }
+
+            // HACK: reload load balancer config until Tutum fixes shit
+            try {
+              tutum.reloadLoadBalancers();
+            } catch (e) {
+              throw new Meteor.Error(e);
+            }
           }, 10000);
 
           handle.stop();
