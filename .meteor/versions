@@ -42,8 +42,8 @@ juliancwirko:s-alert-jelly@1.0.6
 juliancwirko:s-alert-scale@1.0.6
 juliancwirko:s-alert-slide@1.1.4
 juliancwirko:s-alert-stackslide@1.1.4
-kadira:blaze-layout@2.0.1
-kadira:flow-router@2.4.0
+kadira:blaze-layout@2.1.0
+kadira:flow-router@2.6.0
 launch-screen@1.0.2
 launchdock:accounts-reaction@0.0.0
 launchdock:lib@0.0.0
