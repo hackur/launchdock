@@ -47,12 +47,12 @@ var startEventsStream = function () {
     }
   }));
 
-  socket.on('close', function() {
+  socket.on('close', Meteor.bindEnvironment(function() {
     console.warn('Tutum events websocket closed!');
 
     // reopen websocket if it closes
     startEventsStream();
-  });
+  }));
 };
 
 
