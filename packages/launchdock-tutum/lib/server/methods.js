@@ -38,7 +38,7 @@ Meteor.methods({
 
     var app = {
       "name": "app-" + stackId,
-      "image": doc.appImage || "reactioncommerce/reaction:latest",
+      "image": doc.appImage || "jshimko/reaction:devel",
       "container_ports": [
         {
           "protocol": "tcp",
