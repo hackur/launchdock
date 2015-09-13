@@ -264,32 +264,16 @@ Tutum.prototype.getServiceContainers = function (serviceUri) {
 
 
 Tutum.prototype.checkMongoState = function (containerUuid, callback) {
-  var command = 'bash /opt/mongo/status_check.sh';
-  var url = 'wss://stream.tutum.co/v1/container/' + containerUuid +
-            '/exec/?user=' + this.username + '&token=' + this.token +
-            '&command=' + command;
-
-  var WebSocket = Npm.require('ws');
-  var socket = new WebSocket(url);
-
-  socket.on('open', function() {
-    console.log('Tutum shell websocket opened');
-  });
-
-  socket.on('message', Meteor.bindEnvironment(function(messageStr) {
-    var msg = JSON.parse(messageStr);
-    console.log("MONGO: ", msg.output);
-    if (msg.output === 'Replica set is now accepting connections!') {
+  // start streaming logs of mongo primary
+  this.logs(containerUuid, function(err, msg, socket) {
+    if (err) {
+      callback(err);
+    }
+    // watch log output for replica set to be ready
+    var readyStr = "transition to primary complete; database writes are now permitted";
+    if (msg.log && ~msg.log.indexOf(readyStr)) {
+      socket.close();
       callback(null, true);
     }
-  }));
-
-  socket.on('error', function(e) {
-    console.error(e);
-    callback(e);
-  });
-
-  socket.on('close', function() {
-    console.log('Tutum shell websocket closed');
   });
 }

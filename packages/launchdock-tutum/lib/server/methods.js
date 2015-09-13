@@ -197,46 +197,47 @@ Meteor.methods({
       changed: function (id, fields) {
         if (fields.state && fields.state === 'Running') {
 
-          // Gross.  Wait 10 secs to start the app...
-          console.log("Waiting 10 secs to start the app container...");
-          Meteor.setTimeout(function() {
-            // add the app to the stack
-            console.log("Adding the app to the stack...");
-            try {
-              var fullStack = tutum.update(stack.data.resource_uri, {
-                "services": [ app, mongo1, mongo2, mongo3 ]
-              });
-            } catch(e) {
-              throw new Meteor.Error(e);
-            }
+          // get the container URI for the mongo primary
+          var mongoPrimary = Services.findOne({ name: 'mongo1-' + stackId });
+          var mongo1Containers = tutum.getServiceContainers(mongoPrimary.uri);
 
-            // update the stack services locally again
-            tutum.updateStackServices(fullStack.data.services);
-            Stacks.update({ _id: stackId }, { $set: { services: fullStack.data.services }});
+          // parse UUID from URI
+          var mongoUuid = mongo1Containers[0].substring(18, mongo1Containers[0].length - 1);
 
-            // start the app service
-            console.log("Starting the app...");
-            var appService = Services.findOne({ name: "app-" + stackId });
-            try {
-              tutum.start(appService.uri);
-            } catch(e) {
-              throw new Meteor.Error(e);
-            }
+          // open websocket and try to connect to mongo
+          tutum.checkMongoState(mongoUuid, function (err, ready) {
+            if (ready) {
+              // add the app to the stack
+              console.log("Adding the app to the stack...");
+              try {
+                var fullStack = tutum.update(stack.data.resource_uri, {
+                  "services": [ app, mongo1, mongo2, mongo3 ]
+                });
+              } catch(e) {
+                throw new Meteor.Error(e);
+              }
 
-            // link the load balancer to the app service
-            try {
-              tutum.addLinkToLoadBalancer(appService.name, appService.uri);
-            } catch (e) {
-              throw new Meteor.Error(e);
-            }
+              // update the stack services locally again
+              tutum.updateStackServices(fullStack.data.services);
+              Stacks.update({ _id: stackId }, { $set: { services: fullStack.data.services }});
 
-            // HACK: reload load balancer config until Tutum fixes shit
-            try {
-              tutum.reloadLoadBalancers();
-            } catch (e) {
-              throw new Meteor.Error(e);
+              // start the app service
+              var appService = Services.findOne({ name: "app-" + stackId });
+              try {
+                tutum.start(appService.uri);
+              } catch(e) {
+                throw new Meteor.Error(e);
+              }
+
+              // link the load balancer to the app service
+              try {
+                tutum.addLinkToLoadBalancer(appService.name, appService.uri);
+                tutum.reloadLoadBalancers();
+              } catch (e) {
+                throw new Meteor.Error(e);
+              }
             }
-          }, 10000);
+          });
 
           handle.stop();
         }
