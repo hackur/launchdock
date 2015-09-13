@@ -113,7 +113,7 @@ Tutum.prototype.logs = function (containerUuid, callback) {
     var msg = JSON.parse(messageStr);
 
     if (_.isFunction(callback)) {
-      callback(null, msg);
+      callback(null, msg, socket);
     } else {
       console.log(msg.log);
     }
