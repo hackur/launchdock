@@ -51,7 +51,7 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addFiles([
-    'lib/api.js'
+    'lib/server/api.js',
   ], 'server');
 
   api.export('Launchdock');
