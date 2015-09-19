@@ -7,6 +7,11 @@ Package.onUse(function(api) {
 
   api.versionsFrom(['METEOR@1.1.0.2']);
 
+  Npm.depends({
+    'winston': '1.0.1',
+    'winston-loggly': '1.1.0'
+  });
+
   var packages = [
     'meteor-platform',
     'accounts-base',
@@ -52,8 +57,12 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'lib/server/api.js',
+    'lib/server/logger.js'
   ], 'server');
 
-  api.export('Launchdock');
+  api.export([
+    'Launchdock',
+    'Logger'
+  ]);
 
 });

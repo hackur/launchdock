@@ -208,7 +208,7 @@ Meteor.methods({
           tutum.checkMongoState(mongoUuid, function (err, ready) {
             if (ready) {
               // add the app to the stack
-              console.log("Adding the app to the stack...");
+              Logger.info("Adding the app to the stack...");
               try {
                 var fullStack = tutum.update(stack.data.resource_uri, {
                   "services": [ app, mongo1, mongo2, mongo3 ]

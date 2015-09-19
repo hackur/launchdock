@@ -106,7 +106,7 @@ Tutum.prototype.logs = function (containerUuid, callback) {
   var socket = new WebSocket(url);
 
   socket.on('open', function() {
-    console.log('Listening to Tutum container logs...');
+    Logger.info('Tutum: Tailing logs for container ' + containerUuid);
   });
 
   socket.on('message', Meteor.bindEnvironment(function(messageStr) {
@@ -115,17 +115,17 @@ Tutum.prototype.logs = function (containerUuid, callback) {
     if (_.isFunction(callback)) {
       callback(null, msg, socket);
     } else {
-      console.log(msg.log);
+      Logger.info(msg.log);
     }
   }));
 
   socket.on('error', function(e) {
-    console.error(e);
+    Logger.error(e);
     callback(e);
   });
 
   socket.on('close', function() {
-    console.log('Tutum container logs stopped');
+    Logger.info('Tutum: Log tailing stopped for container ' + containerUuid);
   });
 }
 
@@ -179,7 +179,7 @@ Tutum.prototype.reloadLoadBalancers = function () {
 
   var self = this;
 
-  console.log("Redeploying 1st load balancer...");
+  Logger.info("Redeploying 1st load balancer...");
   try {
     self.redeploy(lbContainers[0]);
   } catch (e) {
@@ -187,7 +187,7 @@ Tutum.prototype.reloadLoadBalancers = function () {
   }
 
   Meteor.setTimeout(function() {
-    console.log("Redeploying 2nd load balancer...");
+    Logger.info("Redeploying 2nd load balancer...");
     try {
       self.redeploy(lbContainers[1]);
     } catch (e) {
