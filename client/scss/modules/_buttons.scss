@@ -1,3 +1,16 @@
+$btn-color: #76a5ba;
+
+.btn {
+  background-color: $btn-color;
+
+  &:hover {
+    background-color: darken($btn-color, 10%);
+
+    &.danger {
+      background-color: darken($danger-background-color, 10%);
+    }
+  }
+}
 
 button:focus {
   outline: none;

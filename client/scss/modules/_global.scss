@@ -3,3 +3,22 @@ body {
   background: #ececec;
   margin: 0;
 }
+
+a {
+  transition: color .7s;
+
+  &:hover {
+
+    &:not(.btn) {
+      color: darken($link-color, 15%);
+    }
+  }
+}
+
+.danger {
+  background: $danger-background-color;
+}
+
+.danger-text {
+  color: $danger-text-color;
+}

@@ -1,13 +1,15 @@
 
 /*** Colors ***/
-$primary-color: #1a99d5;
+$primary-color: #8a9dcf;
 $primary-color-light: lighten($primary-color, 15%);
 $primary-color-dark: darken($primary-color, 15%);
 
-$secondary-color: #1a99d5;
-$success-color: color("green", "base");
-$error-color: color("red", "base");
-$link-color: color("light-blue", "darken-1");
+$secondary-color: #89cdb3;
+$success-color: #72cc84;
+$danger-background-color: #ca4c55;
+$danger-text-color: $danger-background-color;
+$error-color: $danger-background-color;
+$link-color: #7a95bb;
 
 $text-color: #666;
 
