@@ -30,10 +30,28 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  rancherApiUrl: {
+    type: String,
+    optional: true,
+    label: 'Rancher API URL',
+    autoform: {
+      private: true
+    }
+  },
+
   rancherApiKey: {
     type: String,
     optional: true,
     label: 'Rancher API Key',
+    autoform: {
+      private: true
+    }
+  },
+
+  rancherApiSecret: {
+    type: String,
+    optional: true,
+    label: 'Rancher API Secret',
     autoform: {
       private: true
     }
