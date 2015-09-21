@@ -41,7 +41,8 @@ Package.onUse(function(api) {
     'useraccounts:materialize',
     'mizzao:user-status',
     'sacha:spin',
-    'momentjs:moment'
+    'momentjs:moment',
+    'jeremy:reactive-stripe'
   ];
 
   api.use(packages);
