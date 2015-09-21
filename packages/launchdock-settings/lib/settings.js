@@ -66,6 +66,47 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  stripeMode: {
+    type: String,
+    optional: true,
+    label: 'Stripe Mode',
+    allowedValues: ['Test', 'Live'],
+    defaultValue: 'Test',
+    autoform: {
+      private: true
+    }
+  },
+
+  stripeTestPublishableKey: {
+    type: String,
+    optional: true,
+    label: 'Test - Publishable Key'
+  },
+
+  stripeTestSecretKey: {
+    type: String,
+    optional: true,
+    label: 'Test - Secret Key',
+    autoform: {
+      private: true
+    }
+  },
+
+  stripeLivePublishableKey: {
+    type: String,
+    optional: true,
+    label: 'Live - Publishable Key'
+  },
+
+  stripeLiveSecretKey: {
+    type: String,
+    optional: true,
+    label: 'Live - Secret Key',
+    autoform: {
+      private: true
+    }
+  },
+
   createdAt: {
     type: Date,
     label: 'Created',

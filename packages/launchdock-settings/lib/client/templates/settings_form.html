@@ -34,6 +34,26 @@
             <div class="row">
               {{> afQuickField name="awsRegion" label="Region"}}
             </div>
+
+            <div class="row settings-group-heading">
+              <h5>Stripe</h5>
+            </div>
+            <div class="row">
+              {{> afQuickField name="stripeMode" options="allowed"}}
+            </div>
+            <div class="row">
+              {{> afQuickField name="stripeTestPublishableKey"}}
+            </div>
+            <div class="row">
+              {{> afQuickField name="stripeTestSecretKey"}}
+            </div>
+            <div class="row">
+              {{> afQuickField name="stripeLivePublishableKey" }}
+            </div>
+            <div class="row">
+              {{> afQuickField name="stripeLiveSecretKey" }}
+            </div>
+
             <button type="submit" class="waves-effect waves-light btn right">Save</button>
           {{/autoForm}}
         </div>
