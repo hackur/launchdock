@@ -13,7 +13,20 @@ Package.onUse(function(api) {
   });
 
   var packages = [
-    'meteor-platform',
+    'meteor-base',
+    'standard-minifiers',
+    'mobile-experience',
+    'mongo',
+    'blaze-html-templates',
+    'session',
+    'tracker',
+    'logging',
+    'reload',
+    'random',
+    'ejson',
+    'spacebars',
+    'check',
+    'ecmascript',
     'accounts-base',
     'accounts-password',
     'email',

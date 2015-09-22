@@ -1,5 +1,18 @@
+meteor-base
+standard-minifiers
+mobile-experience
+mongo
+blaze-html-templates
+session
+tracker
+logging
+reload
+random
+ejson
+spacebars
+check
+ecmascript
 
-meteor-platform
 accounts-base
 accounts-password
 email
