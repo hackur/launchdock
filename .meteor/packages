@@ -26,6 +26,7 @@ kadira:blaze-layout
 arillo:flow-router-helpers
 zimme:active-route
 
+underscorestring:underscore.string
 aldeed:simple-schema
 aldeed:autoform
 aldeed:collection2

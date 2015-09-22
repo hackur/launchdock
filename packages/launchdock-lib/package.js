@@ -35,6 +35,7 @@ Package.onUse(function(api) {
     'reactive-var',
     'reactive-dict',
     'templating',
+    'underscorestring:underscore.string',
     'kadira:flow-router',
     'kadira:blaze-layout',
     'arillo:flow-router-helpers',

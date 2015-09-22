@@ -14,9 +14,11 @@ Meteor.methods({
       password: String
     });
 
+    req.shopName = Launchdock.utils.slugify(req.shopName);
+    var shopDomain = req.shopName + '.getreaction.io';
+
     var launchdockUsername = Random.id();
     var launchdockAuth = Random.secret();
-    var shopDomain = req.shopName + '.getreaction.io';
 
     var launchdockUserId = Accounts.createUser({
       username: launchdockUsername,
