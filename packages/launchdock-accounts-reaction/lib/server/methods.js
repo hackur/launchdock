@@ -30,7 +30,7 @@ Meteor.methods({
       }
     });
 
-    Roles.addUsersToRoles(launchdockUserId, 'shop-owner');
+    Roles.addUsersToRoles(launchdockUserId, 'app-owner');
 
     stackCreateDetails = {
       name: req.shopName,
