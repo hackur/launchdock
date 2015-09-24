@@ -18,7 +18,7 @@ ReactiveStripe = {
     var self = this;
     var i = 0;
     var checkReady = Meteor.setInterval(function(){
-      if (typeof Stripe !== 'undefined' || typeof StripeCheckout !== 'undefined') {
+      if (typeof Stripe !== 'undefined' && typeof StripeCheckout !== 'undefined') {
         Stripe.setPublishableKey(stripeKey);
         self._loaded.set(true);
         Meteor.clearInterval(checkReady);
