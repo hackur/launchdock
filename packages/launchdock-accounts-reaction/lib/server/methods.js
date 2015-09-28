@@ -1,21 +1,59 @@
 
 Meteor.methods({
 
-  'createReactionAccount': function(req) {
+  'checkIfShopNameExists': function(token, name) {
 
-    if (!Launchdock.api.authCheck(req.token, this.userId)) {
-      throw new Meteor.Error("AUTH ERROR: Invalid credentials");
+    if (!Launchdock.api.authCheck(token, this.userId)) {
+      var err = "AUTH ERROR: Invalid credentials";
+      Logger.error(err);
+      throw new Meteor.Error(err);
     }
 
-    check(req, {
+    check(name, String);
+
+    var slug = Launchdock.utils.slugify(name);
+    var domain = 'https://' + slug + '.getreaction.io';
+
+    return !!Stacks.findOne({ publicUrl: domain });
+  },
+
+
+  'checkIfEmailExists': function(token, email) {
+
+    if (!Launchdock.api.authCheck(token, this.userId)) {
+      var err = "AUTH ERROR: Invalid credentials";
+      Logger.error(err);
+      throw new Meteor.Error(err);
+    }
+
+    check(email, String);
+
+    return !!Accounts.findUserByEmail(email);
+  },
+
+
+  'createReactionAccount': function(doc) {
+
+    if (!Launchdock.api.authCheck(doc.token, this.userId)) {
+      var err = "AUTH ERROR: Invalid credentials";
+      Logger.error(err, {
+        "package": "launchdock-accounts-reaction",
+        "type": "method",
+        "method-name": "createReactionAccount",
+        "method-args": doc
+      });
+      throw new Meteor.Error(err);
+    }
+
+    check(doc, {
       token: String,
       shopName: String,
       email: String,
       password: String
     });
 
-    req.shopName = Launchdock.utils.slugify(req.shopName);
-    var shopDomain = req.shopName + '.getreaction.io';
+    doc.shopName = Launchdock.utils.slugify(doc.shopName);
+    var shopDomain = doc.shopName + '.getreaction.io';
 
     var launchdockUsername = Random.id();
     var launchdockAuth = Random.secret();
@@ -23,26 +61,26 @@ Meteor.methods({
     var launchdockUserId = Accounts.createUser({
       username: launchdockUsername,
       password: launchdockAuth,
-      email: req.email,
+      email: doc.email,
       profile: {
-        shopName: req.shopName,
+        shopName: doc.shopName,
         shopDomain: shopDomain
       }
     });
 
     Roles.addUsersToRoles(launchdockUserId, 'app-owner');
 
-    stackCreateDetails = {
-      name: req.shopName,
-      appImage: "jshimko/reaction:devel",
+    var stackCreateDetails = {
+      name: doc.shopName,
+      appImage: "reactioncommerce/prequel:1.2",
       domainName: shopDomain,
       appEnvVars: [
         {
           "key": "METEOR_EMAIL",
-          "value": req.email
+          "value": doc.email
         }, {
           "key": "METEOR_AUTH",
-          "value": req.password
+          "value": doc.password
         }, {
           "key": "LAUNCHDOCK_USERID",
           "value": launchdockUserId
@@ -55,9 +93,12 @@ Meteor.methods({
         }, {
           "key": "LAUNCHDOCK_URL",
           "value": Meteor.absoluteUrl()
+        }, {
+          "key": "MAIL_URL",
+          "value": "smtp://postmaster%40mail.launchdock.io:b442e6eb2aa294ccc86360f0c647adcd@smtp.mailgun.org:587"
         }
       ],
-      token: req.token
+      token: doc.token
     };
 
     Meteor.call('tutum/createStack', stackCreateDetails);
