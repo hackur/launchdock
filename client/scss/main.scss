@@ -4,33 +4,31 @@
 // Materialize //
 /////////////////
 
-// Note that prefix of import path is set in scss.json
-
 @import // Mixins
-        "materialize/sass/components/mixins",
-        "materialize/sass/components/prefixer",
-        "materialize/sass/components/color",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/mixins",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/prefixer",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/color",
 
         // Variables
-        "materialize/sass/components/variables",  // default
-        "vars",                                   // custom
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/variables",  // default
+        "vars",                                                                              // custom
 
         // Reset
-        "materialize/sass/components/normalize",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/normalize",
 
         // Components
-        "materialize/sass/components/global",
-        "materialize/sass/components/grid",
-        "materialize/sass/components/navbar",
-        "materialize/sass/components/roboto",
-        "materialize/sass/components/typography",
-        "materialize/sass/components/cards",
-        "materialize/sass/components/buttons",
-        "materialize/sass/components/dropdown",
-        "materialize/sass/components/waves",
-        "materialize/sass/components/modal",
-        "materialize/sass/components/form",
-        "materialize/sass/components/preloader";
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/global",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/grid",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/navbar",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/roboto",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/typography",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/cards",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/buttons",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/dropdown",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/waves",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/modal",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/form",
+        "{poetic:materialize-scss}/bower_components/materialize/sass/components/preloader";
 
         // Unused stuff
         // "materialize/sass/components/icons-material-design",
