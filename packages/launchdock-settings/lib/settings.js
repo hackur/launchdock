@@ -87,7 +87,7 @@ Settings.schema = new SimpleSchema({
   stripeMode: {
     type: String,
     optional: true,
-    label: 'Stripe Mode',
+    label: 'Mode',
     allowedValues: ['Test', 'Live'],
     defaultValue: 'Test',
     autoform: {
