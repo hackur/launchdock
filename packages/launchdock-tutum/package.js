@@ -17,6 +17,7 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
+    'lib/server/main.js',
     'lib/server/tutum.js',
     'lib/server/methods.js',
     'lib/server/socket.js'

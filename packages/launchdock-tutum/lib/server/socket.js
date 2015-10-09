@@ -2,6 +2,7 @@
  * Monitor Tutum events over websocket stream API
  */
 
+// https://www.npmjs.com/package/ws
 var WebSocket = Npm.require('ws');
 
 var startEventsStream = function () {
@@ -20,7 +21,7 @@ var startEventsStream = function () {
   var socket = new WebSocket(url);
 
   socket.on('open', function() {
-    console.log('Tutum events websocket opened');
+    Logger.info('Tutum events websocket opened');
   });
 
   socket.on('message', Meteor.bindEnvironment(function(messageStr) {
@@ -48,7 +49,7 @@ var startEventsStream = function () {
   }));
 
   socket.on('close', Meteor.bindEnvironment(function() {
-    console.warn('Tutum events websocket closed!');
+    Logger.warn('Tutum events websocket closed!');
 
     // reopen websocket if it closes
     startEventsStream();
@@ -70,7 +71,7 @@ Meteor.startup(function() {
     changed: function (newDoc, oldDoc) {
       if (newDoc.tutumUsername !== oldDoc.tutumUsername ||
           newDoc.tutumToken    !== oldDoc.tutumToken) {
-        console.log("Tutum API credentials changed.");
+        Logger.info("Tutum API credentials changed.");
         startEventsStream();
       }
     }

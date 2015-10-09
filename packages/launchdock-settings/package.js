@@ -19,8 +19,9 @@ Package.onUse(function(api) {
   ], ['client', 'server']);
 
   api.addFiles([
+    'lib/server/main.js',
     'lib/server/permissions.js',
-    'lib/server/publications.js',
+    'lib/server/publications.js'
   ], 'server');
 
   api.addFiles([

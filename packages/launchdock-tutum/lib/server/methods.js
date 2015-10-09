@@ -2,8 +2,18 @@
 Meteor.methods({
   'tutum/createStack': function (doc) {
 
+    Logger = Logger.child({
+      meteor_method: 'tutum/createStack',
+      meteor_method_args: doc,
+      userId: this.userId
+    });
+
     if (!Launchdock.api.authCheck(doc.token, this.userId)) {
-      throw new Meteor.Error("AUTH ERROR: Invalid credentials");
+      var err = "AUTH ERROR: Invalid credentials";
+
+      Logger.error(err);
+
+      throw new Meteor.Error(err);
     }
 
     check(doc, {
@@ -21,7 +31,11 @@ Meteor.methods({
     tutum.checkCredentials();
 
     if (Stacks.findOne({ name: doc.name, userId: this.userId })) {
-      throw new Meteor.Error("A stack called '" + doc.name +"' already exists.");
+      var err = "A stack called '" + doc.name +"' already exists.";
+
+      Logger.error(err);
+
+      throw new Meteor.Error(err);
     }
 
     var stackId = Stacks.insert({ name: doc.name, state: "Creating" });
@@ -208,12 +222,13 @@ Meteor.methods({
           tutum.checkMongoState(mongoUuid, function (err, ready) {
             if (ready) {
               // add the app to the stack
-              Logger.info("Adding the app to the stack...");
+              Logger.info("Adding the app to the stack " + stackId);
               try {
                 var fullStack = tutum.update(stack.data.resource_uri, {
                   "services": [ app, mongo1, mongo2, mongo3 ]
                 });
               } catch(e) {
+                Logger.error("Error adding app container to stack " + stackId);
                 throw new Meteor.Error(e);
               }
 
@@ -226,6 +241,7 @@ Meteor.methods({
               try {
                 tutum.start(appService.uri);
               } catch(e) {
+                Logger.error("Error starting app service in stack " + stackId);
                 throw new Meteor.Error(e);
               }
 
@@ -234,6 +250,7 @@ Meteor.methods({
                 tutum.addLinkToLoadBalancer(appService.name, appService.uri);
                 tutum.reloadLoadBalancers();
               } catch (e) {
+                Logger.error("Error adding link to load balancer for stack " + stackId);
                 throw new Meteor.Error(e);
               }
             }
@@ -250,8 +267,16 @@ Meteor.methods({
 
   'tutum/deleteStack': function (id) {
 
+    Logger = Logger.child({
+      meteor_method: 'tutum/deleteStack',
+      meteor_method_args: id,
+      userId: this.userId
+    });
+
     if (! Users.is.admin(this.userId)) {
-      throw new Meteor.Error("Method 'tutum/deleteStack': Must be admin.");
+      var msg = "Method 'tutum/deleteStack': Must be admin.";
+      Logger.error(msg);
+      throw new Meteor.Error(msg);
     }
 
     check(id, String);
@@ -272,6 +297,7 @@ Meteor.methods({
         Services.remove({ stack: stack.uri });
       }
 
+      Logger.info("Stack " + id + " deleted successfully.");
       return res;
     } catch(e) {
       throw new Meteor.Error(e);
