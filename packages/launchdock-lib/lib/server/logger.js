@@ -33,9 +33,9 @@ var logglyStream = {
   })
 }
 
-// if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production") {
   streams.push(logglyStream);
-// }
+}
 
 // create default logger instance
 Logger = logger.bunyan.createLogger({
