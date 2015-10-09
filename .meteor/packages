@@ -38,6 +38,7 @@ alanning:roles
 dburles:collection-helpers
 tmeasday:publish-counts
 aslagle:reactive-table
+ongoworks:bunyan-logger
 
 fourseven:scss
 poetic:materialize-scss
