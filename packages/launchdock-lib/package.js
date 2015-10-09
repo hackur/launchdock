@@ -8,8 +8,7 @@ Package.onUse(function(api) {
   api.versionsFrom(['METEOR@1.1.0.2']);
 
   Npm.depends({
-    'winston': '1.0.1',
-    'winston-loggly': '1.1.0'
+    'bunyan-loggly': '0.0.5'
   });
 
   var packages = [
@@ -41,6 +40,7 @@ Package.onUse(function(api) {
     'arillo:flow-router-helpers',
     'zimme:active-route',
     'ongoworks:security',
+    'ongoworks:bunyan-logger',
     'aldeed:simple-schema',
     'aldeed:autoform',
     'aldeed:collection2',
