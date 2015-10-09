@@ -76,10 +76,10 @@ Meteor.methods({
       domainName: shopDomain,
       appEnvVars: [
         {
-          "key": "METEOR_EMAIL",
+          "key": "REACTION_EMAIL",
           "value": doc.email
         }, {
-          "key": "METEOR_AUTH",
+          "key": "REACTION_AUTH",
           "value": doc.password
         }, {
           "key": "LAUNCHDOCK_USERID",
