@@ -38,7 +38,9 @@ alanning:roles
 dburles:collection-helpers
 tmeasday:publish-counts
 aslagle:reactive-table
+percolate:synced-cron
 ongoworks:bunyan-logger
+ongoworks:mongo-tools
 
 fourseven:scss
 poetic:materialize-scss
