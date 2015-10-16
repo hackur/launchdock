@@ -1,7 +1,7 @@
 
 Meteor.methods({
 
-  'checkIfShopNameExists': function(token, name) {
+  'checkIfShopNameExists': function (token, name) {
 
     if (!Launchdock.api.authCheck(token, this.userId)) {
       var err = "AUTH ERROR: Invalid credentials";
@@ -18,7 +18,7 @@ Meteor.methods({
   },
 
 
-  'checkIfEmailExists': function(token, email) {
+  'checkIfEmailExists': function (token, email) {
 
     if (!Launchdock.api.authCheck(token, this.userId)) {
       var err = "AUTH ERROR: Invalid credentials";
@@ -32,7 +32,7 @@ Meteor.methods({
   },
 
 
-  'createReactionAccount': function(doc) {
+  'createReactionAccount': function (doc) {
 
     if (!Launchdock.api.authCheck(doc.token, this.userId)) {
       var err = "AUTH ERROR: Invalid credentials";
