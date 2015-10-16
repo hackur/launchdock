@@ -72,7 +72,7 @@ Meteor.methods({
 
     var stackCreateDetails = {
       name: doc.shopName,
-      appImage: "reactioncommerce/prequel:1.2",
+      appImage: "reactioncommerce/prequel:latest",
       domainName: shopDomain,
       appEnvVars: [
         {
