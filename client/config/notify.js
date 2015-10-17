@@ -19,8 +19,8 @@ Meteor.startup(function() {
 Notify = {
   success: function(text, location) {
     sAlert.info(text, {
-      effect: 'stackslide',
-      position: location || 'top'
+      // effect: 'stackslide',
+      position: location || 'top-right'
     });
   },
 
@@ -30,7 +30,7 @@ Notify = {
     });
   },
 
-  warning: function(text, location) {
+  warn: function(text, location) {
     sAlert.warning(text, {
       position: location || 'top-right',
       timeout: 7000
