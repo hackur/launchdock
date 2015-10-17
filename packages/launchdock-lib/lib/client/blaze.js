@@ -1,5 +1,6 @@
 // date helpers
 Template.registerHelper('moment', (date, format) => {
+  format = format || 'LLL';
   return moment(date).format(format);
 });
 
