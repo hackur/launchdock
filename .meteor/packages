@@ -38,6 +38,7 @@ alanning:roles
 dburles:collection-helpers
 tmeasday:publish-counts
 aslagle:reactive-table
+meteorhacks:ssr 
 percolate:synced-cron
 ongoworks:bunyan-logger
 ongoworks:mongo-tools
