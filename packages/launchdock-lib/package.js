@@ -41,6 +41,7 @@ Package.onUse(function(api) {
     'zimme:active-route',
     'ongoworks:security',
     'ongoworks:bunyan-logger',
+    'meteorhacks:ssr',
     'aldeed:simple-schema',
     'aldeed:autoform',
     'aldeed:collection2',
