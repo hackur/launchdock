@@ -1,28 +1,28 @@
 
-FlowRouter.route('/users', {
+Launchdock.routes.private.route('/users', {
   name: 'users_list',
-  action: function() {
+  action() {
     BlazeLayout.render('dashboard_layout', { content: 'accounts' });
   }
 });
 
-FlowRouter.route('/users/:_id', {
+Launchdock.routes.private.route('/users/:_id', {
   name: 'user_account',
-  action: function() {
+  action() {
     BlazeLayout.render('dashboard_layout', { content: 'user_account' });
   }
 });
 
-FlowRouter.route('/users/:_id/edit', {
+Launchdock.routes.private.route('/users/:_id/edit', {
   name: 'user_edit',
-  action: function() {
+  action() {
     BlazeLayout.render('dashboard_layout', { content: 'user_edit' });
   }
 });
 
-FlowRouter.route('/invite/:token', {
+Launchdock.routes.public.route('/invite/:token', {
   name: 'accept_invite',
-  action: function() {
+  action() {
     BlazeLayout.render('dashboard_layout', { content: 'accept_invite' });
   }
 });
