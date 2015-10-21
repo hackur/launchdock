@@ -12,14 +12,38 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
-    'lib/namespace.js',
-    'lib/roles.js'
+    'lib/common/namespace.js',
+    'lib/common/roles.js',
+    'lib/common/invitations.js'
   ], ['client', 'server']);
 
   api.addFiles([
-    'lib/server/create_user.js'
-  ], ['server']);
+    'lib/client/views/accounts/accept_invite.html',
+    'lib/client/views/accounts/accept_invite.js',
+    'lib/client/views/accounts/accounts.html',
+    'lib/client/views/accounts/invites.html',
+    'lib/client/views/accounts/invites.js',
+    'lib/client/views/accounts/send_invite.html',
+    'lib/client/views/accounts/send_invite.js',
+    'lib/client/views/accounts/users.html',
+    'lib/client/views/accounts/users.js',
+    'lib/client/routes.js'
+  ], 'client');
 
-  api.export('Users');
+  api.addFiles([
+    'lib/server/main.js',
+    'lib/server/methods.js',
+    'lib/server/permissions.js',
+    'lib/server/publications.js'
+  ], 'server');
+
+  api.addAssets([
+    'lib/server/email/templates/user-invitation.html'
+  ], 'server');
+
+  api.export([
+    'Users',
+    'Invitations'
+  ]);
 
 });

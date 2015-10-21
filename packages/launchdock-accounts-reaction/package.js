@@ -9,12 +9,17 @@ Package.onUse(function (api) {
 
   api.use([
     'launchdock:lib',
-    'launchdock:tutum'
+    'launchdock:tutum',
+    'launchdock:users'
   ]);
 
   api.addFiles([
     'lib/server/main.js',
     'lib/server/methods.js'
   ], ['server']);
+
+  api.addAssets([
+    'lib/server/email/invitation.html'
+  ], 'server');
 
 });

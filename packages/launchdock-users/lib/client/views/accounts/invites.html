@@ -1,0 +1,38 @@
+<template name="invites">
+  <div class="row">
+    <div class="card col s10 offset-s1">
+      <div class="card-content">
+        <div class="row">
+          <h4>Invitations <small class="text-muted">({{openInviteCount}})</small></h4>
+          {{> send_invite}}
+        </div>
+        {{#if hasInvitations}}
+          <table class="bordered">
+            <thead>
+              <tr>
+                <th>Email Address</th>
+                <th>Type</th>
+                <th>Date Sent</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#each invitations}}
+                <tr>
+                  <td>{{email}}</td>
+                  <td>{{role}}</td>
+                  <td>{{moment createdAt 'LLL'}} <small>({{timeAgo createdAt}})</small></td>
+                  <td>
+                    <button class="btn danger revoke-invite">Revoke</button>
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{else}}
+          <h5 class="center">No open invitations.</h5>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</template>

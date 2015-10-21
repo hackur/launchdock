@@ -22,3 +22,7 @@ a {
 .danger-text {
   color: $danger-text-color;
 }
+
+.disabled {
+  cursor: not-allowed;
+}

@@ -1,0 +1,6 @@
+<template name="accounts">
+  {{#if isInRole 'admin, manager'}}
+    {{> users}}
+    {{> invites}}
+  {{/if}}
+</template>

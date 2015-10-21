@@ -64,7 +64,8 @@ Package.onUse(function(api) {
   api.imply(packages);
 
   api.addFiles([
-    'lib/core.js'
+    'lib/core.js',
+    'lib/utils.js'
   ], ['client', 'server']);
 
   api.addFiles([

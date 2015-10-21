@@ -1,0 +1,49 @@
+<template name="users">
+  <div class="row">
+    <div class="card col s10 offset-s1">
+      <div class="card-content">
+        <h4 class="page-header">Active Users</h4>
+        <table class="bordered">
+          <thead>
+            <tr>
+              <th>Email Address</th>
+              <th class="text-center">{{#if isInRole 'admin'}}Role{{/if}}</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each users}}
+              <tr>
+                <td class="text-center">
+                  {{emails.[0].address}}
+                  {{#if isCurrentUser _id}}<span class="flag">You!</span>{{/if}}
+                </td>
+                <td>
+                  {{#if isInRole 'admin'}}
+                    {{#unless isCurrentUser _id}}
+                      <div class="input-field">
+                        <select name="user-role">
+                          <option value="">Select a role...</option>
+                          <option selected="{{isEqual roles.[0] 'admin'}}" value="admin">Admin</option>
+                          <option selected="{{isEqual roles.[0] 'manager'}}" value="manager">Manager</option>
+                          <option selected="{{isEqual roles.[0] 'customer'}}" value="customer">Customer</option>
+                        </select>
+                      </div>
+                    {{/unless}}
+                  {{/if}}
+                </td>
+                <td>
+                  {{#if isInRole 'admin'}}
+                    {{#unless isCurrentUser _id}}
+                      <button class="danger btn delete-user">Delete</button>
+                    {{/unless}}
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</template>

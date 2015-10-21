@@ -1,0 +1,51 @@
+
+<template name="accept_invite">
+  {{#if subsReady}}
+    <div class="row">
+      {{#with invitation}}
+        {{#unless invitation.accepted}}
+          <div class="card col s12 m4 offset-m4">
+            <div class="card-content">
+              <div class="row">
+                <h4 class="center">Choose a password.</h4>
+              </div>
+              <div class="row">
+                <form class="sign-up-form">
+                  <div class="row">
+                    <div class="col s12">
+                      <div class="input-field">
+                        <label for="email" class="active">Email</label>
+                        <input disabled name="email" type="text" value="{{email}}">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col s12">
+                      <div class="input-field">
+                        <label for="password">Password</label>
+                        <input name="password" type="password" autofocus>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn">Let's go!</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        {{else}}
+          <div class="card col s12 m8 offset-m2">
+            <div class="card-content">
+              <h5 class="center">
+                Oops, looks like this invite has already been used.
+              </h5>
+            </div>
+          </div>
+        {{/unless}}
+      {{else}}
+        Sorry, this link is not valid.
+      {{/with}}
+    </div>
+  {{else}}
+    {{>spinner}}
+  {{/if}}
+</template>

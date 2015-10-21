@@ -4,12 +4,17 @@
     <li class="{{isActiveRoute regex='dashboard'}}">
       <a href="/">Home</a>
     </li>
-    <li class="{{isActiveRoute regex='stacks_list|stack_new|stack_page'}}">
-      <a href="/stacks">Stacks</a>
+    <li class="{{isActiveRoute regex='users_list'}}">
+      <a href="/users">Users</a>
     </li>
-    <li class="{{isActiveRoute regex='settings'}}">
-      <a href="/settings">Settings</a>
-    </li>
+    {{#if isInRole 'admin'}}
+      <li class="{{isActiveRoute regex='stacks_list|stack_new|stack_page'}}">
+        <a href="/stacks">Stacks</a>
+      </li>
+      <li class="{{isActiveRoute regex='settings'}}">
+        <a href="/settings">Settings</a>
+      </li>
+    {{/if}}
     <li>
       <a id="logout" href="/logout">Logout</a>
     </li>
