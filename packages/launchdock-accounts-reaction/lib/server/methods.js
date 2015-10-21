@@ -135,7 +135,7 @@ Meteor.methods({
     options.token = Random.hexString(32);
     options.invitedBy = this.userId;
 
-    let url = 'http://localhost:3001/invite/' + options.token;
+    let url = Launchdock.config.drive.url() + 'invite/' + options.token;
     let emailHtml = 'lib/server/email/invitation.html';
 
     SSR.compileTemplate('invitation', Assets.getText(emailHtml));
