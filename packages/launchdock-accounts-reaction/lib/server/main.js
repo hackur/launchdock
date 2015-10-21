@@ -10,7 +10,7 @@ Launchdock.config.drive = {
     if (settings && settings.url) {
       return settings.url
     } else {
-      return "https://reactioncommerce.com"
+      return "https://reactioncommerce.com/"
     }
   }
 }
