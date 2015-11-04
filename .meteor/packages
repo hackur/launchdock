@@ -1,5 +1,6 @@
 meteor-base
-standard-minifiers
+# standard-minifiers
+seba:minifiers-autoprefixer
 mobile-experience
 mongo
 blaze-html-templates
@@ -38,11 +39,13 @@ alanning:roles
 dburles:collection-helpers
 tmeasday:publish-counts
 aslagle:reactive-table
-meteorhacks:ssr 
+percolatestudio:segment.io
+meteorhacks:ssr
 percolate:synced-cron
 ongoworks:bunyan-logger
 ongoworks:mongo-tools
 
+# mquandalle:bower
 fourseven:scss
 poetic:materialize-scss
 ixdi:material-design-iconic-font
@@ -70,6 +73,7 @@ launchdock:core
 launchdock:email
 launchdock:lib
 launchdock:settings
+launchdock:stripe
 launchdock:tutum
 launchdock:users
 

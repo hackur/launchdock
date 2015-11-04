@@ -13,7 +13,8 @@ Package.onUse(function(api) {
 
   var packages = [
     'meteor-base',
-    'standard-minifiers',
+    // 'standard-minifiers',
+    'seba:minifiers-autoprefixer',
     'mobile-experience',
     'mongo',
     'blaze-html-templates',
