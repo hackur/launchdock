@@ -1,20 +1,22 @@
 
 Template.stack_info.onCreated(function() {
-  var self = this;
-  self.autorun(function() {
+  this.autorun(() => {
     var stackId = FlowRouter.getParam('_id');
-    self.subscribe('stack-page', stackId);
+    this.subscribe('stack-page', stackId);
   });
 });
 
 
 Template.stack_info.helpers({
-  stack: function () {
+  stack() {
     return Stacks.find();
   },
-  stackUrlReady: function () {
+  stackUrlReady() {
     // TODO: do some health checks to make sure app is actually ready to view
     var stack = Stacks.findOne();
     return (stack.services.length === 4 && stack.state === 'Running');
+  },
+  isStackPage() {
+    return (FlowRouter.getRouteName() === "stack_page");
   }
 });
