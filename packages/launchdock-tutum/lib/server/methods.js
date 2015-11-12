@@ -302,6 +302,83 @@ Meteor.methods({
     } catch(e) {
       throw new Meteor.Error(e);
     }
+  },
+
+
+  'tutum/updateSSLCert'(doc, stackId) {
+
+    Logger = Logger.child({
+      meteor_method: 'tutum/updateSSLCert',
+      meteor_method_args: doc,
+      userId: this.userId
+    });
+
+    // TODO: make this a setting on the client
+    doc.$set.customSSLActive = true;
+
+    // so we don't need to have this remotely
+    doc.$set.lastUpdatedBy = this.userId;
+
+    check(doc.$set, {
+      sslPrivateKey: String,
+      sslPublicCert: String,
+      sslDomainName: String,
+      customSSLActive: Boolean,
+      updatedAt: Date,
+      lastUpdatedBy: String
+    });
+
+    check(stackId, String);
+
+    const stack = Stacks.findOne(stackId);
+
+    if (!stack) {
+      const err = "Stack not found";
+      Logger.error(err);
+      throw new Meteor.Error(err);
+    }
+
+    const appService = Services.findOne({ name: 'app-' + stackId });
+
+    if (!appService) {
+      const err = "App service not found";
+      Logger.error(err);
+      throw new Meteor.Error(err);
+    }
+
+    // combine private key and cert to create pem file
+    const pem = doc.$set.sslPrivateKey + "\n" + doc.$set.sslPublicCert;
+
+    // replace all new lines with "\n"
+    const pemEnvVar = pem.replace(/(?:\r\n|\r|\n)/g, '\\n');
+
+    doc.$set.sslPem = pem;
+
+    Stacks.update(stackId, doc);
+
+    const tutum = new Tutum();
+
+    tutum.checkCredentials();
+
+    try {
+      tutum.addCustomSSL(appService.uri, doc.$set.sslDomainName, pemEnvVar, true);
+    } catch(e) {
+      Logger.error(e);
+      throw new Meteor.Error(e);
+    }
+
+    try {
+      tutum.redeploy(appService.uri);
+    } catch(e) {
+      Logger.error(e);
+      throw new Meteor.Error(e);
+    }
+
+    Stacks.update(stackId, doc);
+
+    Logger.info("Updated SSL cert for stack: " + stackId);
+
+    return true;
   }
 
 });

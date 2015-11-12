@@ -253,12 +253,88 @@ Tutum.prototype.updateEnvVars = function (serviceUri, newEnvVars) {
 };
 
 
+Tutum.prototype.addCustomSSL = function (serviceUri, domain, pem, isPrimary) {
+
+  if (!serviceUri || !domain || !pem) {
+    throw new Meteor.Error("Tutum.addCustomSSL: Missing args.");
+  }
+
+  // Query the service to get the current env vars
+  let service;
+  try {
+    service = this.get(serviceUri);
+  } catch (e) {
+    throw new Meteor.Error(e);
+  }
+
+  let currentEnvVars = service.data.container_envvars;
+
+  // check if there's a cert already
+  let hasCert;
+  for (let i = currentEnvVars.length - 1; i >= 0; i--) {
+    if (currentEnvVars[i].key === "DEFAULT_SSL_CERT") {
+      hasCert = true;
+    }
+  };
+
+  const newRootUrl = "https://" + domain;
+  const newVirtualHost = "http://" + domain + ", ws://" + domain +
+                     ", https://" + domain + ", wss://" + domain;
+
+  // update env var array with new values
+  for (let i = currentEnvVars.length - 1; i >= 0; i--) {
+    // update ROOT_URL
+    if (currentEnvVars[i].key === "ROOT_URL") {
+      currentEnvVars[i].value = newRootUrl;
+    }
+    // update VIRTUAL_HOST
+    if (currentEnvVars[i].key === "VIRTUAL_HOST") {
+      currentEnvVars[i].value = newVirtualHost;
+    }
+    // update cert if it exists, otherwise we'll add it to the array below
+    if (currentEnvVars[i].key === "DEFAULT_SSL_CERT") {
+      currentEnvVars[i].value = pem;
+    }
+  }
+
+  if (!hasCert) {
+    // add SSL cert to env vars array if one didn't already exist
+    currentEnvVars.push({
+      key: "DEFAULT_SSL_CERT",
+      value: pem
+    });
+  }
+
+  // Update the service
+  return HTTP.call("PATCH", this.apiBaseUrl + serviceUri, {
+    headers: {
+      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Accept": "application/json",
+      "Content-Type": "application/json"
+    },
+    data: {
+      "container_envvars": currentEnvVars
+    }
+  });
+};
+
+
+Tutum.prototype.getStackServices = function (stackUri) {
+  try {
+    var stack = this.get(stackUri);
+    return stack.data.services;
+  } catch(e) {
+    throw new Meteor.Error(e);
+  }
+}
+
+
 Tutum.prototype.getServiceContainers = function (serviceUri) {
   try {
     var service = this.get(serviceUri);
     return service.data.containers;
   } catch(e) {
-    return e;
+    throw new Meteor.Error(e);
   }
 }
 

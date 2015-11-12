@@ -12,6 +12,7 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.2.0.2']);
 
   api.use([
+    'launchdock:core',
     'launchdock:lib',
     'launchdock:settings'
   ]);
