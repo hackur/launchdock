@@ -235,6 +235,8 @@ Meteor.methods({
       throw new Meteor.Error(err);
     }
 
+    Logger.info("Successfully removed invitation: " + inviteId);
+    
     return true;
   }
 
