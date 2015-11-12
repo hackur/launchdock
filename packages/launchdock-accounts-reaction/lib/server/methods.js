@@ -105,7 +105,7 @@ Meteor.methods({
       token: doc.token
     };
 
-    Meteor.call('tutum/createStack', stackCreateDetails);
+    Meteor.call('tutum/createStack', stackCreateDetails, launchdockUserId);
 
     return true;
   },
