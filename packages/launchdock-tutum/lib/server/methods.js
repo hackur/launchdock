@@ -389,6 +389,29 @@ Meteor.methods({
     Logger.info("Updated SSL cert for stack: " + stackId);
 
     return true;
+  },
+
+
+  'tutum/getLoadBalancerEndpoint'(serviceUri) {
+
+    Logger = Logger.child({
+      meteor_method: 'tutum/getLoadBalancerEndpoint',
+      meteor_method_args: serviceUri,
+      userId: this.userId
+    });
+
+    if (!this.userId) {
+      const err = "Auth error.";
+      Logger.error(err);
+      throw new Meteor.Error(err);
+    }
+
+    check(serviceUri, Match.Optional(String));
+
+    Logger.info("Method 'tutum/getLoadBalancerEndpoint' called by: " + this.userId);
+
+    // currently only one LB service running, so this is a placeholder
+    return "us1.lb.launchdock.io";
   }
 
 });
