@@ -2,11 +2,11 @@
 Meteor.startup(function() {
 
   // schedule database backups in production
-  if (process.env.NODE_ENV === "production") {
+  if (Launchdock.isProduction()) {
 
     // custom logger for percolate:synced-cron
-    var SyncedCronLogger = function (opts) {
-      var CronLogger = Logger.child({ meteor_package: 'percolate:synced-cron' });
+    let SyncedCronLogger = function (opts) {
+      let CronLogger = Logger.child({ meteor_package: 'percolate:synced-cron' });
 
       switch (opts.level) {
         case 'info':

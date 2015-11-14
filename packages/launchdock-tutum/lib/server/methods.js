@@ -1,6 +1,6 @@
 
 Meteor.methods({
-  'tutum/createStack': function (doc) {
+  'tutum/createStack'(doc, userId) {
 
     Logger = Logger.child({
       meteor_method: 'tutum/createStack',
@@ -9,10 +9,8 @@ Meteor.methods({
     });
 
     if (!Launchdock.api.authCheck(doc.token, this.userId)) {
-      var err = "AUTH ERROR: Invalid credentials";
-
+      const err = "AUTH ERROR: Invalid credentials";
       Logger.error(err);
-
       throw new Meteor.Error(err);
     }
 
@@ -24,35 +22,39 @@ Meteor.methods({
       token: Match.Optional(String)
     });
 
+    check(userId, Match.Optional(String));
+
     this.unblock();
 
-    var tutum = new Tutum();
+    const user = userId || this.userId;
+
+    const tutum = new Tutum();
 
     tutum.checkCredentials();
 
-    if (Stacks.findOne({ name: doc.name, userId: this.userId })) {
-      var err = "A stack called '" + doc.name +"' already exists.";
-
+    if (Stacks.findOne({ name: doc.name, userId: user })) {
+      const err = "A stack called '" + doc.name +"' already exists.";
       Logger.error(err);
-
       throw new Meteor.Error(err);
     }
 
-    var stackId = Stacks.insert({ name: doc.name, state: "Creating" });
-    var siteId = stackId.toLowerCase();
+    const stackId = Stacks.insert({
+      name: doc.name,
+      state: "Creating",
+      userId: user
+    });
 
-    var siteUrl = doc.domainName ? doc.domainName :
+    const siteId = stackId.toLowerCase();
+
+    const siteUrl = doc.domainName ? doc.domainName :
                                    siteId + ".getreaction.io";
 
-    var websocketUrl = doc.domainName ? doc.domainName :
-                                        siteId + ".getreaction.io";
+    const virtualHosts = "http://" + siteUrl + ", ws://" + siteUrl +
+                       ", https://" + siteUrl + ", wss://" + siteUrl;
 
-    var virtualHosts = "http://" + siteUrl + ", ws://" + websocketUrl +
-                       ", https://" + siteUrl + ", wss://" + websocketUrl;
-
-    var app = {
+    const app = {
       "name": "app-" + stackId,
-      "image": doc.appImage || "jshimko/reaction:devel",
+      "image": doc.appImage || "reactioncommerce/prequel:devel",
       "container_ports": [
         {
           "protocol": "tcp",
@@ -75,9 +77,6 @@ Meteor.methods({
         }, {
           "key": "FORCE_SSL",
           "value": "yes"
-        }, {
-          "key": "NODE_TLS_REJECT_UNAUTHORIZED",
-          "value": 0
         }
       ],
       "linked_to_service": [
@@ -102,7 +101,7 @@ Meteor.methods({
     };
 
     // Mongo - primary
-    var mongo1 = {
+    const mongo1 = {
       "name": "mongo1-" + stackId,
       "image": "tutum.co/ongoworks/mongo-rep-set:0.2.10",
       "container_ports": [
@@ -137,7 +136,7 @@ Meteor.methods({
     };
 
     // Mongo - secondary
-    var mongo2 = {
+    const mongo2 = {
       "name": "mongo2-" + stackId,
       "image": "tutum.co/ongoworks/mongo-rep-set:0.2.10",
       "container_ports": [
@@ -151,7 +150,7 @@ Meteor.methods({
     };
 
     // Mongo - arbiter
-    var mongo3 = {
+    const mongo3 = {
       "name": "mongo3-" + stackId,
       "image": "tutum.co/ongoworks/mongo-rep-set:0.2.10",
       "container_ports": [
@@ -171,7 +170,7 @@ Meteor.methods({
     };
 
     // configure the stack
-    var stackDetails = {
+    const stackDetails = {
       "name": doc.name + "-" + stackId,
       "services": [ mongo1, mongo2, mongo3 ]
     };
@@ -207,16 +206,16 @@ Meteor.methods({
 
     // watch for mongo stack to be running, then start trying to connect to it
     // (stack state gets updated by persistent Tutum events websocket stream)
-    var handle = Stacks.find({ _id: stackId }).observeChanges({
+    const handle = Stacks.find({ _id: stackId }).observeChanges({
       changed: function (id, fields) {
         if (fields.state && fields.state === 'Running') {
 
           // get the container URI for the mongo primary
-          var mongoPrimary = Services.findOne({ name: 'mongo1-' + stackId });
-          var mongo1Containers = tutum.getServiceContainers(mongoPrimary.uri);
+          const mongoPrimary = Services.findOne({ name: 'mongo1-' + stackId });
+          const mongo1Containers = tutum.getServiceContainers(mongoPrimary.uri);
 
           // parse UUID from URI
-          var mongoUuid = mongo1Containers[0].substring(18, mongo1Containers[0].length - 1);
+          const mongoUuid = mongo1Containers[0].substring(18, mongo1Containers[0].length - 1);
 
           // open websocket and try to connect to mongo
           tutum.checkMongoState(mongoUuid, function (err, ready) {
@@ -237,7 +236,7 @@ Meteor.methods({
               Stacks.update({ _id: stackId }, { $set: { services: fullStack.data.services }});
 
               // start the app service
-              var appService = Services.findOne({ name: "app-" + stackId });
+              const appService = Services.findOne({ name: "app-" + stackId });
               try {
                 tutum.start(appService.uri);
               } catch(e) {
@@ -248,7 +247,6 @@ Meteor.methods({
               // link the load balancer to the app service
               try {
                 tutum.addLinkToLoadBalancer(appService.name, appService.uri);
-                tutum.reloadLoadBalancers();
               } catch (e) {
                 Logger.error("Error adding link to load balancer for stack " + stackId);
                 throw new Meteor.Error(e);
@@ -261,11 +259,29 @@ Meteor.methods({
       }
     });
 
+    Meteor.defer(function() {
+      let userEmail = "Launchdock Admin";
+
+      _.each(app.container_envvars, (envVar) => {
+        if (envVar.key === "METEOR_USER") {
+          userEmail = envVar.value;
+        }
+      });
+
+      Email.send({
+        to: "jeremy.shimko@gmail.com",
+        from: "admin@launchdock.io",
+        subject: "New stack creation for " + siteUrl + " by " + userEmail,
+        text: "User: " + userEmail + "\n" +
+              "Shop: https://" + siteUrl
+      });
+    })
+
     return stackId;
   },
 
 
-  'tutum/deleteStack': function (id) {
+  'tutum/deleteStack'(id) {
 
     Logger = Logger.child({
       meteor_method: 'tutum/deleteStack',
@@ -274,18 +290,18 @@ Meteor.methods({
     });
 
     if (! Users.is.admin(this.userId)) {
-      var msg = "Method 'tutum/deleteStack': Must be admin.";
+      const msg = "Method 'tutum/deleteStack': Must be admin.";
       Logger.error(msg);
       throw new Meteor.Error(msg);
     }
 
     check(id, String);
 
-    var tutum = new Tutum();
+    const tutum = new Tutum();
 
     tutum.checkCredentials();
 
-    var stack = Stacks.findOne(id);
+    const stack = Stacks.findOne(id);
 
     try {
       var res = tutum.delete(stack.uri);
