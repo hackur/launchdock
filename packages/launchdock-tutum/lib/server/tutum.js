@@ -253,9 +253,9 @@ Tutum.prototype.updateEnvVars = function (serviceUri, newEnvVars) {
 };
 
 
-Tutum.prototype.addCustomSSL = function (serviceUri, domain, pem, isPrimary) {
+Tutum.prototype.addCustomSSL = function (serviceUri, opts) {
 
-  if (!serviceUri || !domain || !pem) {
+  if (!serviceUri || !opts.defaultDomain || !opts.customDomain || !opts.pem) {
     throw new Meteor.Error("Tutum.addCustomSSL: Missing args.");
   }
 
@@ -277,9 +277,16 @@ Tutum.prototype.addCustomSSL = function (serviceUri, domain, pem, isPrimary) {
     }
   };
 
-  const newRootUrl = "https://" + domain;
-  const newVirtualHost = "http://" + domain + ", ws://" + domain +
-                     ", https://" + domain + ", wss://" + domain;
+  // default domain
+  const oldVHost = "http://" + opts.defaultDomain + ", ws://" + opts.defaultDomain +
+                ", https://" + opts.defaultDomain + ", wss://" + opts.defaultDomain;
+
+  // custom domain
+  const newRootUrl = "https://" + opts.customDomain;
+  const newVHost = "http://" + opts.customDomain + ", ws://" + opts.customDomain +
+                ", https://" + opts.customDomain + ", wss://" + opts.customDomain;
+
+  const updatedVHost = oldVHost + ", " + newVHost;
 
   // update env var array with new values
   for (let i = currentEnvVars.length - 1; i >= 0; i--) {
@@ -289,11 +296,11 @@ Tutum.prototype.addCustomSSL = function (serviceUri, domain, pem, isPrimary) {
     }
     // update VIRTUAL_HOST
     if (currentEnvVars[i].key === "VIRTUAL_HOST") {
-      currentEnvVars[i].value = newVirtualHost;
+      currentEnvVars[i].value = updatedVHost;
     }
     // update cert if it exists, otherwise we'll add it to the array below
     if (currentEnvVars[i].key === "DEFAULT_SSL_CERT") {
-      currentEnvVars[i].value = pem;
+      currentEnvVars[i].value = opts.pem;
     }
   }
 
@@ -301,7 +308,7 @@ Tutum.prototype.addCustomSSL = function (serviceUri, domain, pem, isPrimary) {
     // add SSL cert to env vars array if one didn't already exist
     currentEnvVars.push({
       key: "DEFAULT_SSL_CERT",
-      value: pem
+      value: opts.pem
     });
   }
 

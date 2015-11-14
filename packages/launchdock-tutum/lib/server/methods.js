@@ -316,9 +316,6 @@ Meteor.methods({
     // TODO: make this a setting on the client
     doc.$set.customSSLActive = true;
 
-    // so we don't need to have this remotely
-    doc.$set.lastUpdatedBy = this.userId;
-
     check(doc.$set, {
       sslPrivateKey: String,
       sslPublicCert: String,
@@ -347,21 +344,34 @@ Meteor.methods({
     }
 
     // combine private key and cert to create pem file
-    const pem = doc.$set.sslPrivateKey + "\n" + doc.$set.sslPublicCert;
+    const customPem = doc.$set.sslPrivateKey + "\n" + doc.$set.sslPublicCert;
 
-    // replace all new lines with "\n"
+    // grab default wildcard pem for default url's
+    const defaultPem = Launchdock.ssl.getDefaultPem();
+
+    // combine them
+    const pem = customPem + "\n" + defaultPem;
+
+    // add to update object
+    doc.$set.sslPem = customPem;
+
+    // replace all new lines with "\n" for haproxy environment variable
     const pemEnvVar = pem.replace(/(?:\r\n|\r|\n)/g, '\\n');
 
-    doc.$set.sslPem = pem;
-
     Stacks.update(stackId, doc);
+
+    const sslOpts = {
+      defaultDomain: stack.defaultDomain,
+      customDomain: doc.$set.sslDomainName,
+      pem: pemEnvVar
+    }
 
     const tutum = new Tutum();
 
     tutum.checkCredentials();
 
     try {
-      tutum.addCustomSSL(appService.uri, doc.$set.sslDomainName, pemEnvVar, true);
+      tutum.addCustomSSL(appService.uri, sslOpts);
     } catch(e) {
       Logger.error(e);
       throw new Meteor.Error(e);
