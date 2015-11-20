@@ -63,6 +63,15 @@ Meteor.methods({
       ],
       "container_envvars": [
         {
+          "key": "LAUNCHDOCK_STACK_ID",
+          "value": stackId
+        }, {
+          "key": "LAUNCHDOCK_DEFAULT_DOMAIN",
+          "value": siteUrl
+        }, {
+          "key": "LAUNCHDOCK_BALANCER_ENDPOINT",
+          "value": "us1.lb.launchdock.io"
+        }, {
           "key": "MONGO_URL",
           "value": "mongodb://myAppUser:myAppPassword@mongo1:27017,mongo2:27017/myAppDatabase"
         }, {
