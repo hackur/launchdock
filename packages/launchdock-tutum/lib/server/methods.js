@@ -197,7 +197,8 @@ Meteor.methods({
       $set: {
         uuid: stack.data.uuid,
         uri: stack.data.resource_uri,
-        publicUrl: "https://" + siteUrl,
+        publicUrl: "https://" + siteUrl, // TODO change to defaultUrl across app
+        defaultDomain: siteUrl,
         state: stack.data.state,
         services: stack.data.services
       }
