@@ -2,8 +2,8 @@
 ReactiveStripe = {
 
   load: _.once(function(stripeKey) {
-    var createHeadTag = function (srcUrl) {
-      var script = document.createElement('script');
+    const createHeadTag = (srcUrl) => {
+      let script = document.createElement('script');
       script.type = 'text/javascript';
       script.src = srcUrl;
       document.head.appendChild(script);
@@ -15,12 +15,11 @@ ReactiveStripe = {
   }),
 
   _checkReady: function(stripeKey) {
-    var self = this;
-    var i = 0;
-    var checkReady = Meteor.setInterval(function(){
+    let i = 0;
+    const checkReady = Meteor.setInterval(() => {
       if (typeof Stripe !== 'undefined' && typeof StripeCheckout !== 'undefined') {
         Stripe.setPublishableKey(stripeKey);
-        self._loaded.set(true);
+        this._loaded.set(true);
         Meteor.clearInterval(checkReady);
       } else {
         i += 100;
