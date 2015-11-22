@@ -384,8 +384,6 @@ Meteor.methods({
     // replace all new lines with "\n" for haproxy environment variable
     const pemEnvVar = pem.replace(/(?:\r\n|\r|\n)/g, '\\n');
 
-    Stacks.update(stackId, doc);
-
     const sslOpts = {
       defaultDomain: stack.defaultDomain,
       customDomain: doc.$set.sslDomainName,
