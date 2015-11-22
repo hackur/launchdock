@@ -2,7 +2,7 @@
 Meteor.methods({
   'tutum/createStack'(doc, userId) {
 
-    Logger = Logger.child({
+    const Logger = Logger.child({
       meteor_method: 'tutum/createStack',
       meteor_method_args: doc,
       userId: this.userId
@@ -293,7 +293,7 @@ Meteor.methods({
 
   'tutum/deleteStack'(id) {
 
-    Logger = Logger.child({
+    const Logger = Logger.child({
       meteor_method: 'tutum/deleteStack',
       meteor_method_args: id,
       userId: this.userId
@@ -333,7 +333,7 @@ Meteor.methods({
 
   'tutum/updateSSLCert'(doc, stackId) {
 
-    Logger = Logger.child({
+    const Logger = Logger.child({
       meteor_method: 'tutum/updateSSLCert',
       meteor_method_args: doc,
       userId: this.userId
@@ -418,7 +418,7 @@ Meteor.methods({
 
   'tutum/getLoadBalancerEndpoint'(serviceUri) {
 
-    Logger = Logger.child({
+    const Logger = Logger.child({
       meteor_method: 'tutum/getLoadBalancerEndpoint',
       meteor_method_args: serviceUri,
       userId: this.userId
