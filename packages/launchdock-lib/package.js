@@ -74,6 +74,7 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addFiles([
+    'lib/server/main.js',
     'lib/server/api.js',
     'lib/server/logger.js'
   ], 'server');
