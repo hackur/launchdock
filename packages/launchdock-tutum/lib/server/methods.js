@@ -2,7 +2,7 @@
 Meteor.methods({
   'tutum/createStack'(doc, userId) {
 
-    const Logger = Logger.child({
+    const logger = Logger.child({
       meteor_method: 'tutum/createStack',
       meteor_method_args: doc,
       userId: this.userId
@@ -10,7 +10,7 @@ Meteor.methods({
 
     if (!Launchdock.api.authCheck(doc.token, this.userId)) {
       const err = "AUTH ERROR: Invalid credentials";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
@@ -34,7 +34,7 @@ Meteor.methods({
 
     if (Stacks.findOne({ name: doc.name, userId: user })) {
       const err = "A stack called '" + doc.name +"' already exists.";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
@@ -231,13 +231,13 @@ Meteor.methods({
           tutum.checkMongoState(mongoUuid, function (err, ready) {
             if (ready) {
               // add the app to the stack
-              Logger.info("Adding the app to the stack " + stackId);
+              logger.info("Adding the app to the stack " + stackId);
               try {
                 var fullStack = tutum.update(stack.data.resource_uri, {
                   "services": [ app, mongo1, mongo2, mongo3 ]
                 });
               } catch(e) {
-                Logger.error("Error adding app container to stack " + stackId);
+                logger.error("Error adding app container to stack " + stackId);
                 throw new Meteor.Error(e);
               }
 
@@ -250,7 +250,7 @@ Meteor.methods({
               try {
                 tutum.start(appService.uri);
               } catch(e) {
-                Logger.error("Error starting app service in stack " + stackId);
+                logger.error("Error starting app service in stack " + stackId);
                 throw new Meteor.Error(e);
               }
 
@@ -258,7 +258,7 @@ Meteor.methods({
               try {
                 tutum.addLinkToLoadBalancer(appService.name, appService.uri);
               } catch (e) {
-                Logger.error("Error adding link to load balancer for stack " + stackId);
+                logger.error("Error adding link to load balancer for stack " + stackId);
                 throw new Meteor.Error(e);
               }
             }
@@ -293,7 +293,7 @@ Meteor.methods({
 
   'tutum/deleteStack'(id) {
 
-    const Logger = Logger.child({
+    const logger = Logger.child({
       meteor_method: 'tutum/deleteStack',
       meteor_method_args: id,
       userId: this.userId
@@ -301,7 +301,7 @@ Meteor.methods({
 
     if (! Users.is.admin(this.userId)) {
       const msg = "Method 'tutum/deleteStack': Must be admin.";
-      Logger.error(msg);
+      logger.error(msg);
       throw new Meteor.Error(msg);
     }
 
@@ -323,7 +323,7 @@ Meteor.methods({
         Services.remove({ stack: stack.uri });
       }
 
-      Logger.info("Stack " + id + " deleted successfully.");
+      logger.info("Stack " + id + " deleted successfully.");
       return res;
     } catch(e) {
       throw new Meteor.Error(e);
@@ -333,7 +333,7 @@ Meteor.methods({
 
   'tutum/updateSSLCert'(doc, stackId) {
 
-    const Logger = Logger.child({
+    const logger = Logger.child({
       meteor_method: 'tutum/updateSSLCert',
       meteor_method_args: doc,
       userId: this.userId
@@ -357,7 +357,7 @@ Meteor.methods({
 
     if (!stack) {
       const err = "Stack not found";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
@@ -365,7 +365,7 @@ Meteor.methods({
 
     if (!appService) {
       const err = "App service not found";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
@@ -397,20 +397,20 @@ Meteor.methods({
     try {
       tutum.addCustomSSL(appService.uri, sslOpts);
     } catch(e) {
-      Logger.error(e);
+      logger.error(e);
       throw new Meteor.Error(e);
     }
 
     try {
       tutum.redeploy(appService.uri);
     } catch(e) {
-      Logger.error(e);
+      logger.error(e);
       throw new Meteor.Error(e);
     }
 
     Stacks.update(stackId, doc);
 
-    Logger.info("Updated SSL cert for stack: " + stackId);
+    logger.info("Updated SSL cert for stack: " + stackId);
 
     return true;
   },
@@ -418,7 +418,7 @@ Meteor.methods({
 
   'tutum/getLoadBalancerEndpoint'(serviceUri) {
 
-    const Logger = Logger.child({
+    const logger = Logger.child({
       meteor_method: 'tutum/getLoadBalancerEndpoint',
       meteor_method_args: serviceUri,
       userId: this.userId
@@ -426,13 +426,13 @@ Meteor.methods({
 
     if (!this.userId) {
       const err = "Auth error.";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
     check(serviceUri, Match.Optional(String));
 
-    Logger.info("Method 'tutum/getLoadBalancerEndpoint' called by: " + this.userId);
+    logger.info("Method 'tutum/getLoadBalancerEndpoint' called by: " + this.userId);
 
     // currently only one LB service running, so this is a placeholder
     return "us1.lb.launchdock.io";
