@@ -34,7 +34,6 @@ aldeed:collection2
 aldeed:template-extension
 ongoworks:security
 matb33:collection-hooks
-gildaspk:autoform-materialize
 alanning:roles
 dburles:collection-helpers
 tmeasday:publish-counts
@@ -45,14 +44,14 @@ percolate:synced-cron
 ongoworks:bunyan-logger
 ongoworks:mongo-tools
 
-# mquandalle:bower
 fourseven:scss
-poetic:materialize-scss
+nemo64:bootstrap
+less
 ixdi:material-design-iconic-font
 lookback:tooltips
 
 useraccounts:core
-useraccounts:materialize
+useraccounts:bootstrap
 useraccounts:flow-routing
 
 mizzao:user-status

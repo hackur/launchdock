@@ -1,19 +1,14 @@
-$btn-color: #76a5ba;
 
-.btn {
-  background-color: $btn-color;
+button, .btn {
+  transition: all .7s;
 
-  &:hover {
-    background-color: darken($btn-color, 10%);
-
-    &.danger {
-      background-color: darken($danger-background-color, 10%);
-    }
+  &:focus {
+    outline: none;
   }
-}
 
-button:focus {
-  outline: none;
+  &.invite-user {
+    margin-bottom: 2rem;
+  }
 }
 
 .stacks-list-actions {

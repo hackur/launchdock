@@ -1,38 +1,40 @@
 <template name="send_invite">
-  <a class="modal-trigger waves-effect waves-light btn" href="#invite-modal">Send invite</a>
-  <div id="invite-modal" class="modal modal-fixed-footer">
-    <div class="modal-content">
-      <div class="row">
-        <h4>Send Invitation</h4>
-      </div>
-      <div class="row">
-        <form id="send-invite-form">
-          <div class="modal-body">
-            <div class="row">
-              <div class="input-field">
-                <label for="email">Email</label>
-                <input type="email" name="email">
-              </div>
+  <button class="btn btn-primary invite-user" data-toggle="modal" data-target="#invite-user-modal">
+    Send Invitation
+  </button>
+  <div class="modal fade" id="invite-user-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <h4 class="modal-title">Send Invitation</h4>
+        </div>
+        <div class="modal-body">
+          <form id="send-invite-form">
+            <div class="form-group">
+              <label for="invite-user-email">Email address</label>
+              <input type="email" class="form-control" name="invite-user-email">
             </div>
             {{#if isInRole 'admin'}}
-              <div class="row">
-                <div class="input-field col s12">
-                  <select name="invite-user-role">
-                    <option value="">Select a role...</option>
-                    <option value="admin">Admin</option>
-                    <option value="manager">Manager</option>
-                    <option value="customer">Customer</option>
-                  </select>
-                </div>
-              </div>
+            <div class="form-group">
+              <label for="invite-user-role">Role</label>
+              <select name="invite-user-role" class="form-control">
+                <option value="">Select a role...</option>
+                <option value="admin">Admin</option>
+                <option value="manager">Manager</option>
+                <option value="customer">Customer</option>
+              </select>
+            </div>
             {{/if}}
-          </div>
-        </form>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Send</button>
+        </div>
       </div>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn modal-action modal-close waves-effect waves-green" data-dismiss="modal">Cancel</button>
-      <button type="submit" class="btn modal-action waves-effect waves-green">Send Invitation</button>
     </div>
   </div>
 </template>

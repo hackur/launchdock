@@ -1,13 +1,9 @@
 <template name="dashboard_layout">
   {{#if subsReady}}
     {{#if currentUser}}
-      <nav class="white" role="navigation">
-        <div class="nav-wrapper">
-          {{> top_nav }}
-        </div>
-      </nav>
+      {{> top_nav }}
     {{/if}}
-    <main class="main-content">
+    <main class="main-content container">
       {{>Template.dynamic template=content}}
     </main>
   {{else}}

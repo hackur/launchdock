@@ -2,21 +2,24 @@
 <template name="stack_new">
   <div class="container">
     <div class="row">
-      <div class="card">
-        <div class="col s8 offset-s2 card-content stack-create">
-          {{#autoForm collection="Stacks" id="insertStackForm" type="method" meteormethod="tutum/createStack" }}
-            <h3 class="center">Create New Stack</h3>
-            <div class="row">
-              {{> afQuickField name='name'}}
-            </div>
-            <div class="row">
-              {{> afQuickField name='appImage'}}
-            </div>
-            <div class="row">
-              {{> afQuickField name='domainName'}}
-            </div>
-            <button type="submit" class="waves-effect waves-light btn right">Do it!</button>
-          {{/autoForm}}
+      <div class="col-sm-6 col-sm-offset-3">
+        <div class="panel">
+          <div class="panel-body">
+            {{#autoForm collection="Stacks" id="insertStackForm" type="method" meteormethod="tutum/createStack" }}
+              <h3 class="text-center">Create New Stack</h3>
+
+                {{> afQuickField name='name'}}
+
+
+                {{> afQuickField name='appImage'}}
+
+
+                {{> afQuickField name='domainName'}}
+
+              <a href="/stacks" class="btn btn-default">Cancel</a>
+              <button type="submit" class="btn btn-primary pull-right">Do it!</button>
+            {{/autoForm}}
+          </div>
         </div>
       </div>
     </div>

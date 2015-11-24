@@ -1,12 +1,15 @@
 <template name="settings">
   <div class="container settings-page">
     <div class="row">
-      <div class="card settings-page-form">
-        <div class="card-content">
-          {{#autoForm collection="Settings" class="col s12 offset-m2 m8" id="updateSettingsForm" type="update" doc=settings }}
-            <h3 class="form-heading center">Settings</h3>
+      <div class="panel settings-page-form col-sm-12 col-md-6 col-md-offset-3">
+        <div class="panel-body">
+          {{#autoForm collection="Settings"
+            id="updateSettingsForm"
+            type="update"
+            doc=settings }}
+            <h3 class="form-heading text-center">Launchdock Settings</h3>
             <div class="row settings-group-heading">
-              <h5>Tutum</h5>
+              <h3>Tutum</h3>
             </div>
             <div class="row">
               {{> afQuickField name="tutumUsername" label="Username"}}
@@ -15,8 +18,8 @@
               {{> afQuickField name="tutumToken" label="API Token"}}
             </div>
 
-            <div class="row settings-group-heading">
-              <h5>Rancher</h5>
+            <!-- <div class="row settings-group-heading">
+              <h3>Rancher</h3>
             </div>
             <div class="row">
               {{> afQuickField name="rancherApiUrl" label="API URL"}}
@@ -26,10 +29,10 @@
             </div>
             <div class="row">
               {{> afQuickField name="rancherApiSecret" label="API Secret Key" }}
-            </div>
+            </div> -->
 
             <div class="row settings-group-heading">
-              <h5>AWS</h5>
+              <h3>AWS</h3>
             </div>
             <div class="row">
               {{> afQuickField name="awsKey" label="Key"}}
@@ -42,7 +45,7 @@
             </div>
 
             <div class="row settings-group-heading">
-              <h5>Stripe</h5>
+              <h3>Stripe</h3>
             </div>
             <div class="row">
               {{> afQuickField name="stripeMode" options="allowed"}}
@@ -59,8 +62,11 @@
             <div class="row">
               {{> afQuickField name="stripeLiveSecretKey" }}
             </div>
-
-            <button type="submit" class="waves-effect waves-light btn right">Save</button>
+            <div class="row">
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary pull-right">Save</button>
+              </div>
+            </div>
           {{/autoForm}}
         </div>
       </div>

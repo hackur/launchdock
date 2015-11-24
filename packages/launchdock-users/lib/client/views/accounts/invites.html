@@ -1,36 +1,43 @@
 <template name="invites">
   <div class="row">
-    <div class="card col s10 offset-s1">
-      <div class="card-content">
+    <div class="panel col-sm-10 col-sm-offset-1">
+      <div class="panel-body">
         <div class="row">
-          <h4>Invitations <small class="text-muted">({{openInviteCount}})</small></h4>
-          {{> send_invite}}
+          <div class="col-sm-12">
+            <h3>Invitations <small class="text-muted">({{openInviteCount}})</small></h3>
+            <hr>
+            {{> send_invite}}
+          </div>
         </div>
         {{#if hasInvitations}}
-          <table class="bordered">
-            <thead>
-              <tr>
-                <th>Email Address</th>
-                <th>Type</th>
-                <th>Date Sent</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each invitations}}
-                <tr>
-                  <td>{{email}}</td>
-                  <td>{{role}}</td>
-                  <td>{{moment createdAt 'LLL'}} <small>({{timeAgo createdAt}})</small></td>
-                  <td>
-                    <button class="btn danger revoke-invite">Revoke</button>
-                  </td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
+          <div class="row">
+            <div class="col-sm-12">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Email Address</th>
+                    <th>Type</th>
+                    <th>Date Sent</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class="text-center">
+                  {{#each invitations}}
+                    <tr>
+                      <td>{{email}}</td>
+                      <td>{{role}}</td>
+                      <td>{{moment createdAt 'LLL'}} <small>({{timeAgo createdAt}})</small></td>
+                      <td>
+                        <button class="btn btn-danger revoke-invite">Revoke</button>
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
         {{else}}
-          <h5 class="center">No open invitations.</h5>
+          <h3 class="text-center">No open invitations.</h3>
         {{/if}}
       </div>
     </div>

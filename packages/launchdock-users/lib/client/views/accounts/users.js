@@ -11,16 +11,6 @@ Template.users.helpers({
 });
 
 
-Template.users.onRendered(function () {
-  // initialize <select> elements when subs are ready
-  this.autorun(() => {
-    if (this.subscriptionsReady()) {
-      $('select').material_select();
-    }
-  });
-});
-
-
 Template.users.events({
   'change [name="user-role"]' (e, t) {
     let options = {

@@ -3,26 +3,22 @@
   <div class="container">
     {{> stack_info}}
     <div class="row">
-      <div class="col s12">
-        <div class="card">
-          <div class="card-content col s8 offset-s2 ssl-settings">
-            <h4 class="center">Custom SSL Settings</h4>
-            {{#autoForm collection="Stacks" id="sslUpdateForm" doc=currentStack type="method-update" meteormethod="tutum/updateSSLCert" }}
-              <div class="row">
+      <div class="col-sm-12">
+        <div class="panel">
+          <div class="panel-body ssl-settings">
+            <div class="col-sm-6 col-sm-offset-3">
+              <h4 class="text-center">Custom SSL Settings</h4>
+              {{#autoForm collection="Stacks" id="sslUpdateForm" doc=currentStack type="method-update" meteormethod="tutum/updateSSLCert" }}
                 {{> afQuickField name='sslDomainName' label='Domain Name'}}
-              </div>
-              <div class="row">
                 {{> afQuickField name='sslPrivateKey' label='Private Key' type='textarea' style='height: 175px;'}}
-              </div>
-              <div class="row">
                 {{> afQuickField name='sslPublicCert' label='Public Certificate' type='textarea' style='height: 175px;'}}
-              </div>
-              {{> afQuickField name='stackId' type='hidden' value=currentStack._id}}
-              <!-- <div class="row">
-                {{> afQuickField name='customSSLActive' label='Is Active?'}}
-              </div> -->
-              <button type="submit" class="waves-effect waves-light btn right">Save</button>
-            {{/autoForm}}
+                {{> afQuickField name='stackId' type='hidden' value=currentStack._id}}
+                <!--
+                  {{> afQuickField name='customSSLActive' label='Is Active?'}}
+                -->
+                <button type="submit" class="btn btn-primary pull-right">Save</button>
+              {{/autoForm}}
+            </div>
           </div>
         </div>
       </div>

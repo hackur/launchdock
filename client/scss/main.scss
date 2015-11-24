@@ -1,70 +1,12 @@
-@charset "UTF-8";
-
-/////////////////
-// Materialize //
-/////////////////
-
-@import // Mixins
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/mixins",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/prefixer",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/color",
-
-        // Variables
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/variables",  // default
-        "vars",                                                                              // custom
-
-        // Reset
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/normalize",
-
-        // Components
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/global",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/grid",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/navbar",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/roboto",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/typography",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/cards",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/buttons",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/dropdown",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/waves",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/modal",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/form",
-        "{poetic:materialize-scss}/bower_components/materialize/sass/components/preloader";
-
-        // Unused stuff
-        // "materialize/sass/components/icons-material-design",
-        // "materialize/sass/components/material-icons",
-        // "materialize/sass/components/slider",
-        // "materialize/sass/components/toast",
-        // "materialize/sass/components/tabs",
-        // "materialize/sass/components/tooltip",
-        // "materialize/sass/components/collapsible",
-        // "materialize/sass/components/materialbox",
-        // "materialize/sass/components/table_of_contents",
-        // "materialize/sass/components/sideNav",
-        // "materialize/sass/components/date_picker/default.scss",
-        // "materialize/sass/components/date_picker/default.date.scss",
-        // "materialize/sass/components/date_picker/default.time.scss";
-
 
 //////////////////////////////
 // Launchdock Custom Styles //
 //////////////////////////////
 
-@import "modules/mixins",
-        "modules/breakpoints",
+@import "vars",
         "modules/badges",
         "modules/buttons",
-        "modules/code",
-        "modules/forms",
         "modules/global",
-        "modules/layout",
-        "modules/login",
         "modules/notifications",
-        "modules/side_nav",
-        "modules/tables",
         "modules/tooltips",
-        "modules/top_nav",
-        "modules/type",
-
-        "pages/settings",
-        "pages/stacks";
+        "modules/type";

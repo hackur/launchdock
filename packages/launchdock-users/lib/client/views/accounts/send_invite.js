@@ -1,17 +1,12 @@
 
-Template.send_invite.onRendered(function () {
-  $('.modal-trigger').leanModal();
-});
-
-
 Template.send_invite.events({
   'click button[type="submit"]' (e, t) {
     e.preventDefault();
 
-    let isManager = Roles.userIsInRole(Meteor.userId(), 'manager');
+    const isManager = Roles.userIsInRole(Meteor.userId(), 'manager');
 
-    let options = {
-      email: t.find("[name='email']").value,
+    const options = {
+      email: t.find("[name='invite-user-email']").value,
       role: isManager ? 'customer' : t.find("[name='invite-user-role'] option:selected").value
     }
 
@@ -21,7 +16,7 @@ Template.send_invite.events({
           if (err) {
             Notify.error(err.error);
           } else {
-            $('#invite-modal').closeModal();
+            $('#invite-user-modal').modal('hide');
             Notify.success('Invitation sent!');
           }
         });
@@ -30,7 +25,7 @@ Template.send_invite.events({
           if (err) {
             Notify.error(err.error);
           } else {
-            $('#invite-modal').closeModal();
+            $('#invite-user-modal').modal('hide');
             Notify.success('Invitation sent!');
           }
         });

@@ -1,14 +1,16 @@
 <template name="users">
   <div class="row">
-    <div class="card col s10 offset-s1">
-      <div class="card-content">
-        <h4 class="page-header">Active Users</h4>
-        <table class="bordered">
+    <div class="panel col-sm-10 col-sm-offset-1">
+      <div class="panel-body">
+        <h3>Active Users</h3>
+        <hr>
+        <table class="table table-bordered users-table">
           <thead>
             <tr>
               <th>Email Address</th>
+              <th>Username</th>
               <th class="text-center">{{#if isInRole 'admin'}}Role{{/if}}</th>
-              <th></th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -17,6 +19,9 @@
                 <td class="text-center">
                   {{emails.[0].address}}
                   {{#if isCurrentUser _id}}<span class="flag">You!</span>{{/if}}
+                </td>
+                <td class="text-center">
+                  {{username}}
                 </td>
                 <td>
                   {{#if isInRole 'admin'}}
@@ -33,9 +38,10 @@
                   {{/if}}
                 </td>
                 <td>
+                  <a href="users/{{_id}}" class="btn btn-primary">Profile</a>
                   {{#if isInRole 'admin'}}
                     {{#unless isCurrentUser _id}}
-                      <button class="danger btn delete-user">Delete</button>
+                      <button class="btn btn-danger delete-user">Delete</button>
                     {{/unless}}
                   {{/if}}
                 </td>

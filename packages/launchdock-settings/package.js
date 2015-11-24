@@ -5,7 +5,7 @@ Package.describe({
 
 Package.onUse(function(api) {
 
-  api.versionsFrom(['METEOR@1.1.0.2']);
+  api.versionsFrom(['METEOR@1.2.0.2']);
 
   api.use([
     'launchdock:lib',
@@ -27,7 +27,8 @@ Package.onUse(function(api) {
   api.addFiles([
     'lib/client/helpers.js',
     'lib/client/templates/settings_form.html',
-    'lib/client/templates/settings_form.js'
+    'lib/client/templates/settings_form.js',
+    'lib/client/templates/settings_form.scss'
   ], 'client');
 
   api.export('Settings');
