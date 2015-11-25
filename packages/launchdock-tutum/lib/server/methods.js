@@ -44,6 +44,8 @@ Meteor.methods({
       userId: user
     });
 
+    const stack = Stacks.findOne(stackId);
+
     const siteId = stackId.toLowerCase();
 
     const siteUrl = doc.domainName ? doc.domainName :
@@ -65,6 +67,9 @@ Meteor.methods({
         {
           "key": "LAUNCHDOCK_STACK_ID",
           "value": stackId
+        }, {
+          "key": "LAUNCHDOCK_STACK_CREATED",
+          "value": stack.createdAt
         }, {
           "key": "LAUNCHDOCK_DEFAULT_DOMAIN",
           "value": siteUrl
@@ -185,8 +190,9 @@ Meteor.methods({
     };
 
     // create the stack
+    let tutumStack;
     try {
-      var stack = tutum.create('stack', stackDetails);
+      tutumStack = tutum.create('stack', stackDetails);
     } catch(e) {
       Stacks.remove(stackId);
       throw new Meteor.Error(e);
@@ -195,21 +201,21 @@ Meteor.methods({
     // update local database with returned stack details
     Stacks.update({ _id: stackId }, {
       $set: {
-        uuid: stack.data.uuid,
-        uri: stack.data.resource_uri,
+        uuid: tutumStack.data.uuid,
+        uri: tutumStack.data.resource_uri,
         publicUrl: "https://" + siteUrl, // TODO change to defaultUrl across app
         defaultDomain: siteUrl,
-        state: stack.data.state,
-        services: stack.data.services
+        state: tutumStack.data.state,
+        services: tutumStack.data.services
       }
     });
 
     // add each of the stack's services to the local Services collection
-    tutum.updateStackServices(stack.data.services);
+    tutum.updateStackServices(tutumStack.data.services);
 
     // start the stack (currently only a mongo cluster)
     try {
-      tutum.start(stack.data.resource_uri);
+      tutum.start(tutumStack.data.resource_uri);
     } catch(e) {
       throw new Meteor.Error(e);
     }
@@ -233,7 +239,7 @@ Meteor.methods({
               // add the app to the stack
               logger.info("Adding the app to the stack " + stackId);
               try {
-                var fullStack = tutum.update(stack.data.resource_uri, {
+                var fullStack = tutum.update(tutumStack.data.resource_uri, {
                   "services": [ app, mongo1, mongo2, mongo3 ]
                 });
               } catch(e) {
