@@ -32,15 +32,15 @@ Launchdock.routes.private = FlowRouter.group({
 
 Launchdock.routes.private.route("/", {
   name: "dashboard",
-  action: function() {
+  action() {
     BlazeLayout.render("dashboard_layout", { content: "dashboard" });
   }
 });
 
 Launchdock.routes.private.route("/logout", {
   name: "logout",
-  action: function() {
-    Meteor.logout(function () {
+  action() {
+    Meteor.logout(() => {
       FlowRouter.redirect("/login");
     });
   }

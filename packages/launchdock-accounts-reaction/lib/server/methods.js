@@ -11,8 +11,8 @@ Meteor.methods({
 
     check(name, String);
 
-    let slug = Launchdock.utils.slugify(name);
-    let domain = 'https://' + slug + '.getreaction.io';
+    const slug = Launchdock.utils.slugify(name);
+    const domain = 'https://' + slug + '.getreaction.io';
 
     return !!Stacks.findOne({ publicUrl: domain });
   },
@@ -57,12 +57,12 @@ Meteor.methods({
     }
 
     doc.shopName = Launchdock.utils.slugify(doc.shopName);
-    let shopDomain = doc.shopName + '.getreaction.io';
+    const shopDomain = doc.shopName + '.getreaction.io';
 
-    let launchdockUsername = Random.id();
-    let launchdockAuth = Random.secret();
+    const launchdockUsername = Random.id();
+    const launchdockAuth = Random.secret();
 
-    let launchdockUserId = Accounts.createUser({
+    const launchdockUserId = Accounts.createUser({
       username: launchdockUsername,
       password: launchdockAuth,
       email: doc.email,
@@ -74,7 +74,7 @@ Meteor.methods({
 
     Roles.setUserRoles(launchdockUserId, ['customer']);
 
-    let stackCreateDetails = {
+    const stackCreateDetails = {
       name: doc.shopName,
       appImage: "reactioncommerce/prequel:latest",
       domainName: shopDomain,
@@ -135,13 +135,13 @@ Meteor.methods({
     options.token = Random.hexString(32);
     options.invitedBy = this.userId;
 
-    let url = Launchdock.config.drive.url() + 'invite/' + options.token;
-    let emailHtml = 'lib/server/email/invitation.html';
+    const url = Launchdock.config.drive.url() + 'invite/' + options.token;
+    const emailHtml = 'lib/server/email/invitation.html';
 
     SSR.compileTemplate('invitation', Assets.getText(emailHtml));
-    let content = SSR.render('invitation', { url: url });
+    const content = SSR.render('invitation', { url: url });
 
-    let emailOpts = {
+    const emailOpts = {
       to: options.email,
       from: "Reaction Commerce <invites@reactioncommerce.com>",
       subject: "You're invited to Reaction Commerce!",
@@ -176,7 +176,7 @@ Meteor.methods({
       inviteToken: String
     });
 
-    let invite = Invitations.findOne({ token: options.inviteToken });
+    const invite = Invitations.findOne({ token: options.inviteToken });
 
     if (!invite) {
       const err = "Invitation not found.";
@@ -236,7 +236,7 @@ Meteor.methods({
     }
 
     Logger.info("Successfully removed invitation: " + inviteId);
-    
+
     return true;
   }
 
