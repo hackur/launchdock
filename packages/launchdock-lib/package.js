@@ -34,7 +34,6 @@ Package.onUse(function(api) {
     'jquery',
     'reactive-var',
     'reactive-dict',
-    'templating',
     'underscorestring:underscore.string',
     'kadira:flow-router',
     'kadira:blaze-layout',
@@ -48,16 +47,14 @@ Package.onUse(function(api) {
     'aldeed:collection2',
     'aldeed:template-extension',
     'matb33:collection-hooks',
-    'gildaspk:autoform-materialize',
     'alanning:roles',
     'aslagle:reactive-table',
     'fourseven:scss',
-    'poetic:materialize-scss',
     'useraccounts:core',
-    'useraccounts:materialize',
     'mizzao:user-status',
     'sacha:spin',
     'momentjs:moment',
+    'percolate:synced-cron',
     'jeremy:reactive-stripe'
   ];
 

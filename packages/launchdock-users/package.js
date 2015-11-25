@@ -8,7 +8,9 @@ Package.onUse(function (api) {
   api.versionsFrom(['METEOR@1.2.0.2']);
 
   api.use([
-    'launchdock:lib'
+    'launchdock:core',
+    'launchdock:lib',
+    'jeremy:reactive-stripe'
   ]);
 
   api.addFiles([

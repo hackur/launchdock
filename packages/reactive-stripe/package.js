@@ -12,8 +12,9 @@ Package.on_use(function (api) {
   });
 
   api.use([
-    'underscore@1.0.3',
-    'reactive-var@1.0.5'
+    'ecmascript',
+    'underscore@1.0.4',
+    'reactive-var@1.0.6'
   ]);
 
   api.addFiles('stripe_client.js', 'client');
