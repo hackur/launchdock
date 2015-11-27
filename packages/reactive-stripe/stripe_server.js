@@ -1,2 +1,0 @@
-
-Stripe = Npm.require('stripe');
