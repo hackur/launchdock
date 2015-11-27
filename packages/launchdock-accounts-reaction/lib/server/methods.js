@@ -195,9 +195,10 @@ Meteor.methods({
     delete options.inviteToken;
 
     // create a user account and launch a shop
+    let userId;
     try {
       Logger.info("Creating new user and shop: " + options.shopName);
-      Meteor.call('createReactionAccount', options);
+      userId = Meteor.call('createReactionAccount', options);
     } catch (err) {
       Logger.error(err);
       return err;
@@ -206,7 +207,8 @@ Meteor.methods({
     Invitations.update({ _id: invite._id }, {
       $set: {
         accepted: true,
-        acceptedDate: new Date()
+        acceptedDate: new Date(),
+        userId: userId
       }
     }, (err, res) => {
       if (!err) {
