@@ -217,29 +217,6 @@ Meteor.methods({
     });
 
     return true;
-  },
-
-
-  revokeInvitation(inviteId) {
-
-    if (!Users.is.admin(this.userId)) {
-      const err = "AUTH ERROR: Invalid credentials";
-      Logger.error(err);
-      throw new Meteor.Error(err);
-    }
-
-    check(inviteId, String);
-
-    try {
-      Invitations.remove(inviteId);
-    } catch (err) {
-      Logger.error(err);
-      throw new Meteor.Error(err);
-    }
-
-    Logger.info("Successfully removed invitation: " + inviteId);
-
-    return true;
   }
 
 });
