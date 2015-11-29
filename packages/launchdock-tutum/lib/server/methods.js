@@ -222,7 +222,8 @@ Meteor.methods({
         publicUrl: "https://" + siteUrl, // TODO change to defaultUrl across app
         defaultDomain: siteUrl,
         state: tutumStack.data.state,
-        services: tutumStack.data.services
+        services: tutumStack.data.services,
+        endpoint: Launchdock.tutum.getLoadBalancerEndpoint()
       }
     });
 
@@ -457,7 +458,7 @@ Meteor.methods({
     logger.info("Method 'tutum/getLoadBalancerEndpoint' called by: " + this.userId);
 
     // currently only one LB service running, so this is a placeholder
-    return "us1.lb.launchdock.io";
+    return Launchdock.tutum.getLoadBalancerEndpoint();
   }
 
 });
