@@ -22,13 +22,13 @@ Users.is.admin = function (userOrUserId) {
 /**
  * Check if a user owns a document
  * @param {Object|String} userOrUserId - The user or their userId
- * @param {Object} doc - The document to check (post, comment, user object, etc.)
+ * @param {Object} doc - The document to check
  */
 Users.is.owner = function (userOrUserId, doc) {
   try {
     var user = Users.getUser(userOrUserId);
     if (!!doc.userId) {
-      // case 1: document is a post or a comment, use userId to check
+      // case 1: use document.userId to check
       return user._id === doc.userId;
     } else {
       // case 2: document is a user, use _id to check
