@@ -51,8 +51,11 @@ Meteor.methods({
       throw new Meteor.Error(err);
     }
 
+    const appImage = doc.appImage || "reactioncommerce/prequel:devel";
+
     const stackId = Stacks.insert({
       name: doc.name,
+      appImage: appImage,
       state: "Creating",
       userId: user
     });
@@ -69,7 +72,7 @@ Meteor.methods({
 
     const app = {
       "name": "app-" + stackId,
-      "image": doc.appImage || "reactioncommerce/prequel:devel",
+      "image": appImage,
       "container_ports": [
         {
           "protocol": "tcp",
