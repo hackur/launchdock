@@ -5,9 +5,10 @@ Meteor.methods({
     const logger = Logger.child({
       meteor_method: 'tutum/createStack',
       meteor_method_args: doc,
-      userId: this.userId
+      userId: userId || this.userId
     });
 
+    // confirms this is being called by Drive or a Launchdock admin
     if (!Launchdock.api.authCheck(doc.token, this.userId)) {
       const err = "AUTH ERROR: Invalid credentials";
       logger.error(err);
@@ -22,7 +23,19 @@ Meteor.methods({
       token: Match.Optional(String)
     });
 
-    check(userId, Match.Optional(String));
+    
+    if (!this.userId) {
+      check(userId, String);
+
+      // if a userId was passed in, make sure that user exists
+      const newUser = Users.findOne(userId);
+
+      if (!newUser) {
+        const err = "Provided user not found.";
+        logger.error(err);
+        throw new Meteor.Error(err);
+      }
+    }
 
     this.unblock();
 
