@@ -130,10 +130,12 @@ Meteor.methods({
       app.container_envvars = app.container_envvars.concat(doc.appEnvVars);
     };
 
+    const mongoImage = "tutum.co/ongoworks/mongo-rep-set:0.2.10";
+
     // Mongo - primary
     const mongo1 = {
       "name": "mongo1-" + stackId,
-      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.10",
+      "image": mongoImage,
       "container_ports": [
         {
           "protocol": "tcp",
@@ -168,7 +170,7 @@ Meteor.methods({
     // Mongo - secondary
     const mongo2 = {
       "name": "mongo2-" + stackId,
-      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.10",
+      "image": mongoImage,
       "container_ports": [
         {
           "protocol": "tcp",
@@ -182,7 +184,7 @@ Meteor.methods({
     // Mongo - arbiter
     const mongo3 = {
       "name": "mongo3-" + stackId,
-      "image": "tutum.co/ongoworks/mongo-rep-set:0.2.10",
+      "image": mongoImage,
       "container_ports": [
         {
           "protocol": "tcp",
@@ -211,6 +213,7 @@ Meteor.methods({
       tutumStack = tutum.create('stack', stackDetails);
     } catch(e) {
       Stacks.remove(stackId);
+      logger.error(e);
       throw new Meteor.Error(e);
     }
 
@@ -234,6 +237,7 @@ Meteor.methods({
     try {
       tutum.start(tutumStack.data.resource_uri);
     } catch(e) {
+      logger.error(e);
       throw new Meteor.Error(e);
     }
 
