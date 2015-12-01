@@ -99,7 +99,7 @@ Meteor.methods({
           "value": Meteor.absoluteUrl()
         }, {
           "key": "MAIL_URL",
-          "value": "smtp://postmaster%40mail.launchdock.io:b442e6eb2aa294ccc86360f0c647adcd@smtp.mailgun.org:587"
+          "value": process.env.MAIL_URL
         }
       ],
       token: doc.token
