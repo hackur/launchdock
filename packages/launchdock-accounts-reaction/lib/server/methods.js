@@ -34,14 +34,14 @@ Meteor.methods({
 
   createReactionAccount(doc) {
 
+    const logger = Logger.child({
+      meteor_method: 'createReactionAccount',
+      meteor_method_args: doc
+    });
+
     if (!Launchdock.api.authCheck(doc.token, this.userId)) {
       const err = "AUTH ERROR: Invalid credentials";
-      Logger.error(err, {
-        "package": "launchdock-accounts-reaction",
-        "type": "method",
-        "method-name": "createReactionAccount",
-        "method-args": doc
-      });
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
@@ -53,7 +53,9 @@ Meteor.methods({
     });
 
     if (!!Accounts.findUserByEmail(doc.email)) {
-      throw new Meteor.Error("Email already registered.");
+      const err = "Email already registered.";
+      logger.error(err);
+      throw new Meteor.Error(err);
     }
 
     doc.shopName = Launchdock.utils.slugify(doc.shopName);
@@ -72,7 +74,11 @@ Meteor.methods({
       }
     });
 
+    logger.info("New Reaction user created.");
+
     Roles.setUserRoles(launchdockUserId, ['customer']);
+
+    logger.debug(`User ${launchdockUserId} role updated to customer`);
 
     const stackCreateDetails = {
       name: doc.shopName,
@@ -113,9 +119,15 @@ Meteor.methods({
 
   sendReactionInvite(options) {
 
+    const logger = Logger.child({
+      meteor_method: 'sendReactionInvite',
+      meteor_method_args: options,
+      userId: this.userId
+    });
+
     if (!Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
       const err = "AUTH ERROR: Invalid credentials";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
@@ -128,7 +140,7 @@ Meteor.methods({
 
     if (!!Invitations.findOne({ email: options.email })) {
       const err = "Email has already been invited";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
@@ -154,7 +166,7 @@ Meteor.methods({
 
     Invitations.insert(options);
 
-    Logger.info("Invite successfully sent to " + options.email);
+    logger.info(`Invite successfully sent to ${options.email}`);
 
     return true;
   },
@@ -162,9 +174,14 @@ Meteor.methods({
 
   activateInvitation(options) {
 
+    const logger = Logger.child({
+      meteor_method: 'activateInvitation',
+      meteor_method_args: options
+    });
+
     if (!Launchdock.api.authCheck(options.token, this.userId)) {
       const err = "AUTH ERROR: Invalid credentials";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
@@ -180,14 +197,14 @@ Meteor.methods({
 
     if (!invite) {
       const err = "Invitation not found.";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
     // invite can only be used once
     if (invite.accepted) {
       const err = "Invitation has already been used.";
-      Logger.error(err);
+      logger.error(err);
       throw new Meteor.Error(err);
     }
 
@@ -197,7 +214,7 @@ Meteor.methods({
     // create a user account and launch a shop
     let userId;
     try {
-      Logger.info("Creating new user and shop: " + options.shopName);
+      logger.info(`Creating new user and shop: ${options.shopName}`);
       userId = Meteor.call('createReactionAccount', options);
     } catch (err) {
       Logger.error(err);
@@ -210,9 +227,9 @@ Meteor.methods({
         acceptedDate: new Date(),
         userId: userId
       }
-    }, (err, res) => {
+    }, (err, num) => {
       if (!err) {
-        Logger.info("Invitation successfully accepted by " + invite.email);
+        logger.info(`Invitation successfully accepted by ${invite.email}`);
       }
     });
 

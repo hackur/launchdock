@@ -23,7 +23,6 @@ Meteor.methods({
       token: Match.Optional(String)
     });
 
-    
     if (!this.userId) {
       check(userId, String);
 
@@ -31,7 +30,7 @@ Meteor.methods({
       const newUser = Users.findOne(userId);
 
       if (!newUser) {
-        const err = "Provided user not found.";
+        const err = `User ${userId} not found.`;
         logger.error(err);
         throw new Meteor.Error(err);
       }
@@ -46,7 +45,7 @@ Meteor.methods({
     tutum.checkCredentials();
 
     if (Stacks.findOne({ name: doc.name, userId: user })) {
-      const err = "A stack called '" + doc.name +"' already exists.";
+      const err = `A stack called ${doc.name} already exists.`;
       logger.error(err);
       throw new Meteor.Error(err);
     }
@@ -59,6 +58,8 @@ Meteor.methods({
       state: "Creating",
       userId: user
     });
+
+    logger.info(`New stack ${stackId} created`);
 
     const stack = Stacks.findOne(stackId);
 
@@ -127,6 +128,7 @@ Meteor.methods({
 
     // add custom environment variables to app (if any were provided)
     if (doc.appEnvVars) {
+      logger.debug("Appending customer env vars to stack", doc.appEnvVars);
       app.container_envvars = app.container_envvars.concat(doc.appEnvVars);
     };
 
@@ -217,6 +219,8 @@ Meteor.methods({
       throw new Meteor.Error(e);
     }
 
+    logger.info("Tutum stack created", tutumStack.data);
+
     // update local database with returned stack details
     Stacks.update({ _id: stackId }, {
       $set: {
@@ -228,6 +232,12 @@ Meteor.methods({
         services: tutumStack.data.services,
         endpoint: Launchdock.tutum.getLoadBalancerEndpoint()
       }
+    }, (err, num) => {
+      if (err) {
+        logger.error(err);
+      } else {
+        logger.debug(`Stack ${stackId} updated with Tutum stack details`);
+      }
     });
 
     // add each of the stack's services to the local Services collection
@@ -236,6 +246,7 @@ Meteor.methods({
     // start the stack (currently only a mongo cluster)
     try {
       tutum.start(tutumStack.data.resource_uri);
+      logger.info("Mongo stack started on Tutum.");
     } catch(e) {
       logger.error(e);
       throw new Meteor.Error(e);
@@ -258,9 +269,10 @@ Meteor.methods({
           tutum.checkMongoState(mongoUuid, function (err, ready) {
             if (ready) {
               // add the app to the stack
-              logger.info("Adding the app to the stack " + stackId);
+              let fullStack;
               try {
-                var fullStack = tutum.update(tutumStack.data.resource_uri, {
+                logger.info(`Adding the app service to stack ${stackId}`);
+                fullStack = tutum.update(tutumStack.data.resource_uri, {
                   "services": [ app, mongo1, mongo2, mongo3 ]
                 });
               } catch(e) {
@@ -275,17 +287,19 @@ Meteor.methods({
               // start the app service
               const appService = Services.findOne({ name: "app-" + stackId });
               try {
+                logger.info(`Starting app service ${appService._id}`);
                 tutum.start(appService.uri);
               } catch(e) {
-                logger.error("Error starting app service in stack " + stackId);
+                logger.error(`Error starting app service ${appService._id} in stack ${stackId}`);
                 throw new Meteor.Error(e);
               }
 
               // link the load balancer to the app service
               try {
+                logger.info("Linking app service to load balancer");
                 tutum.addLinkToLoadBalancer(appService.name, appService.uri);
               } catch (e) {
-                logger.error("Error adding link to load balancer for stack " + stackId);
+                logger.error(`Error adding link to load balancer for stack ${stackId}`);
                 throw new Meteor.Error(e);
               }
             }
@@ -327,9 +341,9 @@ Meteor.methods({
     });
 
     if (! Users.is.admin(this.userId)) {
-      const msg = "Method 'tutum/deleteStack': Must be admin.";
-      logger.error(msg);
-      throw new Meteor.Error(msg);
+      const err = "AUTH ERROR: Must be admin.";
+      logger.error(err);
+      throw new Meteor.Error(err);
     }
 
     check(id, String);
@@ -341,7 +355,7 @@ Meteor.methods({
     const stack = Stacks.findOne(id);
 
     try {
-      var res = tutum.delete(stack.uri);
+      const res = tutum.delete(stack.uri);
 
       if (res.statusCode == 202) {
         // TODO - set stack to "terminated" and
