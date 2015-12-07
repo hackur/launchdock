@@ -71,6 +71,10 @@ Meteor.methods({
     const virtualHosts = "http://" + siteUrl + ", ws://" + siteUrl +
                        ", https://" + siteUrl + ", wss://" + siteUrl;
 
+    const mongoUser = Random.id();
+    const mongoPw = Random.secret();
+    const mongoDatabase = Random.id();
+
     const app = {
       "name": "app-" + stackId,
       "image": appImage,
@@ -95,7 +99,7 @@ Meteor.methods({
           "value": "us1.lb.launchdock.io"
         }, {
           "key": "MONGO_URL",
-          "value": "mongodb://myAppUser:myAppPassword@mongo1:27017,mongo2:27017/myAppDatabase"
+          "value": `mongodb://${mongoUser}:${mongoPw}@mongo1:27017,mongo2:27017/${mongoDatabase}`
         }, {
           "key": "ROOT_URL",
           "value": "https://" + siteUrl
@@ -132,7 +136,7 @@ Meteor.methods({
       app.container_envvars = app.container_envvars.concat(doc.appEnvVars);
     };
 
-    const mongoImage = "tutum.co/ongoworks/mongo-rep-set:0.2.10";
+    const mongoImage = "tutum.co/ongoworks/mongo-rep-set:latest";
 
     // Mongo - primary
     const mongo1 = {
@@ -154,6 +158,15 @@ Meteor.methods({
         }, {
           "key": "MONGO_ARBITER",
           "value": "mongo3-" + stackId
+        }, {
+          "key": "MONGO_APP_USER",
+          "value": mongoUser
+        }, {
+          "key": "MONGO_APP_PASSWORD",
+          "value": mongoPw
+        }, {
+          "key": "MONGO_APP_DATABASE",
+          "value": mongoDatabase
         }
       ],
       "linked_to_service": [
