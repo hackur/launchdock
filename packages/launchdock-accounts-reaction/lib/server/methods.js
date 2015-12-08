@@ -86,6 +86,9 @@ Meteor.methods({
       domainName: shopDomain,
       appEnvVars: [
         {
+          "key": "REACTION_SHOP_NAME",
+          "value": doc.shopName
+        }, {
           "key": "REACTION_EMAIL",
           "value": doc.email
         }, {
