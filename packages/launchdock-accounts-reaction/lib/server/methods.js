@@ -58,8 +58,7 @@ Meteor.methods({
       throw new Meteor.Error(err);
     }
 
-    doc.shopName = Launchdock.utils.slugify(doc.shopName);
-    const shopDomain = doc.shopName + '.getreaction.io';
+    const shopNameSlug = Launchdock.utils.slugify(doc.shopName);
 
     const launchdockUsername = Random.id();
     const launchdockAuth = Random.secret();
@@ -69,8 +68,7 @@ Meteor.methods({
       password: launchdockAuth,
       email: doc.email,
       profile: {
-        shopName: doc.shopName,
-        shopDomain: shopDomain
+        shopName: doc.shopName
       }
     });
 
@@ -81,9 +79,8 @@ Meteor.methods({
     logger.debug(`User ${launchdockUserId} role updated to customer`);
 
     const stackCreateDetails = {
-      name: doc.shopName,
       appImage: "reactioncommerce/prequel:latest",
-      domainName: shopDomain,
+      name: shopNameSlug,
       appEnvVars: [
         {
           "key": "REACTION_SHOP_NAME",
