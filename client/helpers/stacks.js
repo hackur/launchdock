@@ -29,7 +29,7 @@ Template.registerHelper('stateClass', function(item) {
       return 'red'
       break;
     case 'Terminated':
-      return 'muted'
+      return 'text-muted'
       break;
   }
 })
