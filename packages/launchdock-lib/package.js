@@ -55,7 +55,7 @@ Package.onUse(function(api) {
     'sacha:spin',
     'momentjs:moment',
     'percolate:synced-cron',
-    'jeremy:reactive-stripe'
+    'jeremy:stripe'
   ];
 
   api.use(packages);
