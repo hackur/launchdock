@@ -123,7 +123,7 @@ Meteor.methods({
           "name": "mongo2"
         }
       ],
-      "tags": [ "app" ],
+      "tags": [ "app", "aws" ],
       // "target_num_containers": 2,
       "sequential_deployment": true,
       "deployment_strategy": "HIGH_AVAILABILITY",
@@ -178,7 +178,7 @@ Meteor.methods({
           "name": "mongo3"
         }
       ],
-      "tags": [ "mongo1" ],
+      "tags": [ "mongo1", "aws" ],
       "autorestart": "ALWAYS"
     };
 
@@ -192,7 +192,7 @@ Meteor.methods({
           "inner_port": 27017
         }
       ],
-      "tags": [ "mongo2" ],
+      "tags": [ "mongo2", "aws" ],
       "autorestart": "ALWAYS"
     };
 
@@ -212,7 +212,7 @@ Meteor.methods({
           "value": "no"
         }
       ],
-      "tags": [ "mongo3" ],
+      "tags": [ "mongo3", "aws" ],
       "autorestart": "ALWAYS"
     };
 
