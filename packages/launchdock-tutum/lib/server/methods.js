@@ -72,7 +72,7 @@ Meteor.methods({
                        ", https://" + siteUrl + ", wss://" + siteUrl;
 
     const mongoUser = Random.id();
-    const mongoPw = Random.secret();
+    const mongoPw = Random.id();
     const mongoDatabase = Random.id();
 
     const app = {
