@@ -74,6 +74,7 @@ Meteor.methods({
     const mongoUser = Random.id();
     const mongoPw = Random.id();
     const mongoDatabase = Random.id();
+    const mongoUrl = `mongodb://${mongoUser}:${mongoPw}@mongo1:27017,mongo2:27017/${mongoDatabase}`
 
     const app = {
       "name": "app-" + stackId,
@@ -99,7 +100,7 @@ Meteor.methods({
           "value": "us1.lb.launchdock.io"
         }, {
           "key": "MONGO_URL",
-          "value": `mongodb://${mongoUser}:${mongoPw}@mongo1:27017,mongo2:27017/${mongoDatabase}`
+          "value": mongoUrl
         }, {
           "key": "ROOT_URL",
           "value": "https://" + siteUrl
