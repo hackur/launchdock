@@ -324,23 +324,26 @@ Meteor.methods({
       }
     });
 
-    Meteor.defer(function() {
-      let userEmail = "Launchdock Admin";
+    // TODO: make this a resuable method
+    if (Launchdock.isProduction()) {
+      Meteor.defer(function() {
+        let userEmail = "Launchdock Admin";
 
-      _.each(app.container_envvars, (envVar) => {
-        if (envVar.key === "METEOR_USER") {
-          userEmail = envVar.value;
-        }
-      });
+        _.each(app.container_envvars, (envVar) => {
+          if (envVar.key === "METEOR_USER") {
+            userEmail = envVar.value;
+          }
+        });
 
-      Email.send({
-        to: "jeremy.shimko@gmail.com",
-        from: "admin@launchdock.io",
-        subject: "New stack creation for " + siteUrl + " by " + userEmail,
-        text: "User: " + userEmail + "\n" +
-              "Shop: https://" + siteUrl
+        Email.send({
+          to: "jeremy.shimko@gmail.com",
+          from: "admin@launchdock.io",
+          subject: "New stack creation for " + siteUrl + " by " + userEmail,
+          text: "User: " + userEmail + "\n" +
+                "Shop: https://" + siteUrl
+        });
       });
-    })
+    }
 
     return stackId;
   },
