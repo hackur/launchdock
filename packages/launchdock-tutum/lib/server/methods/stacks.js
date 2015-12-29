@@ -71,11 +71,15 @@ Meteor.methods({
     const virtualHosts = "http://" + siteUrl + ", ws://" + siteUrl +
                        ", https://" + siteUrl + ", wss://" + siteUrl;
 
+    // mongo environment variables
+    const mongoRootUser = Random.id();
+    const mongoRootPw = Random.id(30);
     const mongoUser = Random.id();
-    const mongoPw = Random.id();
+    const mongoPw = Random.id(30);
     const mongoDatabase = Random.id();
     const mongoUrl = `mongodb://${mongoUser}:${mongoPw}@mongo1:27017,mongo2:27017/${mongoDatabase}`
 
+    // app container configuration
     const app = {
       "name": "app-" + stackId,
       "image": appImage,
@@ -159,6 +163,12 @@ Meteor.methods({
         }, {
           "key": "MONGO_ARBITER",
           "value": "mongo3-" + stackId
+        }, {
+          "key": "MONGO_ROOT_USER",
+          "value": mongoRootUser
+        }, {
+          "key": "MONGO_ROOT_PASSWORD",
+          "value": mongoRootPw
         }, {
           "key": "MONGO_APP_USER",
           "value": mongoUser
