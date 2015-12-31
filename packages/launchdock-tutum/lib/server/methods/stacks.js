@@ -214,6 +214,12 @@ Meteor.methods({
           "inner_port": 27017
         }
       ],
+      "container_envvars": [
+        {
+          "key": "REP_SET",
+          "value": mongoRepSetId
+        }
+      ],
       "tags": [ "mongo2", "aws" ],
       "autorestart": "ALWAYS"
     };
@@ -230,6 +236,9 @@ Meteor.methods({
       ],
       "container_envvars": [
         {
+          "key": "REP_SET",
+          "value": mongoRepSetId
+        }, {
           "key": "JOURNALING",
           "value": "no"
         }
