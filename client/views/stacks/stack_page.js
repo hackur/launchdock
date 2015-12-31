@@ -12,6 +12,6 @@ Template.stack_page.helpers({
     return Services.find({}, { sort: { name: 1 }});
   },
   role: function () {
-    return this.tags[0].name;
+    return this.tags[1].name;
   }
 });
