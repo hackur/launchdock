@@ -76,8 +76,13 @@ Meteor.methods({
     const mongoRootPw = Random.id(30);
     const mongoUser = Random.id();
     const mongoPw = Random.id(30);
+    const mongoRepSetId = Random.id();
     const mongoDatabase = Random.id();
-    const mongoUrl = `mongodb://${mongoUser}:${mongoPw}@mongo1:27017,mongo2:27017/${mongoDatabase}`
+
+    // mongo urls
+    const mongoBaseUrl = `mongodb://${mongoUser}:${mongoPw}@mongo1:27017,mongo2:27017/`
+    const mongoUrl = mongoBaseUrl + mongoDatabase + "?replicaSet=" + mongoRepSetId
+    const mongoOplogUrl = mongoBaseUrl + "local?authSource=" + mongoDatabase
 
     // app container configuration
     const app = {
@@ -105,6 +110,9 @@ Meteor.methods({
         }, {
           "key": "MONGO_URL",
           "value": mongoUrl
+        }, {
+          "key": "MONGO_OPLOG_URL",
+          "value": mongoOplogUrl
         }, {
           "key": "ROOT_URL",
           "value": "https://" + siteUrl
@@ -175,6 +183,9 @@ Meteor.methods({
         }, {
           "key": "MONGO_APP_PASSWORD",
           "value": mongoPw
+        }, {
+          "key": "REP_SET",
+          "value": mongoRepSetId
         }, {
           "key": "MONGO_APP_DATABASE",
           "value": mongoDatabase
