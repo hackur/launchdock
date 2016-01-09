@@ -6,15 +6,16 @@ Package.describe({
 
 Package.onUse(function(api) {
 
-  api.versionsFrom(['METEOR@1.2.0.2']);
-  
+  api.versionsFrom(['METEOR@1.2.1']);
+
   api.use([
-    'launchdock:lib',
+    'launchdock:lib'
   ]);
 
   api.addFiles([
     'lib/client/router/config.js',
     'lib/client/router/core.js',
+    'lib/client/router/settings.js',
     'lib/client/router/stacks.js'
   ], 'client');
 
