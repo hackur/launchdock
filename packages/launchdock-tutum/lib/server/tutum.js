@@ -102,11 +102,15 @@ Tutum = class Tutum {
 
 
   logs(containerUuid, callback) {
-    const url = 'wss://stream.tutum.co/v1/container/' + containerUuid +
-              '/logs/?user=' + this.username + '&token=' + this.token;
 
     const WebSocket = Npm.require('ws');
-    const socket = new WebSocket(url);
+    const url = `wss://stream.tutum.co/v1/container/${containerUuid}/logs/`;
+
+    const socket = new WebSocket(url, {
+      headers: {
+        Authorization: `Basic ${this.apiKey}`
+      }
+    });
 
     socket.on('open', () => {
       Logger.info('Tutum: Tailing logs for container ' + containerUuid);
