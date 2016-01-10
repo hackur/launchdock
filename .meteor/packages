@@ -42,7 +42,6 @@ percolatestudio:segment.io
 meteorhacks:ssr
 percolate:synced-cron
 ongoworks:bunyan-logger
-ongoworks:mongo-tools
 
 fourseven:scss
 nemo64:bootstrap
