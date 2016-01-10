@@ -48,6 +48,7 @@ nemo64:bootstrap
 less
 ixdi:material-design-iconic-font
 lookback:tooltips
+joshdellay:meteor-ladda-bootstrap
 
 useraccounts:core
 useraccounts:bootstrap

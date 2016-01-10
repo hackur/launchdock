@@ -1,4 +1,10 @@
 
+Template.stack_new.onRendered(function() {
+  // submit button animations
+  const btn = this.find('button[type=submit]');
+  Ladda.bind(btn);
+});
+
 AutoForm.hooks({
   insertStackForm: {
     onSuccess(formType, result) {
