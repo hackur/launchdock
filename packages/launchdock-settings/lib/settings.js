@@ -30,6 +30,15 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  tutumBalancerUuid: {
+    type: String,
+    optional: true,
+    label: 'Tutum Load Balancer UUID',
+    autoform: {
+      private: true
+    }
+  },
+
   rancherApiUrl: {
     type: String,
     optional: true,

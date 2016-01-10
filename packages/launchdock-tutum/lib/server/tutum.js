@@ -7,11 +7,14 @@ Tutum = class Tutum {
     this.apiKey = new Buffer(`${this.username}:${this.token}`).toString('base64');
     this.apiBaseUrl = "https://dashboard.tutum.co";
     this.apiFullUrl = this.apiBaseUrl + "/api/v1/";
-    this.loadBalancerUri = "/api/v1/service/56507358-5b58-4f33-a605-44d652dca9b6/";
+    this.loadBalancerUri = `/api/v1/service/${Settings.get('tutumBalancerUuid')}/`;
 
     this.checkCredentials = function() {
       if (!this.username || !this.token) {
         throw new Meteor.Error("Missing Tutum API credentials.");
+      }
+      if (!this.loadBalancerUri) {
+        throw new Meteor.Error("Missing Tutum load balancer UUID on settings page.");
       }
     };
   }
