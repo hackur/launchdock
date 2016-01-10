@@ -17,8 +17,11 @@ var startEventsStream = function () {
   }
 
   // open a persistent websocket connection
-  var url = 'wss://stream.tutum.co/v1/events?user='+tutum.username+'&token='+tutum.token;
-  var socket = new WebSocket(url);
+  const socket = new WebSocket("wss://stream.tutum.co/v1/events", {
+    headers: {
+      Authorization: `Basic ${tutum.apiKey}`
+    }
+  });
 
   socket.on('open', function() {
     Logger.info('Tutum events websocket opened');

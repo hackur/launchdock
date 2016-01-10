@@ -2,6 +2,7 @@
 Tutum = function Tutum (username, token) {
   this.username = username || Settings.get('tutumUsername');
   this.token = token || Settings.get('tutumToken');
+  this.apiKey = new Buffer(`${this.username}:${this.token}`).toString('base64');
   this.apiBaseUrl = "https://dashboard.tutum.co";
   this.apiFullUrl = this.apiBaseUrl + "/api/v1/";
   this.loadBalancerUri = "/api/v1/service/56507358-5b58-4f33-a605-44d652dca9b6/";
@@ -17,7 +18,7 @@ Tutum = function Tutum (username, token) {
 Tutum.prototype.create = function (resourceType, data) {
   return HTTP.call("POST", this.apiFullUrl + resourceType + "/", {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json",
       "Content-Type": "application/json"
     },
@@ -29,7 +30,7 @@ Tutum.prototype.create = function (resourceType, data) {
 Tutum.prototype.list = function (resourceType) {
   return HTTP.call("GET", this.apiFullUrl + resourceType + "/", {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json"
     }
   });
@@ -39,7 +40,7 @@ Tutum.prototype.list = function (resourceType) {
 Tutum.prototype.get = function (resourceUri) {
   return HTTP.call("GET", this.apiBaseUrl + resourceUri, {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json"
     }
   });
@@ -49,7 +50,7 @@ Tutum.prototype.get = function (resourceUri) {
 Tutum.prototype.update = function (resourceUri, data) {
   return HTTP.call("PATCH", this.apiBaseUrl + resourceUri, {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json",
       "Content-Type": "application/json"
     },
@@ -61,7 +62,7 @@ Tutum.prototype.update = function (resourceUri, data) {
 Tutum.prototype.start = function (resourceUri) {
   return HTTP.call("POST", this.apiBaseUrl + resourceUri + "start/", {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json"
     }
   });
@@ -71,7 +72,7 @@ Tutum.prototype.start = function (resourceUri) {
 Tutum.prototype.stop = function (resourceUri) {
   return HTTP.call("POST", this.apiBaseUrl + resourceUri + "stop/", {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json"
     }
   });
@@ -81,7 +82,7 @@ Tutum.prototype.stop = function (resourceUri) {
 Tutum.prototype.redeploy = function (resourceUri) {
   return HTTP.call("POST", this.apiBaseUrl + resourceUri + "redeploy/", {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json"
     }
   });
@@ -91,7 +92,7 @@ Tutum.prototype.redeploy = function (resourceUri) {
 Tutum.prototype.delete = function (resourceUri) {
   return HTTP.call("DELETE", this.apiBaseUrl + resourceUri, {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json"
     }
   });
@@ -155,7 +156,7 @@ Tutum.prototype.addLinkToLoadBalancer = function (linkedServiceName, linkedServi
   // Update the load balancer
   return HTTP.call("PATCH", this.apiBaseUrl + this.loadBalancerUri, {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json",
       "Content-Type": "application/json"
     },
@@ -242,7 +243,7 @@ Tutum.prototype.updateEnvVars = function (serviceUri, newEnvVars) {
   // Update the service
   return HTTP.call("PATCH", this.apiBaseUrl + serviceUri, {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json",
       "Content-Type": "application/json"
     },
@@ -315,7 +316,7 @@ Tutum.prototype.addCustomSSL = function (serviceUri, opts) {
   // Update the service
   return HTTP.call("PATCH", this.apiBaseUrl + serviceUri, {
     headers: {
-      "Authorization": "ApiKey " + this.username + ":" + this.token,
+      "Authorization": `Basic ${this.apiKey}`,
       "Accept": "application/json",
       "Content-Type": "application/json"
     },
