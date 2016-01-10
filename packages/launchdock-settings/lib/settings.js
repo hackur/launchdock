@@ -39,6 +39,15 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  tutumWildcardDomain: {
+    type: String,
+    optional: true,
+    label: 'Tutum Default Wildcard Domain',
+    autoform: {
+      private: true
+    }
+  },
+
   rancherApiUrl: {
     type: String,
     optional: true,

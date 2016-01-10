@@ -66,7 +66,7 @@ Meteor.methods({
     const siteId = stackId.toLowerCase();
 
     const siteUrl = doc.domainName ? doc.domainName :
-                                   siteId + ".getreaction.io";
+                                   siteId + "." + Settings.get("tutumWildcardDomain");
 
     const virtualHosts = "http://" + siteUrl + ", ws://" + siteUrl +
                        ", https://" + siteUrl + ", wss://" + siteUrl;
