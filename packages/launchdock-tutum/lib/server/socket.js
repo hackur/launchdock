@@ -3,10 +3,10 @@
  */
 
 // https://www.npmjs.com/package/ws
-var WebSocket = Npm.require('ws');
+const WebSocket = Npm.require('ws');
 
-var startEventsStream = function () {
-  var tutum = new Tutum();
+const startEventsStream = () => {
+  const tutum = new Tutum();
   tutum.checkCredentials();
 
   // make sure we have valid credentials
@@ -23,12 +23,12 @@ var startEventsStream = function () {
     }
   });
 
-  socket.on('open', function() {
+  socket.on('open', () => {
     Logger.info('Tutum events websocket opened');
   });
 
-  socket.on('message', Meteor.bindEnvironment(function(messageStr) {
-    var msg = JSON.parse(messageStr);
+  socket.on('message', Meteor.bindEnvironment((messageStr) => {
+    const msg = JSON.parse(messageStr);
 
     // console.log(msg);
     // console.log("\n******************************************");
@@ -51,27 +51,31 @@ var startEventsStream = function () {
     }
   }));
 
-  socket.on('close', Meteor.bindEnvironment(function() {
+  socket.on('close', Meteor.bindEnvironment(() => {
     Logger.warn('Tutum events websocket closed!');
 
     // reopen websocket if it closes
     startEventsStream();
   }));
+
+  socket.on('error', Meteor.bindEnvironment((err) => {
+    Logger.error(err);
+  }));
 };
 
 
-Meteor.startup(function() {
+Meteor.startup(() => {
 
   Settings.find().observe({
     // If the default settings doc has the credentials, try to connect.
     // This will always fire on app startup if credentials are already there.
-    added: function (doc) {
+    added(doc) {
       if (doc.tutumUsername && doc.tutumToken) {
         startEventsStream();
       }
     },
     // if the username or token has changed, try to connect
-    changed: function (newDoc, oldDoc) {
+    changed(newDoc, oldDoc) {
       if (newDoc.tutumUsername !== oldDoc.tutumUsername ||
           newDoc.tutumToken    !== oldDoc.tutumToken) {
         Logger.info("Tutum API credentials changed.");
