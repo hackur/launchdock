@@ -10,7 +10,7 @@
               <table class="table table-bordered">
                 <thead>
                   <tr>
-                    <th data-field="role">Name</th>
+                    <th data-field="type">Type</th>
                     <th data-field="state">State</th>
                     <th data-field="service-id">Tutum Service ID</th>
                     <th data-field="image">Docker Image</th>
@@ -20,7 +20,7 @@
                 <tbody>
                   {{#each stackServices}}
                     <tr>
-                      <td>{{role}}</td>
+                      <td>{{type}}</td>
                       <td><span class="{{stateClass this}}-text">{{state}}</span></td>
                       <td>{{name}}</td>
                       <td>{{imageName}}</td>

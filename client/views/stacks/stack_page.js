@@ -11,7 +11,7 @@ Template.stack_page.helpers({
   stackServices: function () {
     return Services.find({}, { sort: { name: 1 }});
   },
-  role: function () {
-    return this.tags[1].name;
+  type() {
+    return this.tags[0].name;
   }
 });
