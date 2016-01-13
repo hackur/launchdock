@@ -17,8 +17,8 @@ Package.onUse(function(api) {
 
   api.addFiles([
     'server/main.js',
-    'server/config.js'
+    'server/config.js',
+    'server/utils.js'
   ], 'server');
-
 
 });
