@@ -9,8 +9,7 @@ Package.onUse(function (api) {
 
   api.use([
     'launchdock:core',
-    'launchdock:lib',
-    'jeremy:reactive-stripe'
+    'launchdock:lib'
   ]);
 
   api.addFiles([
