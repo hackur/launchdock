@@ -1,8 +1,8 @@
 
 Meteor.startup(function() {
 
+  // import default wildcard pem file 
   let cert;
-
   try {
     cert = Assets.getText("certs/wildcard.pem");
     Launchdock.config.defaultWildcardCert = cert.replace(/(?:\r\n|\r|\n)/g, '\\n');
