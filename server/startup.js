@@ -1,6 +1,15 @@
 
 Meteor.startup(function() {
 
+  let cert;
+
+  try {
+    cert = Assets.getText("certs/wildcard.pem");
+    Launchdock.config.defaultWildcardCert = cert.replace(/(?:\r\n|\r|\n)/g, '\\n');
+  } catch(err) {
+    Logger.warn("No default wildcard pem file found at /private/certs/wildcard.pem");
+  }
+
   // schedule database backups in production
   if (Launchdock.isProduction()) {
 
