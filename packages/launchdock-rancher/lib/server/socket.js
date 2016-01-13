@@ -3,13 +3,13 @@
  */
 
 // https://www.npmjs.com/package/ws
-var WebSocket = Npm.require("ws");
+const WebSocket = Npm.require("ws");
 
-var startEventsStream = function () {
+const startEventsStream = () => {
+
   const rancher = new Rancher();
   rancher.checkCredentials();
 
-  // open a persistent websocket connection
   const accessKey = rancher.apiKey;
   const secretKey = rancher.apiSecret;
   const host = rancher.apiBaseUrl;
@@ -29,24 +29,27 @@ var startEventsStream = function () {
 
       const resource = msg.data.resource;
 
-      let info = `name=${resource.name} state=${resource.state}`;
+      if (resource.type == "service" || resource.type == "environment") {
 
-      if ( resource.transitioning !== 'no' ) {
-        info += ` transitioning=${resource.transitioning} message=${resource.transitioningMessage}`;
+        const resourceType = (resource.type == "environment") ? "stack" : resource.type;
+        const msgType = (resource.transitioning === "error") ? "ERROR" : "INFO";
+
+        console.log("\n******************************************");
+        console.log(`Type: ${resourceType}`);
+        console.log(`ID: ${resource.id}`);
+        console.log(`Name: ${resource.name}`);
+        console.log(`State: ${resource.state}`);
+
+        if (resource.transitioningMessage) {
+          console.log(`Msg Type: ${msgType}`);
+          console.log(`Message: ${resource.transitioningMessage}`);
+        }
+
+        console.log("******************************************");
+
       }
 
-      console.log(`type: ${msg.resourceType} id: ${msg.resourceId} changed: ${info}`);
     }
-
-    // console.log("\n******************************************");
-    // console.log("Type: " + msg.resourceType);
-    // console.log("ID: " + msg.resourceId);
-    // console.log("Action: " + msg.action);
-    // console.log("State: " + msg.state);
-    // console.log("Resource URI: " + msg.resource_uri);
-    // console.log("Date: " + moment(msg.date).format("LLL"));
-    // console.log("Event UUID: " + msg.uuid);
-    // console.log("******************************************");
 
     // // If this message is for a stack that exists in the database, update its state
     // if (msg.type == "stack" && !!Stacks.findOne({ uri: msg.resource_uri })) {
@@ -59,12 +62,12 @@ var startEventsStream = function () {
     // }
   }));
 
-  socket.on("error", Meteor.bindEnvironment(function(err) {
+  socket.on("error", Meteor.bindEnvironment((err) => {
     Logger.error("Rancher events websocket error!");
     Logger.error(err);
   }));
 
-  socket.on("close", Meteor.bindEnvironment(function() {
+  socket.on("close", Meteor.bindEnvironment(() => {
     Logger.warn("Rancher events websocket closed!");
 
     // reopen websocket if it closes
@@ -73,18 +76,18 @@ var startEventsStream = function () {
 };
 
 
-Meteor.startup(function() {
+Meteor.startup(() => {
 
   Settings.find().observe({
     // If the default settings doc has the credentials, try to connect.
     // This will always fire on app startup if credentials are already there.
-    added: function (doc) {
+    added(doc) {
       if (doc.rancherApiKey && doc.rancherApiSecret) {
         startEventsStream();
       }
     },
     // if the API credentials have changed, try to connect
-    changed: function (newDoc, oldDoc) {
+    changed(newDoc, oldDoc) {
       if (newDoc.rancherApiKey !== oldDoc.rancherApiKey ||
           newDoc.rancherApiSecret    !== oldDoc.rancherApiSecret) {
         Logger.info("Rancher API credentials changed.");
