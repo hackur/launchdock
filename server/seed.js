@@ -25,7 +25,8 @@ Meteor.startup(() => {
 
   if (Settings.find().count() < 1) {
     Settings.insert({
-      siteTitle: 'Launchdock'
+      siteTitle: 'Launchdock',
+      adminEmail: 'admin@launchdock.io'
     });
     Logger.info('Default settings document created');
   }

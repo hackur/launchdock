@@ -12,6 +12,12 @@ Settings.schema = new SimpleSchema({
     label: 'Site Title'
   },
 
+  adminEmail: {
+    type: String,
+    optional: true,
+    label: 'Admin Email'
+  },
+
   tutumUsername: {
     type: String,
     optional: true,

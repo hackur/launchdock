@@ -8,6 +8,17 @@
             type="update"
             doc=settings }}
             <h3 class="form-heading text-center">Launchdock Settings</h3>
+
+            <div class="row settings-group-heading">
+              <h3>General</h3>
+            </div>
+            <div class="row">
+              {{> afQuickField name="adminEmail" label="Admin Email"}}
+              <div class="form-group">
+                <small>(used for automated emails)</small>
+              </div>
+            </div>
+
             <div class="row settings-group-heading">
               <h3>Tutum</h3>
             </div>
