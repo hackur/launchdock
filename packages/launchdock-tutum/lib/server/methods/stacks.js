@@ -354,25 +354,28 @@ Meteor.methods({
       }
     });
 
-    // TODO: make this a resuable method
+    // notify admins via email if in production
     if (Launchdock.isProduction()) {
-      Meteor.defer(function() {
-        let userEmail = "Launchdock Admin";
+      const currentUser = Users.findOne({ _id: this.userId });
 
-        _.each(app.container_envvars, (envVar) => {
-          if (envVar.key === "METEOR_USER") {
-            userEmail = envVar.value;
-          }
-        });
+      // if launched in Launchdock dashboard,
+      // use current user's email
+      let userInfo = currentUser.emails[0].address;
 
-        Email.send({
-          to: "jeremy.shimko@gmail.com",
-          from: "admin@launchdock.io",
-          subject: "New stack creation for " + siteUrl + " by " + userEmail,
-          text: "User: " + userEmail + "\n" +
-                "Shop: https://" + siteUrl
-        });
+      // if launched via API with default METEOR_USER set,
+      // use that email instead
+      _.each(app.container_envvars, (envVar) => {
+        if (envVar.key === "METEOR_USER") {
+          userInfo = envVar.value;
+        }
       });
+
+      // define email options
+      const subject = `New stack creation for ${siteUrl} by ${userInfo}`;
+      const text = `User: ${userInfo} \n Shop: https://${siteUrl}`;
+
+      // send the email to all users with admin role
+      Launchdock.email.sendToAdmins(subject, text);
     }
 
     return stackId;
