@@ -14,20 +14,20 @@ Meteor.startup(function() {
   if (Launchdock.isProduction()) {
 
     // custom logger for percolate:synced-cron
-    let SyncedCronLogger = function (opts) {
-      let CronLogger = Logger.child({ meteor_package: 'percolate:synced-cron' });
+    const SyncedCronLogger = (opts) => {
+      const CronLogger = Logger.child({ meteor_package: "percolate:synced-cron" });
 
       switch (opts.level) {
-        case 'info':
+        case "info":
           CronLogger.info(opts.message);
           break;
-        case 'warn':
+        case "warn":
           CronLogger.warn(opts.message);
           break;
-        case 'error':
+        case "error":
           CronLogger.error(opts.message);
           break;
-        case 'debug':
+        case "debug":
           CronLogger.debug(opts.message);
           break;
       }
@@ -35,15 +35,6 @@ Meteor.startup(function() {
 
     SyncedCron.config({
       logger: SyncedCronLogger
-    });
-
-    MongoTools.config({
-      s3: {
-        key: Settings.get('awsKey'),
-        secret: Settings.get('awsSecret'),
-        bucket: 'reaction-dumps-devel',
-        path: "launchdock-dev/"
-      }
     });
 
     // backup on startup
