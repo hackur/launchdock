@@ -18,6 +18,12 @@ Settings.schema = new SimpleSchema({
     label: 'Admin Email'
   },
 
+  defaultAppImage: {
+    type: String,
+    optional: true,
+    label: 'Default App Image'
+  },
+
   tutumUsername: {
     type: String,
     optional: true,
