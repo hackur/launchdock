@@ -17,27 +17,27 @@ Meteor.startup(function() {
 
 // wrapper for simpler calls
 Notify = {
-  success: function(text, location) {
+  success(text, location) {
     sAlert.info(text, {
       effect: 'stackslide',
       position: location || 'top'
     });
   },
 
-  info: function(text, location) {
+  info(text, location) {
     sAlert.info(text, {
       position: location || 'bottom-right'
     });
   },
 
-  warn: function(text, location) {
+  warn(text, location) {
     sAlert.warning(text, {
       position: location || 'top-right',
       timeout: 7000
     });
   },
 
-  error: function(text, location) {
+  error(text, location) {
     sAlert.error(text, {
       position: location || 'top',
       timeout: 7000
