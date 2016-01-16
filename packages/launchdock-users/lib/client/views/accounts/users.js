@@ -30,14 +30,18 @@ Template.users.events({
   'click .delete-user' (e, t) {
     e.preventDefault();
 
-    if (window.confirm("Are you sure?! There's no going back!")) {
+    Alert.confirm({
+      title: "Are you sure?",
+      text: "There's no going back!"
+    }, () => {
       Meteor.call('deleteInvitedUser', this._id, (err, res) => {
         if (err) {
-          Notify.error(err.error);
-        } else {
-          Notify.success('User successfully deleted!', 'bottom-right');
+          Alert.error({
+            title: "Oops!",
+            text: `Something went wrong deleting the user. <br> ${err}`
+          });
         }
       });
-    }
+    });
   }
 });

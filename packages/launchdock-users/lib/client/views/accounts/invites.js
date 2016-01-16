@@ -19,14 +19,18 @@ Template.invites.helpers({
 
 Template.invites.events({
   'click .revoke-invite' (e, t) {
-    if (confirm("Are you sure? This can't be undone.")) {
-      Meteor.call( "revokeInvitation", this._id, (err, res) => {
+    Alert.confirm({
+      title: "Are you sure?",
+      text: "There's no going back!"
+    }, () => {
+      Meteor.call('revokeInvitation', this._id, (err, res) => {
         if (err) {
-          Notify.error(err.reason);
-        } else {
-          Notify.success("Invitation revoked!");
+          Alert.error({
+            title: "Oops!",
+            text: `Something went wrong revoking the invite. <br> ${err}`
+          });
         }
       });
-    }
+    });
   }
 });

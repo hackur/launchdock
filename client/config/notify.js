@@ -1,4 +1,3 @@
-
 /**
  *  sAlerts defaults
  */
@@ -42,5 +41,44 @@ Notify = {
       position: location || 'top',
       timeout: 7000
     });
+  }
+}
+
+
+// better namespace for kevohagan:sweetalert
+Alert = {
+  success(title, text) {
+    swal(title, text, "success");
+  },
+
+  info(title, text) {
+    swal(title, text);
+  },
+
+  confirm(options, callback) {
+    swal({
+      title: options.title || "Are you sure?",
+      text: options.text || "",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: options.confirmButtonText || "Do it!",
+      closeOnConfirm: false
+    }, () => {
+      swal({
+        title: "Success!",
+        text: options.successMsg || "",
+        type: "success",
+        timer: 1500,
+        showConfirmButton: false
+      });
+      if (_.isFunction(callback)) {
+        callback()
+      }
+    });
+  },
+
+  error(options) {
+    swal(options.title || "Oops!", options.text || "Something went wrong.", "error");
   }
 }
