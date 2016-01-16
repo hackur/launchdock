@@ -7,10 +7,9 @@
         <table class="table table-bordered users-table">
           <thead>
             <tr>
-              <th>Email Address</th>
-              <th>Username</th>
-              <th class="text-center">{{#if isInRole 'admin'}}Role{{/if}}</th>
-              <th>Actions</th>
+              <th class="text-center">Email Address</th>
+              <th class="text-center">Role</th>
+              <th class="text-center">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -21,11 +20,10 @@
                   {{#if isCurrentUser _id}}<span class="flag">You!</span>{{/if}}
                 </td>
                 <td class="text-center">
-                  {{username}}
-                </td>
-                <td>
-                  {{#if isInRole 'admin'}}
-                    {{#unless isCurrentUser _id}}
+                  {{#if isInRole 'superuser'}}
+                    {{#if isCurrentUser _id}}
+                      superuser
+                    {{else}}
                       <div class="input-field">
                         <select name="user-role">
                           <option value="">Select a role...</option>
@@ -34,12 +32,14 @@
                           <option selected="{{isEqual roles.[0] 'customer'}}" value="customer">Customer</option>
                         </select>
                       </div>
-                    {{/unless}}
+                    {{/if}}
+                  {{else}}
+                    {{roles.[0]}}
                   {{/if}}
                 </td>
                 <td>
                   <a href="users/{{_id}}" class="btn btn-primary">Profile</a>
-                  {{#if isInRole 'admin'}}
+                  {{#if isInRole 'superuser'}}
                     {{#unless isCurrentUser _id}}
                       <button class="btn btn-danger delete-user">Delete</button>
                     {{/unless}}
