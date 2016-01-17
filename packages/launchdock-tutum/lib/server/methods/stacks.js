@@ -27,9 +27,7 @@ Meteor.methods({
       check(userId, String);
 
       // if a userId was passed in, make sure that user exists
-      const newUser = Users.findOne(userId);
-
-      if (!newUser) {
+      if (!Users.findOne(userId)) {
         const err = `User ${userId} not found.`;
         logger.error(err);
         throw new Meteor.Error(err);
@@ -50,7 +48,21 @@ Meteor.methods({
       throw new Meteor.Error(err);
     }
 
-    const appImage = doc.appImage || "reactioncommerce/prequel:devel";
+    const appImage = doc.appImage || Settings.get("defaultAppImage");
+
+    if (!appImage) {
+      const err = "No default app image specified.";
+      logger.error(err);
+      throw new Meteor.Error(err);
+    }
+
+    const wildcardDomain = Settings.get("tutumWildcardDomain");
+
+    if (!wildcardDomain) {
+      const err = "Wildcard domain not configured on settings page.";
+      logger.error(err);
+      throw new Meteor.Error(err);
+    }
 
     const stackId = Stacks.insert({
       name: doc.name,
@@ -66,7 +78,7 @@ Meteor.methods({
     const siteId = stackId.toLowerCase();
 
     const siteUrl = doc.domainName ? doc.domainName :
-                                   siteId + "." + Settings.get("tutumWildcardDomain");
+                                     siteId + "." + wildcardDomain;
 
     const virtualHosts = "http://" + siteUrl + ", ws://" + siteUrl +
                        ", https://" + siteUrl + ", wss://" + siteUrl;
