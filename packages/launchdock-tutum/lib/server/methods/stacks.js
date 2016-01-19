@@ -370,9 +370,13 @@ Meteor.methods({
     if (Launchdock.isProduction()) {
       const currentUser = Users.findOne({ _id: this.userId });
 
+      let userInfo;
+
       // if launched in Launchdock dashboard,
       // use current user's email
-      let userInfo = currentUser.emails[0].address;
+      if (currentUser) {
+        userInfo = currentUser.emails[0].address;
+      }
 
       // if launched via API with default METEOR_USER set,
       // use that email instead
