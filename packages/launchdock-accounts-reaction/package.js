@@ -15,6 +15,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/server/main.js',
+    'lib/server/publications.js',
     'lib/server/methods.js'
   ], ['server']);
 
