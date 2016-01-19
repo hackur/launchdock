@@ -81,8 +81,8 @@ Meteor.methods({
     logger.debug(`User ${launchdockUserId} role updated to customer`);
 
     const stackCreateDetails = {
-      appImage: "reactioncommerce/prequel:latest",
       name: shopNameSlug,
+      appImage: "reactioncommerce/prequel:devel",
       appEnvVars: [
         {
           "key": "REACTION_SHOP_NAME",
