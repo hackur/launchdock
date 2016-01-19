@@ -94,6 +94,9 @@ Meteor.methods({
           "key": "REACTION_AUTH",
           "value": doc.password
         }, {
+          "key": "METEOR_USER",
+          "value": doc.email
+        }, {
           "key": "LAUNCHDOCK_USERID",
           "value": launchdockUserId
         }, {
