@@ -69,7 +69,9 @@ Meteor.methods({
       email: doc.email,
       profile: {
         shopName: doc.shopName
-      }
+      },
+      "subscription.plan": "none",
+      "subscription.status": "trial"
     });
 
     logger.info("New Reaction user created.");
