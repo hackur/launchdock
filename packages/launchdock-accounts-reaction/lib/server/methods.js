@@ -82,7 +82,7 @@ Meteor.methods({
 
     const stackCreateDetails = {
       name: shopNameSlug,
-      appImage: "reactioncommerce/prequel:devel",
+      appImage: "reactioncommerce/reaction:latest",
       appEnvVars: [
         {
           "key": "REACTION_SHOP_NAME",
