@@ -16,7 +16,9 @@ Package.onUse(function (api) {
   api.addFiles([
     'lib/server/main.js',
     'lib/server/publications.js',
-    'lib/server/methods.js'
+    'lib/server/methods/intercom.js',
+    'lib/server/methods/users.js',
+    'lib/server/methods/utils.js'
   ], ['server']);
 
   api.addAssets([
