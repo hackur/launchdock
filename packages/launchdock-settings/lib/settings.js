@@ -155,6 +155,33 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  sslPrivateKey: {
+    type: String,
+    optional: true,
+    label: 'Private Key',
+    autoform: {
+      private: true
+    }
+  },
+
+  sslCertificate: {
+    type: String,
+    optional: true,
+    label: 'Certificate',
+    autoform: {
+      private: true
+    }
+  },  
+
+  sslRootCertificate: {
+    type: String,
+    optional: true,
+    label: 'Root Certificate',
+    autoform: {
+      private: true
+    }
+  },
+
   createdAt: {
     type: Date,
     label: 'Created',

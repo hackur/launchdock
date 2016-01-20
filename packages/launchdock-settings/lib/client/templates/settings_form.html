@@ -86,6 +86,20 @@
             <div class="row">
               {{> afQuickField name="stripeLiveSecretKey" }}
             </div>
+
+            <div class="row settings-group-heading">
+              <h3>SSL</h3>
+            </div>
+            <div class="row">
+              {{> afQuickField name="sslPrivateKey" label="Private Key" rows=6 }}
+            </div>
+            <div class="row">
+              {{> afQuickField name="sslCertificate" label="Primary Certificate" type="textarea" rows=6 }}
+            </div>
+            <div class="row">
+              {{> afQuickField name="sslRootCertificate" label="Root Certificate" rows=6 }}
+              <div class="info-text">(optional)</div>
+            </div>
           <!--
             <div class="row settings-group-heading">
               <h3>Analytics</h3>
