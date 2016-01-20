@@ -17,3 +17,11 @@ Launchdock.ssl.getDefaultPem = function () {
 
   return pem;
 };
+
+
+Launchdock.ssl.getDefaultPemEnvVar = function () {
+  const pem = this.getDefaultPem();
+
+  // replace all new lines with "\n" for usage in environment variables
+  return pem.replace(/(?:\r\n|\r|\n)/g, '\\n');
+}
