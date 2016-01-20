@@ -468,6 +468,13 @@ Meteor.methods({
       throw new Meteor.Error(err);
     }
 
+    // must either own the stack or be an admin
+    if (stack.userId !== this.userId || !Users.is.admin(this.userId)) {
+      const err = "AUTH ERROR: You can't do that.";
+      logger.error(err);
+      throw new Meteor.Error(err);
+    }
+
     const appService = Services.findOne({ name: 'app-' + stackId });
 
     if (!appService) {
