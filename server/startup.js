@@ -45,4 +45,14 @@ Meteor.startup(function() {
 
   }
 
+  // setup Kadira if credentials exist
+  const kadiraAppId = Settings.get("kadiraAppId");
+  const kadiraAppSecret = Settings.get("kadiraAppSecret");
+
+  if (!kadiraAppId || !kadiraAppSecret) {
+    Logger.warn("No Kadira credentials found.  Not starting.");
+  } else {
+    Kadira.connect(kadiraAppId, kadiraAppSecret);
+  }
+
 });

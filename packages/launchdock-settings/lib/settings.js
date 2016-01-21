@@ -182,6 +182,24 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  kadiraAppId: {
+    type: String,
+    optional: true,
+    label: 'App Id',
+    autoform: {
+      private: true
+    }
+  },
+
+  kadiraAppSecret: {
+    type: String,
+    optional: true,
+    label: 'App Secret',
+    autoform: {
+      private: true
+    }
+  },
+
   createdAt: {
     type: Date,
     label: 'Created',
