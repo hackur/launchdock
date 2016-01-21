@@ -37,6 +37,16 @@ Meteor.startup(function() {
       logger: SyncedCronLogger
     });
 
+    // mongo backup configs
+    MongoTools.config({
+      s3: {
+        key: Settings.get("awsKey"),
+        secret: Settings.get("awsSecret"),
+        bucket: "reaction-dumps-devel",
+        path: "launchdock/"
+      }
+    });
+
     // backup on startup
     MongoTools.backup();
 
