@@ -163,9 +163,9 @@ First, you need to create a pem file with your private key and your certificate.
 At the very least, your file should contain the following content in the following order:
 
 ```sh
------BEGIN ENCRYPTED PRIVATE KEY-----
+-----BEGIN RSA PRIVATE KEY-----
       private key content
------END ENCRYPTED PRIVATE KEY-----
+-----END RSA PRIVATE KEY-----
 -----BEGIN CERTIFICATE-----
       certificate content
 -----END CERTIFICATE-----
@@ -176,9 +176,9 @@ But you may also have a root certificate.  In that case:
 ```sh
 # wildcard.pem
 
------BEGIN ENCRYPTED PRIVATE KEY-----
+-----BEGIN RSA PRIVATE KEY-----
     private key content
------END ENCRYPTED PRIVATE KEY-----
+-----END RSA PRIVATE KEY-----
 -----BEGIN CERTIFICATE-----
     certificate content
 -----END CERTIFICATE-----
