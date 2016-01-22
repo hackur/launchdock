@@ -140,6 +140,9 @@ Meteor.methods({
 
     Invitations.insert(options);
 
+    const msg = `${options.email} has been invited to Reaction.`;
+    Meteor.call("util/slackMessage", msg);
+
     logger.info(`Invite successfully sent to ${options.email}`);
 
     return true;
@@ -206,6 +209,9 @@ Meteor.methods({
         logger.info(`Invitation successfully accepted by ${invite.email}`);
       }
     });
+
+    const msg = `${invite.email} has accepted their invite to Reaction! :rocket:`;
+    Meteor.call("util/slackMessage", msg);
 
     return true;
   }

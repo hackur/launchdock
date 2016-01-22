@@ -200,6 +200,15 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  slackWebhookUrl: {
+    type: String,
+    optional: true,
+    label: 'Webhook URL',
+    autoform: {
+      private: true
+    }
+  },
+
   createdAt: {
     type: Date,
     label: 'Created',
