@@ -15,6 +15,7 @@ Package.onUse(function(api) {
   api.addFiles([
     'lib/client/router/config.js',
     'lib/client/router/core.js',
+    'lib/client/router/subscriptions.js',
     'lib/client/router/settings.js',
     'lib/client/router/stacks.js'
   ], 'client');

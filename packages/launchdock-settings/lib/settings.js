@@ -15,13 +15,19 @@ Settings.schema = new SimpleSchema({
   adminEmail: {
     type: String,
     optional: true,
-    label: 'Admin Email'
+    label: 'Admin Email',
+    autoform: {
+      private: true
+    }
   },
 
   defaultAppImage: {
     type: String,
     optional: true,
-    label: 'Default App Image'
+    label: 'Default App Image',
+    autoform: {
+      private: true
+    }
   },
 
   tutumUsername: {
@@ -229,7 +235,10 @@ Settings.schema = new SimpleSchema({
         this.unset();
       }
     },
-    denyUpdate: true
+    denyUpdate: true,
+    autoform: {
+      private: true
+    }
   },
 
   updatedAt: {
@@ -241,7 +250,10 @@ Settings.schema = new SimpleSchema({
       }
     },
     denyInsert: true,
-    optional: true
+    optional: true,
+    autoform: {
+      private: true
+    }
   }
 });
 
