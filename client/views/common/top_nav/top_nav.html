@@ -28,6 +28,12 @@
             </li>
           {{/if}}
           <li>
+            <span class="navbar-spacer"></span>
+          </li>
+          <li class="{{isActiveRoute regex='user_account'}}">
+            <a href="/users/{{profileId}}">Profile</a>
+          </li>
+          <li>
             <a href="/logout">Logout</a>
           </li>
         </ul>
