@@ -38,7 +38,6 @@ alanning:roles
 dburles:collection-helpers
 tmeasday:publish-counts
 aslagle:reactive-table
-percolatestudio:segment.io
 meteorhacks:ssr
 percolate:synced-cron
 ongoworks:bunyan-logger
