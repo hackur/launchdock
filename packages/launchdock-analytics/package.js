@@ -19,8 +19,14 @@ Package.onUse(function (api) {
   ]);
 
   api.addFiles([
+    "lib/client/snippet.js",
+    "lib/client/startup.js",
+    "lib/client/router.js"
+  ], "client");
+
+  api.addFiles([
     "lib/server/main.js"
-  ], ["server"]);
+  ], "server");
 
   api.export("analytics");
 });
