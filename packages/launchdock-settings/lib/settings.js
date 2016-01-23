@@ -114,6 +114,12 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  segmentKey: {
+    type: String,
+    optional: true,
+    label: 'Segment.com API Key'
+  },
+
   stripeMode: {
     type: String,
     optional: true,

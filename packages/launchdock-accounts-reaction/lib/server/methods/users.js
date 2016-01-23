@@ -87,6 +87,25 @@ Meteor.methods({
 
     Meteor.call('tutum/createStack', stackCreateDetails, launchdockUserId);
 
+    analytics.identify({
+      userId: launchdockUserId,
+      traits: {
+        email: doc.email,
+        username: launchdockUsername,
+        shopName: doc.shopName,
+        plan: "trial"
+      }
+    });
+
+    analytics.track({
+      userId: launchdockUserId,
+      event: "New Reaction Shop Launched",
+      properties: {
+        shopName: doc.shopName,
+        plan: "trial"
+      }
+    });
+
     return launchdockUserId;
   },
 
@@ -210,8 +229,17 @@ Meteor.methods({
       }
     });
 
-    const msg = `${invite.email} has accepted their invite to Reaction! :rocket:`;
+    const msg = `${invite.email} has accepted their invite to Reaction!`;
     Meteor.call("util/slackMessage", msg);
+
+    analytics.track({
+      userId: userId,
+      event: "Reaction Invite Accepted",
+      properties: {
+        shopName: options.shopName,
+        plan: "trial"
+      }
+    });
 
     return true;
   }
