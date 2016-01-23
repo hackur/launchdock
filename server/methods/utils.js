@@ -1,21 +1,26 @@
 
 Meteor.methods({
 
-  'util/slackMessage': function(message) {
+  /**
+   * Send Slack message if webhook URL is configured
+   * @param  {String} message - message for Slack bot to send
+   * @return {Object} response from Slack API
+   */
+  "util/slackMessage" (message) {
     check(message, String);
 
-    if (process.env.SLACK_ENABLED) {
-      if (message) {
-        return HTTP.call("POST", 'https://ongoworks.slack.com/services/hooks/incoming-webhook?token=OMeyxSMRKjeqDHaXNbNcMZgP', {
-          headers: {
-            "Content-Type": "application/json"
-          },
-          data: {
-            username: 'Launchdock2',
-            text: message
-          }
-        });
-      }
+    const slackWebhookUrl = Settings.get("slackWebhookUrl");
+
+    if (process.env.SLACK_ENABLED && slackWebhookUrl) {
+      return HTTP.call("POST", slackWebhookUrl, {
+        headers: {
+          "Content-Type": "application/json"
+        },
+        data: {
+          username: "Launchdock",
+          text: message
+        }
+      });
     }
   }
 
