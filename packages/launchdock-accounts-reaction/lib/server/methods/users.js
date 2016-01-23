@@ -99,7 +99,7 @@ Meteor.methods({
 
     analytics.track({
       userId: launchdockUserId,
-      event: "New Reaction Shop Launched",
+      event: "New Reaction shop launched",
       properties: {
         shopName: doc.shopName,
         plan: "trial"
@@ -234,7 +234,7 @@ Meteor.methods({
 
     analytics.track({
       userId: userId,
-      event: "Reaction Invite Accepted",
+      event: "Reaction invite accepted",
       properties: {
         shopName: options.shopName,
         plan: "trial"
