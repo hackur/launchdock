@@ -27,6 +27,8 @@ Package.onUse(function (api) {
     'lib/client/views/accounts/invites.js',
     'lib/client/views/accounts/send_invite.html',
     'lib/client/views/accounts/send_invite.js',
+    'lib/client/views/accounts/user_account.html',
+    'lib/client/views/accounts/user_account.js',
     'lib/client/views/accounts/users.html',
     'lib/client/views/accounts/users.js',
     'lib/client/routes.js'

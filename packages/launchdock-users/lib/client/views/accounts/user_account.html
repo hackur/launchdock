@@ -1,0 +1,23 @@
+<template name="user_account">
+  {{#with user}}
+    <div id="user-account" class="container">
+      <section class="row">
+        <div class="col-sm-12 panel">
+          <div class="panel-body">
+            <div class="row">
+              <p>Launchdock User ID: {{_id}}</p>
+              <p>Email: {{emails.[0].address}}</p>
+            </div>
+            {{#if canEditProfile}}
+              <div class="row">
+                <a role="button" class="btn btn-primary" href="{{pathFor 'atChangePwd'}}">
+                  Change Password
+                </a>
+              </div>
+            {{/if}}
+          </div>
+        </div>
+      </section>
+    </div>
+  {{/with}}
+</template>
