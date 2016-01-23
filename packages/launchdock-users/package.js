@@ -14,6 +14,7 @@ Package.onUse(function (api) {
 
   api.addFiles([
     'lib/common/namespace.js',
+    'lib/common/users.js',
     'lib/common/roles.js',
     'lib/common/invitations.js'
   ], ['client', 'server']);
