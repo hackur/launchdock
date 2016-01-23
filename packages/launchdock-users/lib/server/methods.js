@@ -151,7 +151,7 @@ Meteor.methods({
     Roles.setUserRoles(userId, [invite.role]);
 
     Logger.info("New user created with email " + options.email +
-                "and role "  + invite.role);
+                " and role "  + invite.role);
 
     Invitations.update({ _id: invite._id }, {
       $set: {
@@ -208,7 +208,7 @@ Meteor.methods({
     Users.remove(userId);
 
     Logger.info("User " + userId + " succesfully deleted.");
-    
+
     return true;
   }
 
