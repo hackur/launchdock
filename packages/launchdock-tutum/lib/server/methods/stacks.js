@@ -431,10 +431,20 @@ Meteor.methods({
       }
 
       logger.info("Stack " + id + " deleted successfully.");
-      return res;
     } catch(e) {
       throw new Meteor.Error(e);
     }
+
+    analytics.track({
+      userId: this.userId,
+      event: "Stack Deleted",
+      properties: {
+        stackId: stack._id,
+        stackUserId: stack.userId
+      }
+    });
+
+    return res;
   },
 
 
@@ -502,7 +512,7 @@ Meteor.methods({
       defaultDomain: stack.defaultDomain,
       customDomain: doc.$set.sslDomainName,
       pem: pemEnvVar
-    }
+    };
 
     const tutum = new Tutum();
 
@@ -525,6 +535,17 @@ Meteor.methods({
     Stacks.update(stackId, doc);
 
     logger.info("Updated SSL cert for stack: " + stackId);
+
+    analytics.track({
+      userId: this.userId,
+      event: "Stack SSL settings updated",
+      properties: {
+        stackId: stack._id,
+        stackUserId: stack.userId,
+        defaultDomain: sslOpts.defaultDomain,
+        customDomain: sslOpts.customDomain
+      }
+    });
 
     return true;
   },
