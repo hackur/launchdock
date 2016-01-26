@@ -41,4 +41,33 @@ Logger = logger.bunyan.createLogger({
   streams: streams
 });
 
+// set default level
 Logger.level(logLevel);
+
+
+/**
+ * Parse Meteor errors and return a string to log out
+ * @param  {Object} error - the error object to parse
+ * @return {String} the parsed error string
+ */
+Logger.parseError = (error) => {
+  let result = "";
+
+  if (error.message) {
+    result += error.message + "; ";
+  }
+
+  if (error.reason) {
+    result += error.reason + "; ";
+  }
+
+  if (error.details) {
+    result += error.details;
+  }
+
+  if (!(result.length > 0)) {
+    result = "No error details found";
+  }
+
+  return result;
+};
