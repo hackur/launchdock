@@ -14,7 +14,11 @@ ReactiveTable.publish("all-users", function() {
 // single user account
 Meteor.publish("user-account", function (id) {
   if (Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
-    return Users.find({ _id: id });
+    return [
+      Users.find({ _id: id }),
+      Stacks.find({ userId: id }),
+      Services.find({ userId: id })
+    ];
   } else {
     return null;
   }

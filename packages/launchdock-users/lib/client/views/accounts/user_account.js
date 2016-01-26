@@ -11,11 +11,16 @@ Template.user_account.helpers({
   user() {
     return Users.findOne(FlowRouter.getParam('_id'));
   },
+
   canEditProfile() {
     const user = Meteor.user();
     const profileId = FlowRouter.getParam('_id');
 
     // if owns the profile
     return !!(user._id === profileId);
+  },
+
+  stacks() {
+    return Stacks.find();
   }
 });

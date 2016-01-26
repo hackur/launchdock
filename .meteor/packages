@@ -48,6 +48,7 @@ less
 ixdi:material-design-iconic-font
 lookback:tooltips
 joshdellay:meteor-ladda-bootstrap
+utilities:avatar
 
 useraccounts:core
 useraccounts:bootstrap
