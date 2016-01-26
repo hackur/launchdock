@@ -1,6 +1,6 @@
 
 Settings.get = function(setting, defaultValue) {
-  var settings = Settings.find().fetch()[0];
+  const settings = Settings.find().fetch()[0];
 
   if (Meteor.isServer && Meteor.settings && !!Meteor.settings[setting]) { // if on the server, look in Meteor.settings
     return Meteor.settings[setting];
