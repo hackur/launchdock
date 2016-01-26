@@ -93,6 +93,15 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  rancherDefaultEnv: {
+    type: String,
+    optional: true,
+    label: 'Rancher Default Environment',
+    autoform: {
+      private: true
+    }
+  },
+
   awsKey: {
     type: String,
     optional: true,
