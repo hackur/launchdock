@@ -39,7 +39,6 @@ Meteor.methods({
       profile: {
         shopName: doc.shopName
       },
-      "subscription.plan": "none",
       "subscription.status": "trial"
     });
 
