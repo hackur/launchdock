@@ -41,6 +41,7 @@ aslagle:reactive-table
 meteorhacks:ssr
 percolate:synced-cron
 ongoworks:bunyan-logger
+meteorhacks:kadira
 
 fourseven:scss
 nemo64:bootstrap
