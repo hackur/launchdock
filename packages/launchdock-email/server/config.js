@@ -3,8 +3,9 @@
  */
 
 // global
+const fromEmail = Settings.get("adminEmail", "admin@launchdock.io");
 Accounts.emailTemplates.siteName = "Launchdock";
-Accounts.emailTemplates.from = "Launchdock <admin@launchdock.io>";
+Accounts.emailTemplates.from = `Launchdock <${fromEmail}>`;
 
 
 // enroll account

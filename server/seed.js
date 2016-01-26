@@ -3,9 +3,9 @@
 Meteor.startup(() => {
 
   const defaultUsers = [{
-    email: 'jeremy.shimko@gmail.com',
-    username: 'admin',
-    password: 'admin',
+    email: Settings.get("LD_EMAIL", 'root@localhost'),
+    username: Settings.get('LD_USERNAME', 'admin'),
+    password: Settings.get('LD_PASSWORD', 'admin'),
     roles: ['admin', 'superuser']
   }];
 
@@ -26,7 +26,7 @@ Meteor.startup(() => {
   if (Settings.find().count() < 1) {
     Settings.insert({
       siteTitle: 'Launchdock',
-      adminEmail: 'admin@launchdock.io'
+      adminEmail: Settings.get("LD_EMAIL", 'root@localhost'),
     });
     Logger.info('Default settings document created');
   }
