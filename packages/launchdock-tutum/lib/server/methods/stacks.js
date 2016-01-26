@@ -420,8 +420,9 @@ Meteor.methods({
 
     const stack = Stacks.findOne(id);
 
+    let res;
     try {
-      const res = tutum.delete(stack.uri);
+      res = tutum.delete(stack.uri);
 
       if (res.statusCode == 202) {
         // TODO - set stack to "terminated" and
