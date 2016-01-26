@@ -58,7 +58,7 @@ Meteor.methods({
 
     const wildcardDomain = Settings.get("tutumWildcardDomain");
 
-    if (!wildcardDomain) {
+    if (!doc.domainName && !wildcardDomain) {
       const err = "Wildcard domain not configured on settings page.";
       logger.error(err);
       throw new Meteor.Error(err);
