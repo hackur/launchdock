@@ -1,15 +1,12 @@
 # Launchdock
-
 Launchdock is an automated orchestration tool built with [Meteor.js](https://meteor.com) that uses [Docker](https://docker.com) and [Tutum](https://tutum.co) to configure and launch Meteor stacks that consist of a Meteor app, MongoDB replica set, and HaProxy load balancer(s) - all on your own infrastructure with any major cloud provider.
 
 ## Setup
-
 The first thing you will need to do is deploy Launchdock itself. Any standard Meteor deployment method is supported, but the recommended approach is to use [the Docker family of tools](https://www.docker.com/docker-toolbox). Specifically, we'll be using Docker to build a container image of Launchdock, then use [Docker Machine](https://docs.docker.com/machine/) to set up a server on AWS and deploy the container to it. ([Most major providers are an option](https://docs.docker.com/machine/drivers/), but we'll be using AWS for the duration of these docs). Ok, let's get started!
 
 First, you will need to install the [Docker Toolbox](https://www.docker.com/docker-toolbox) and grab your AWS credentials. Once you have Docker, Docker Compose, and Docker Machine installed, you can launch/manage servers and deploy Dockerized apps to them.
 
 ### Build
-
 Before you can deploy Launchdock, you will need to build a Docker image and push it out to Docker Hub.  First, clone this repo:
 
 ```sh
@@ -31,7 +28,6 @@ docker push yourname/launchdock:latest .
 ```
 
 ### Deploy
-
 [Docker Machine Documentation](https://docs.docker.com/machine/)
 
 For convenience, set local environment variables for your AWS credentials so you don't have to worry about copy/pasting them regularly (and so anyone can use the same commands below while using their own credentials).
@@ -76,10 +72,10 @@ docker-machine ls
 
 which should output a table like this...
 
-| Name | Active | Driver | State | URL |
-| ---- | ------ | ------ | ----- | --- |
-| default | | virtualbox | Running | tcp://192.168.99.101:2376 |
-| launchdock |*| amazonec2 | Running | tcp://101.123.145.132:2376 |
+Name       | Active | Driver     | State   | URL
+---------- | ------ | ---------- | ------- | --------------------------
+default    |        | virtualbox | Running | tcp://192.168.99.101:2376
+launchdock | *      | amazonec2  | Running | tcp://101.123.145.132:2376
 
 If you were setting up a domain name to point at this server, the IP address for `launchdock` (101.123.145.132) would be the one you'd want.  The `*` in the ACTIVE column means that your Docker environment is currently pointed at that server (instead of your local Kitematic virtualbox instance, for example).  If that particular machine wasn't active, you'd select it by running:
 
@@ -118,29 +114,29 @@ launchdock:
 mongo-launchdock:
   image: mongo:latest
   command: mongod --storageEngine=wiredTiger
-
 ```
+
 Note: If you're familiar with the Docker tool set, you may consider a more advanced setup across multiple servers using [Docker Swarm](https://docs.docker.com/swarm/) so you can have a replica set and make use of the MongoDB oplog.
 
 Launchdock should now be running and you can sign in with the default user with username `admin` and password `admin`.  (Obviously, you should change this).
 
-### Tutum
+Default `LD_EMAIL`, `LD_USERNAME`, `LD_PASSWORD` can be configured with [Meteor.settings](http://docs.meteor.com/#/full/meteor_settings).
 
+### Tutum
 Before you can use Launchdock, you'll have to set up a few services and configs that it depends on. If you don't have a [Docker Hub](https://hub.docker.com/) account already, go sign up there and then use those credentials to log into [Tutum](https://www.tutum.co/).  The next several steps will all take place in Tutum's dashboard.  
 
 #### Nodes
-
 There are a few things you need to set up in Tutum before Launchdock will be able to start launching Meteor stacks. The first is to [start up some nodes](https://support.tutum.co/support/solutions/articles/5000523221-your-first-node) (servers) on your provider of choice (AWS, Digital Ocean, etc) using Tutum's dashboard. Launchdock doesn't care which provider you're using, so feel free to use any supported provider that you prefer. (Note that we've experienced some network performance issues with Microsoft Azure and [Tutum's overlay network](http://www.weave.works/products/weave-net/), so Azure is currently not recommended for use with Launchdock).
 
 The only required configuration for your servers will be that you need the following [deploy tags](https://support.tutum.co/support/solutions/articles/5000508859-deploy-tags) set on at least one server: `app`, `mongo1`, `mongo2`, `mongo3`, `lb`. Deploy tags are how Tutum and Launchdock choose which server each type of container gets deployed on. The table below outlines what service will be deployed on a given server that contains the specified tag.
 
-| Tag | Details | Server Requirements |
-| --- | ------- | ------------------- |
-| `app`    | The Meteor app | Depends on your app |
-| `mongo1` | MongoDB replica set primary | [Mongo Docs][1] |
-| `mongo2` | MongoDB replica set secondary | [Mongo Docs][1] |
-| `mongo3` | MongoDB replica set arbiter | [Mongo Docs (arbiter)][2] |
-| `lb`     | HaProxy load balancer | [HaProxy Docs][3] |
+Tag      | Details                       | Server Requirements
+-------- | ----------------------------- | -------------------------
+`app`    | The Meteor app                | Depends on your app
+`mongo1` | MongoDB replica set primary   | [Mongo Docs][1]
+`mongo2` | MongoDB replica set secondary | [Mongo Docs][1]
+`mongo3` | MongoDB replica set arbiter   | [Mongo Docs (arbiter)][2]
+`lb`     | HaProxy load balancer         | [HaProxy Docs][3]
 
 Note that you can put multiple deploy tags on a single server (which would allow multiple container types to be able to deploy to that server). How many servers you launch for your stack is entirely up to you.  As long as all of the deploy tags exist somewhere, Tutum will launch the containers wherever you choose. You can add the 5 deploy tags on 5 different servers (best performance) OR add all of the tags on 1 server (definitely not recommended, but it would work if the server was powerful enough) OR any combination you choose.  For example, according to the [MongoDB docs][2]:
 
@@ -155,7 +151,6 @@ That said, you might choose to add the `app` and `mongo3` tags to the same serve
 Once you have servers running for each of the 5 deploy tags mentioned above, you're ready to set up a load balancer and start configuring Launchdock to communicate with Tutum.
 
 ##### SSL
-
 There are two methods of using an SSL certificate with Launchdock. The first is a "default certificate" that any of your stacks may use (subdomains with a wildcard, for example).  The other type is a certificate that is only for a specific stack.  The latter option can be managed in the Launchdock UI, so we'll cover that later.  However, the default wildcard certificate requires a manual step.  
 
 First, you need to create a pem file with your private key and your certificate. To read more about creating a pem file, see [this](https://www.digicert.com/ssl-support/pem-ssl-creation.htm) article.  
@@ -190,7 +185,6 @@ But you may also have a root certificate.  In that case:
 Once you've created the pem file, you need to put it in `/private/certs/wildcard.pem` so Launchdock can access it.
 
 #### Load Balancers
-
 There isn't currently any load balancer management in Launchdock (near future), so the current recommended way to set up a load balancer on Tutum is by using Tutum's CLI tool.  You can learn how to install it [here](https://support.tutum.co/support/solutions/articles/5000049209-installing-the-command-line-interface-tool).
 
 Once installed, you can launch a load balancer service with the following command:
@@ -205,7 +199,7 @@ tutum service run --role global -p 80:80 \
   --deployment-strategy HIGH_AVAILABILITY \
   --autorestart ALWAYS \
   tutum/haproxy:latest
-```  
+```
 
 If you'd like to set a default SSL certificate that can be used across all Launchdock stacks (a wildcard, for example), then you need to create a pem file with your key/cert (see SSL section above for details).
 
@@ -225,16 +219,11 @@ tutum service run --role global -p 80:80 -p 443:443 \
 ```
 
 ##### Tutum configuration
-
 Go to the Launchdock settings page at `/settings` and add your [Tutum username and API key](https://docs.tutum.co/v2/api/), the default wildcard domain (if applicable), and the UUID of the load balancer you started above.
 
-
 ### Readme TODO:
-
 - launch stacks
 - configure SSL for a stack
-
-
 
 [1]: https://docs.mongodb.org/manual/administration/production-notes/#hardware-considerations
 [2]: https://docs.mongodb.org/manual/tutorial/add-replica-set-arbiter/#add-an-arbiter-to-replica-set

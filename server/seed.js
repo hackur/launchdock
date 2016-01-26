@@ -3,9 +3,9 @@
 Meteor.startup(() => {
 
   const defaultUsers = [{
-    email: 'root@localhost',
-    username: 'admin',
-    password: 'admin',
+    email: Meteor.settings.LD_EMAIL || 'root@localhost',
+    username: Meteor.settings.LD_USERNAME || 'admin',
+    password: Meteor.settings.LD_PASSWORD || 'admin',
     roles: ['admin', 'superuser']
   }];
 
