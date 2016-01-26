@@ -208,7 +208,7 @@ Tutum = class Tutum {
   }
 
 
-  updateStackServices(services) {
+  updateStackServices(stack, services) {
     const self = this;
 
     _.each(services, (service_uri) => {
@@ -226,7 +226,8 @@ Tutum = class Tutum {
           stack: service.data.stack,
           state: service.data.state,
           tags: service.data.tags,
-          uri: service_uri
+          uri: service_uri,
+          userId: stack.userId
         }
       }, {
         upsert: true

@@ -297,7 +297,7 @@ Meteor.methods({
     });
 
     // add each of the stack's services to the local Services collection
-    tutum.updateStackServices(tutumStack.data.services);
+    tutum.updateStackServices(stack, tutumStack.data.services);
 
     // start the stack (currently only a mongo cluster)
     try {
@@ -337,7 +337,7 @@ Meteor.methods({
               }
 
               // update the stack services locally again
-              tutum.updateStackServices(fullStack.data.services);
+              tutum.updateStackServices(stack, fullStack.data.services);
               Stacks.update({ _id: stackId }, { $set: { services: fullStack.data.services }});
 
               // start the app service
