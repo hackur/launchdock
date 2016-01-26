@@ -2,5 +2,21 @@
   "LD_EMAIL": "root@localhost",
   "LD_USERNAME": "admin",
   "LD_PASSWORD": "admin",
-  "adminEmail": "launchdock@localhost"
+  "LAUNCHDOCK_BALANCER_ENDPOINT": "us1.lb.launchdock.io",
+  "adminEmail": "launchdock@localhost",
+  "defaultAppImage": "reactioncommerce/reaction:latest",
+  "mongoImage": "tutum.co/ongoworks/mongo-rep-set:latest",
+  "rancherApiUrl": "",
+  "rancherApiKey": "",
+  "rancherApiSecret": "",
+  "stripeMode": "",
+  "tutumWildcardDomain": "",
+  "tutumUsername": "",
+  "tutumBalancerUuid": "",
+  "slackWebhookUrl": "",
+  "awsKey": "",
+  "awsSecret": "",
+  "kadiraAppId": "",
+  "kadiraAppSecret": "",
+  "segmentKey": ""
 }

@@ -3,7 +3,7 @@
  */
 
 // global
-const fromEmail = Settings.get("adminEmail", "admin@launchdock.io");
+const fromEmail = Settings.get("adminEmail", "launchdock@localhost");
 Accounts.emailTemplates.siteName = "Launchdock";
 Accounts.emailTemplates.from = `Launchdock <${fromEmail}>`;
 
