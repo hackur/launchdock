@@ -14,7 +14,7 @@ Launchdock.email.sendToAdmins = function (subject, content, isHtml) {
   }
 
   // set from email
-  const fromEmail = Settings.get("adminEmail", "admin@launchdock.io");
+  const fromEmail = Settings.get("adminEmail", "launchdock@localhost");
 
   // find all admins
   const admins = Users.find({ roles: { $in: ["admin"] } }).fetch();

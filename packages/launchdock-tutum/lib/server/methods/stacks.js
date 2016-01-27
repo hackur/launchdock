@@ -118,7 +118,7 @@ Meteor.methods({
           "value": siteUrl
         }, {
           "key": "LAUNCHDOCK_BALANCER_ENDPOINT",
-          "value": "us1.lb.launchdock.io"
+          "value": Settings.get("LAUNCHDOCK_BALANCER_ENDPOINT"),
         }, {
           "key": "MONGO_URL",
           "value": mongoUrl
@@ -161,7 +161,7 @@ Meteor.methods({
       app.container_envvars = app.container_envvars.concat(doc.appEnvVars);
     };
 
-    const mongoImage = "tutum.co/ongoworks/mongo-rep-set:latest";
+    const mongoImage = Settings.get("mongoImage", "launchdock/mongo-rep-set:latest");
 
     // Mongo - primary
     const mongo1 = {
