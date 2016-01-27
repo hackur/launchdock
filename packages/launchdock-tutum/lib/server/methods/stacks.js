@@ -161,7 +161,7 @@ Meteor.methods({
       app.container_envvars = app.container_envvars.concat(doc.appEnvVars);
     };
 
-    const mongoImage = Settings.get("mongoImage", "tutum/mongodb:latest");
+    const mongoImage = Settings.get("mongoImage", "launchdock/mongo-rep-set:latest");
 
     // Mongo - primary
     const mongo1 = {

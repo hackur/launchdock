@@ -5,7 +5,7 @@
   "LAUNCHDOCK_BALANCER_ENDPOINT": "us1.lb.launchdock.io",
   "adminEmail": "launchdock@localhost",
   "defaultAppImage": "reactioncommerce/reaction:latest",
-  "mongoImage": "tutum.co/ongoworks/mongo-rep-set:latest",
+  "mongoImage": "launchdock/mongo-rep-set:latest",
   "rancherApiUrl": "",
   "rancherApiKey": "",
   "rancherApiSecret": "",
