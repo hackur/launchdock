@@ -118,7 +118,7 @@ Meteor.methods({
           "value": siteUrl
         }, {
           "key": "LAUNCHDOCK_BALANCER_ENDPOINT",
-          "value": Settings.get("LAUNCHDOCK_BALANCER_ENDPOINT"),
+          "value": Settings.get("loadBalancerEndpoint", ""),
         }, {
           "key": "MONGO_URL",
           "value": mongoUrl

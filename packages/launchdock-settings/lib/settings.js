@@ -30,6 +30,15 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  loadBalancerEndpoint: {
+    type: String,
+    optional: true,
+    label: 'Load Balancer Endpoint',
+    autoform: {
+      private: true
+    }
+  },
+
   tutumUsername: {
     type: String,
     optional: true,

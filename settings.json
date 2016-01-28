@@ -2,7 +2,7 @@
   "LD_EMAIL": "root@localhost",
   "LD_USERNAME": "admin",
   "LD_PASSWORD": "admin",
-  "LAUNCHDOCK_BALANCER_ENDPOINT": "us1.lb.launchdock.io",
+  "loadBalancerEndpoint": "us1.lb.launchdock.io",
   "adminEmail": "launchdock@localhost",
   "defaultAppImage": "reactioncommerce/reaction:latest",
   "mongoImage": "launchdock/mongo-rep-set:latest",
