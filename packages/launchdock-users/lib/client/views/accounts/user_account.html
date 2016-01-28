@@ -17,7 +17,7 @@
           <div class="row">
             <div class="panel">
               <div class="panel-body">
-                <h4>Subscription</h4>
+                <h3>Subscription</h3>
                 <hr>
                 <p>
                   <strong>Status: </strong>
@@ -34,40 +34,44 @@
         <div class="col-md-8 col-md-offset-1 panel">
           <div class="panel-body">
             <div class="row">
-              <h2>Apps</h2>
+              <h3>Apps</h3>
               <hr>
-              <table class="table table-bordered">
-                <thead>
-                  <tr>
-                    <th>Status</th>
-                    <th>Name</th>
-                    <th>Image</th>
-                    <th>Created</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {{#each stacks}}
+              {{#if hasStacks}}
+                <table class="table table-bordered">
+                  <thead>
                     <tr>
-                      <td>
-                        <td><span class="{{stateClass this}}-text">{{state}}</span></td>
-                      </td>
-                      <td>
-                        {{name}}
-                      </td>
-                      <td>
-                        {{appImage}}
-                      </td>
-                      <td>
-                        {{moment createdAt "LLL"}}
-                      </td>
-                      <td><a href="/stacks/{{_id}}">View</a> |
-                          <a href="{{publicUrl}}" target="_blank">Launch</a>
-                      </td>
+                      <th>Status</th>
+                      <th>Name</th>
+                      <th>Image</th>
+                      <th>Created</th>
+                      <th></th>
                     </tr>
-                  {{/each}}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {{#each stacks}}
+                      <tr>
+                        <td>
+                          <td><span class="{{stateClass this}}-text">{{state}}</span></td>
+                        </td>
+                        <td>
+                          {{name}}
+                        </td>
+                        <td>
+                          {{appImage}}
+                        </td>
+                        <td>
+                          {{moment createdAt "LLL"}}
+                        </td>
+                        <td><a href="/stacks/{{_id}}">View</a> |
+                            <a href="{{publicUrl}}" target="_blank">Launch</a>
+                        </td>
+                      </tr>
+                    {{/each}}
+                  </tbody>
+                </table>
+              {{else}}
+                <h4 class="text-center">No running apps at this time.</h4>
+              {{/if}}
             </div>
           </div>
         </div>

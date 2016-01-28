@@ -22,5 +22,9 @@ Template.user_account.helpers({
 
   stacks() {
     return Stacks.find();
+  },
+
+  hasStacks() {
+    return !!Stacks.find().count();
   }
 });
