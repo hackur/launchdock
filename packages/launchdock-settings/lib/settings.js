@@ -30,6 +30,15 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  mongoImage: {
+    type: String,
+    optional: true,
+    label: 'Mongo Image',
+    autoform: {
+      private: true
+    }
+  },
+
   loadBalancerEndpoint: {
     type: String,
     optional: true,

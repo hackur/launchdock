@@ -26,7 +26,8 @@ Meteor.startup(() => {
   if (Settings.find().count() < 1) {
     Settings.insert({
       siteTitle: 'Launchdock',
-      adminEmail: Settings.get("LD_EMAIL", 'root@localhost'),
+      adminEmail: Settings.get("LD_EMAIL", "root@localhost"),
+      mongoImage: Settings.get("mongoImage", "launchdock/mongo-rep-set:latest"),
     });
     Logger.info('Default settings document created');
   }
