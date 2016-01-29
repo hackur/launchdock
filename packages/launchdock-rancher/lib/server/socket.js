@@ -10,18 +10,23 @@ const startEventsStream = () => {
   const rancher = new Rancher();
   rancher.checkCredentials();
 
+  // grab Rancher credentials
   const accessKey = rancher.apiKey;
   const secretKey = rancher.apiSecret;
-  const host = rancher.apiBaseUrl;
+
+  // grab the hostname
+  const host = rancher.hostname;
+
+  // build the websocket URL
   const url = `wss://${accessKey}:${secretKey}@${host}/v1/subscribe?eventNames=resource.change`;
 
   const socket = new WebSocket(url);
 
-  socket.on("open", function() {
+  socket.on("open", () => {
     Logger.info("Rancher events websocket opened");
   });
 
-  socket.on("message", Meteor.bindEnvironment(function(messageStr) {
+  socket.on("message", Meteor.bindEnvironment((messageStr) => {
     const msg = JSON.parse(messageStr);
     // Logger.info("Rancher event", msg);
 
