@@ -20,7 +20,7 @@ Package.onUse(function (api) {
     "lib/server/main.js",
     "lib/server/rancher.js",
     "lib/server/socket.js",
-    // "lib/server/methods/stacks.js"
+    "lib/server/methods/stacks.js"
   ], ["server"]);
 
   api.export("Rancher", "server");
