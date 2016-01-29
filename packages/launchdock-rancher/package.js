@@ -23,5 +23,5 @@ Package.onUse(function (api) {
     // "lib/server/methods/stacks.js"
   ], ["server"]);
 
-  api.export("Rancher");
+  api.export("Rancher", "server");
 });
