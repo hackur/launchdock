@@ -48,6 +48,15 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  wildcardDomain: {
+    type: String,
+    optional: true,
+    label: 'Default Wildcard Domain',
+    autoform: {
+      private: true
+    }
+  },
+
   tutumUsername: {
     type: String,
     optional: true,
@@ -70,15 +79,6 @@ Settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     label: 'Tutum Load Balancer UUID',
-    autoform: {
-      private: true
-    }
-  },
-
-  tutumWildcardDomain: {
-    type: String,
-    optional: true,
-    label: 'Tutum Default Wildcard Domain',
     autoform: {
       private: true
     }

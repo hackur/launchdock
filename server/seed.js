@@ -28,6 +28,7 @@ Meteor.startup(() => {
       siteTitle: 'Launchdock',
       adminEmail: Settings.get("LD_EMAIL", "root@localhost"),
       mongoImage: Settings.get("mongoImage", "launchdock/mongo-rep-set:latest"),
+      wildcardDomain: Settings.get("wildcardDomain"),
     });
     Logger.info('Default settings document created');
   }
