@@ -74,6 +74,7 @@ launchdock:analytics
 launchdock:core
 launchdock:email
 launchdock:lib
+launchdock:rancher
 launchdock:settings
 launchdock:stripe
 launchdock:tutum
