@@ -69,6 +69,7 @@ Meteor.methods({
     const stackId = Stacks.insert({
       name: doc.name,
       appImage: appImage,
+      endpoint: Settings.get("loadBalancerEndpoint"),
       platform: "Rancher",
       state: "Creating",
       userId: user
@@ -90,15 +91,19 @@ Meteor.methods({
 
     logger.info("Rancher stack created", rancherStack.data);
 
+    const stack = Stacks.findOne(stackId);
+    const siteId = stackId.toLowerCase();
+    const siteUrl = doc.domainName ? doc.domainName :
+                                     siteId + "." + wildcardDomain;
+
     // update local database with returned stack details
     Stacks.update({ _id: stackId }, {
       $set: {
+        defaultUrl: `https://${siteUrl}`,
+        defaultDomain: siteUrl,
         rancherId: rancherStack.data.id,
         uuid: rancherStack.data.uuid,
-        defaultUrl: "https://" + siteUrl,
-        defaultDomain: siteUrl,
         state: rancherStack.data.state,
-        endpoint: Settings.get("loadBalancerEndpoint")
       }
     }, (err, num) => {
       if (err) {
@@ -107,13 +112,6 @@ Meteor.methods({
         logger.debug(`Stack ${stackId} updated with Rancher stack details`);
       }
     });
-
-    const stack = Stacks.findOne(stackId);
-
-    const siteId = stackId.toLowerCase();
-
-    const siteUrl = doc.domainName ? doc.domainName :
-                                     siteId + "." + wildcardDomain;
 
     const virtualHosts = "http://" + siteUrl + ", ws://" + siteUrl +
                        ", https://" + siteUrl + ", wss://" + siteUrl;
@@ -127,129 +125,201 @@ Meteor.methods({
     const mongoRepSetId = Random.id();
 
     // mongo urls
-    const mongoBaseUrl = `mongodb://${mongoUser}:${mongoPw}@mongo1:27017,mongo2:27017/`;
+    const mongoBaseUrl = `mongodb://${mongoUser}:${mongoPw}@mongo1-${stackId}:27017,mongo2-${stackId}:27017/`;
     const mongoUrl = mongoBaseUrl + mongoDatabase + "?replicaSet=" + mongoRepSetId;
     const mongoOplogUrl = mongoBaseUrl + "local?authSource=" + mongoDatabase;
 
     // app container configuration
     const app = {
-      "name": `app-${stackId}`,
-      "scale": 1,
-      "environmentId": rancherStack.id,
-      "launchConfig": {
-        "hostname": `app-${stackId}`,
-        "imageUuid": `docker:${appImage}`,
-        "environment": {
-          "LAUNCHDOCK_STACK_ID": stackId,
-          "LAUNCHDOCK_STACK_CREATED": stack.createdAt,
-          "LAUNCHDOCK_DEFAULT_DOMAIN": siteUrl,
-          "LAUNCHDOCK_BALANCER_ENDPOINT": Settings.get("loadBalancerEndpoint", ""),
-          "MONGO_URL": mongoUrl,
-          "MONGO_OPLOG_URL": mongoOplogUrl,
-          "ROOT_URL": "https://" + siteUrl,
-          "VIRTUAL_HOST": virtualHosts,
-          "PORT": 80,
-          "FORCE_SSL": "yes"
+      name: `app-${stackId}`,
+      scale: 1,
+      environmentId: rancherStack.data.id,
+      launchConfig: {
+        hostname: `app-${stackId}`,
+        imageUuid: `docker:${appImage}`,
+        environment: {
+          LAUNCHDOCK_STACK_ID: stackId,
+          LAUNCHDOCK_STACK_CREATED: stack.createdAt,
+          LAUNCHDOCK_DEFAULT_DOMAIN: siteUrl,
+          LAUNCHDOCK_BALANCER_ENDPOINT: Settings.get("loadBalancerEndpoint", ""),
+          MONGO_URL: mongoUrl,
+          MONGO_OPLOG_URL: mongoOplogUrl,
+          ROOT_URL: `https://${siteUrl}`,
+          VIRTUAL_HOST: virtualHosts,
+          PORT: 80,
+          FORCE_SSL: "yes"
         },
-        "labels": {
+        labels: {
           "io.rancher.scheduler.affinity:host_label": "host_type=app"
         },
-        "restartPolicy": {
-          "name": "always"
+        restartPolicy: {
+          name: "always"
         },
-        "startOnCreate": false
+        startOnCreate: false
       }
     };
 
+    // create app service
+    try {
+      const service = rancher.create("services", app);
+      Services.insert({
+        name: service.data.name,
+        imageName: service.data.launchConfig.imageUuid,
+        rancherId: service.data.id,
+        stackId: stackId,
+        type: "app",
+        uuid: service.data.uuid,
+        userId: user
+      });
+    } catch(e) {
+      logger.error(e);
+      throw new Meteor.Error(e);
+    }
+
     // TODO: format objects in Rancher syntax
     // add custom environment variables to app (if any were provided)
-    if (doc.appEnvVars) {
-      logger.debug("Appending customer env vars to stack", doc.appEnvVars);
-      app.container_envvars = app.container_envvars.concat(doc.appEnvVars);
-    };
+    // if (doc.appEnvVars) {
+    //   logger.debug("Appending customer env vars to stack", doc.appEnvVars);
+    //   app.container_envvars = app.container_envvars.concat(doc.appEnvVars);
+    // };
 
     const mongoImage = Settings.get("mongoImage", "launchdock/mongo-rep-set:latest");
 
     // mongo - primary
     const mongo1 = {
-      "name": `mongo1-${stackId}`,
-      "scale": 1,
-      "environmentId": rancherStack.id,
-      "launchConfig": {
-        "hostname": `mongo1-${stackId}`,
-        "imageUuid": `docker:${mongoImage}`,
-        "environment": {
-          "MONGO_ROLE": "primary",
-          "MONGO_SECONDARY": "mongo2-" + stackId,
-          "MONGO_ARBITER": "mongo3-" + stackId,
-          "MONGO_ROOT_USER": mongoRootUser,
-          "MONGO_ROOT_PASSWORD": mongoRootPw,
-          "MONGO_APP_USER": mongoUser,
-          "MONGO_APP_PASSWORD": mongoPw,
-          "REP_SET": mongoRepSetId,
-          "MONGO_APP_DATABASE": mongoDatabase
+      name: `mongo1-${stackId}`,
+      type: "mongo1",
+      scale: 1,
+      environmentId: rancherStack.data.id,
+      launchConfig: {
+        hostname: `mongo1-${stackId}`,
+        imageUuid: `docker:${mongoImage}`,
+        environment: {
+          MONGO_ROLE: "primary",
+          MONGO_SECONDARY: `mongo2-${stackId}`,
+          MONGO_ARBITER: `mongo3-${stackId}`,
+          MONGO_ROOT_USER: mongoRootUser,
+          MONGO_ROOT_PASSWORD: mongoRootPw,
+          MONGO_APP_USER: mongoUser,
+          MONGO_APP_PASSWORD: mongoPw,
+          REP_SET: mongoRepSetId,
+          MONGO_APP_DATABASE: mongoDatabase
         },
-        "labels": {
+        labels: {
           "io.rancher.scheduler.affinity:host_label": "host_type=mongo1"
         },
-        "restartPolicy": {
-          "name": "always"
+        restartPolicy: {
+          name: "always"
         },
-        "startOnCreate": false
+        startOnCreate: false
       }
     };
 
     // mongo - secondary
     const mongo2 = {
-      "name": `mongo2-${stackId}`,
-      "scale": 1,
-      "environmentId": rancherStack.id,
-      "launchConfig": {
-        "hostname": `mongo2-${stackId}`,
-        "imageUuid": `docker:${mongoImage}`,
-        "environment": {
-          "REP_SET": mongoRepSetId
+      name: `mongo2-${stackId}`,
+      scale: 1,
+      environmentId: rancherStack.data.id,
+      launchConfig: {
+        hostname: `mongo2-${stackId}`,
+        imageUuid: `docker:${mongoImage}`,
+        environment: {
+          REP_SET: mongoRepSetId
         },
-        "labels": {
+        labels: {
           "io.rancher.scheduler.affinity:host_label": "host_type=mongo2"
         },
-        "restartPolicy": {
-          "name": "always"
+        restartPolicy: {
+          name: "always"
         },
-        "startOnCreate": false
+        startOnCreate: true
       }
     };
 
     // mongo - arbiter
     const mongo3 = {
-      "name": `mongo3-${stackId}`,
-      "scale": 1,
-      "environmentId": rancherStack.id,
-      "launchConfig": {
-        "hostname": `mongo3-${stackId}`,
-        "imageUuid": `docker:${mongoImage}`,
-        "environment": {
-          "JOURNALING": "no",
-          "REP_SET": mongoRepSetId
+      name: `mongo3-${stackId}`,
+      scale: 1,
+      environmentId: rancherStack.data.id,
+      launchConfig: {
+        hostname: `mongo3-${stackId}`,
+        imageUuid: `docker:${mongoImage}`,
+        environment: {
+          JOURNALING: "no",
+          REP_SET: mongoRepSetId
         },
-        "labels": {
+        labels: {
           "io.rancher.scheduler.affinity:host_label": "host_type=mongo3"
         },
-        "restartPolicy": {
-          "name": "always"
+        restartPolicy: {
+          name: "always"
         },
-        "startOnCreate": false
+        startOnCreate: true
       }
     };
 
-    // add each of the stack's services to the local Services collection
-    // TODO: build this method
-    rancher.updateStackServices(stack);
-
-    // start the stack (currently only a mongo cluster)
+    // create mongo1 service
+    let mongoPrimary;
     try {
-      // TODO: finish start method
-      rancher.start(stack);
+      const service = rancher.create("services", mongo1);
+      const id = Services.insert({
+        name: service.data.name,
+        imageName: service.data.launchConfig.imageUuid,
+        rancherId: service.data.id,
+        stackId: stackId,
+        type: "mongo1",
+        uuid: service.data.uuid,
+        userId: user
+      });
+      mongoPrimary = Services.findOne(id);
+      logger.info("Service created", service.data);
+    } catch(e) {
+      logger.error(e);
+      throw new Meteor.Error(e);
+    }
+
+    // create mongo2 service
+    try {
+      const service = rancher.create("services", mongo2);
+      Services.insert({
+        name: service.data.name,
+        imageName: service.data.launchConfig.imageUuid,
+        rancherId: service.data.id,
+        stackId: stackId,
+        type: "mongo2",
+        uuid: service.data.uuid,
+        userId: user
+      });
+      logger.info("Service created", service.data);
+    } catch(e) {
+      logger.error(e);
+      throw new Meteor.Error(e);
+    }
+
+    // create mongo3 service
+    try {
+      const service = rancher.create("services", mongo3);
+      Services.insert({
+        name: service.data.name,
+        imageName: service.data.launchConfig.imageUuid,
+        rancherId: service.data.id,
+        stackId: stackId,
+        type: "mongo3",
+        uuid: service.data.uuid,
+        userId: user
+      });
+      logger.info("Service created", service.data);
+    } catch(e) {
+      logger.error(e);
+      throw new Meteor.Error(e);
+    }
+
+// temporary breakpoint
+return;
+
+    // start the stack
+    try {
+      rancher.start("services", mongoPrimary.rancherId);
       logger.info("Mongo stack started on Rancher.");
     } catch(e) {
       logger.error(e);
@@ -264,7 +334,7 @@ Meteor.methods({
         if (fields.state && fields.state === 'Running') {
 
           // get the container URI for the mongo primary
-          const mongoPrimary = Services.findOne({ name: 'mongo1-' + stackId });
+          const mongoPrimary = Services.findOne({ name: `mongo1-${stackId}` });
           const mongo1Containers = rancher.getServiceContainers(mongoPrimary.uri);
 
           // parse UUID from URI
@@ -290,10 +360,10 @@ Meteor.methods({
               Stacks.update({ _id: stackId }, { $set: { services: fullStack.data.services }});
 
               // start the app service
-              const appService = Services.findOne({ name: "app-" + stackId });
+              const appService = Services.findOne({ name: `app-${stackId}` });
               try {
                 logger.info(`Starting app service ${appService._id}`);
-                rancher.start(appService.uri);
+                rancher.start("services", appService.rancherId);
               } catch(e) {
                 logger.error(`Error starting app service ${appService._id} in stack ${stackId}`);
                 throw new Meteor.Error(e);
@@ -348,7 +418,6 @@ Meteor.methods({
   },
 
 
-  // TODO: convert to Rancher syntax
   'rancher/deleteStack'(id) {
 
     const logger = Logger.child({
