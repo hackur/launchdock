@@ -373,17 +373,16 @@ Meteor.methods({
 
     let res;
     try {
-      res = rancher.delete(stack.uri);
+      res = rancher.delete("stacks", stack.rancherId);
 
-      if (res.statusCode == 202) {
-        // TODO - set stack to "terminated" and
-        // then remove it after a minute or two delay
+      if (res.statusCode == 200) {
         Stacks.remove({ _id: id });
-        Services.remove({ stack: stack.uri });
+        Services.remove({ stackId: id });
       }
 
-      logger.info("Stack " + id + " deleted successfully.");
+      logger.info(`Stack ${id} deleted successfully.`);
     } catch(e) {
+      logger.error(e);
       throw new Meteor.Error(e);
     }
 
@@ -396,7 +395,7 @@ Meteor.methods({
       }
     });
 
-    return res;
+    return true;
   }
 
 });

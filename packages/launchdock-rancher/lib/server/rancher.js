@@ -76,8 +76,9 @@ Rancher = class Rancher {
   }
 
 
-  delete(resourceUri) {
-    return HTTP.call("DELETE", this.apiBaseUrl + resourceUri, {
+  delete(resourceType, id) {
+    const resource = this.convertApiNames(resourceType);
+    return HTTP.call("DELETE", this.apiFullUrl + resource + "/" + id, {
       headers: {
         "Authorization": `Basic ${this.apiCredentials}`,
         "Accept": "application/json"
