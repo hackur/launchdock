@@ -11,7 +11,7 @@ Meteor.publish('stack-page', function (id) {
   if (stack.userId == this.userId || Users.is.admin(this.userId) ) {
     return [
       Stacks.find({ _id: id }),
-      Services.find({ stack: stack.uri })
+      Services.find({ stackId: id })
     ];
   } else {
     return [];

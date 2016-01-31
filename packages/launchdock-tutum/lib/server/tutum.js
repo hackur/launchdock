@@ -223,7 +223,7 @@ Tutum = class Tutum {
           name: service.data.name,
           uuid: service.data.uuid,
           imageName: service.data.image_name,
-          stack: service.data.stack,
+          stackId: stack._id,
           state: service.data.state,
           tags: service.data.tags,
           uri: service_uri,
