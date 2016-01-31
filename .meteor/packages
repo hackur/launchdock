@@ -41,6 +41,7 @@ aslagle:reactive-table
 meteorhacks:ssr
 percolate:synced-cron
 ongoworks:bunyan-logger
+vsivsi:job-collection
 meteorhacks:kadira
 
 fourseven:scss
@@ -50,6 +51,7 @@ ixdi:material-design-iconic-font
 lookback:tooltips
 joshdellay:meteor-ladda-bootstrap
 utilities:avatar
+abpetkov:switchery
 
 useraccounts:core
 useraccounts:bootstrap
