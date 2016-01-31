@@ -87,6 +87,20 @@ Rancher = class Rancher {
   }
 
 
+  start(resourceType, id) {
+    const resource = this.convertApiNames(resourceType);
+    const action = resourceType === "stacks" ? "activateservices" : "activate";
+    const url = this.apiFullUrl + resource + "/" + id + "/?action=" + action;
+    return HTTP.call("POST", url, {
+      headers: {
+        "Authorization": `Basic ${this.apiCredentials}`,
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+
   logs(containerUuid, callback) {
     const WebSocket = Npm.require("ws");
 
