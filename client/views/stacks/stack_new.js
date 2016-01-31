@@ -24,7 +24,7 @@ Template.stack_new.helpers({
   // create method name based on platform choice
   methodName() {
     const platform = Template.instance().currentPlatform.get();
-    return `${platform.toLowerCase()}/createStack`;
+    return platform ? `${platform.toLowerCase()}/createStack` : "";
   }
 });
 
