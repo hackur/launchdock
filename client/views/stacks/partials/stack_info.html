@@ -13,10 +13,14 @@
                 <p><strong>Name:</strong> {{name}}</p>
                 <p><strong>Tutum uuid:</strong> {{uuid}}</p>
                 <p><strong>Created:</strong> {{moment createdAt 'LLL'}}</p>
-                <p><strong>State:</strong> <span class="{{stateClass this}}-text">{{state}}</span></p>
-                {{#if stackUrlReady}}
-                  <p><strong>URL:</strong> <a href="{{publicUrl}}" target="_blank">{{publicUrl}}</a></p>
-                {{/if}}
+                <p><strong>State: </strong>
+                  <span class="{{stateClass this}}-text text-capitalize">
+                    {{state}}
+                  </span>
+                </p>
+                <p><strong>URL:</strong>
+                  <a href="{{defaultUrl}}" target="_blank">{{defaultUrl}}</a>
+                </p>
               </div>
             </div>
             <div class="row">
