@@ -8,6 +8,7 @@
   "loadBalancerEndpoint": "us1.lb.launchdock.io",
   "wildcardDomain": "",
   "rancherApiUrl": "",
+  "defaultPlatform": "Rancher",
   "rancherApiKey": "",
   "rancherApiSecret": "",
   "stripeMode": "",

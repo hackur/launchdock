@@ -19,6 +19,7 @@ Meteor.methods({
       name: String,
       appImage: Match.Optional(String),
       domainName: Match.Optional(String),
+      platform: Match.Optional(String),
       appEnvVars: Match.Optional([Object]),
       token: Match.Optional(String)
     });
@@ -67,6 +68,7 @@ Meteor.methods({
     const stackId = Stacks.insert({
       name: doc.name,
       appImage: appImage,
+      platform: "Tutum",
       state: "Creating",
       userId: user
     });

@@ -37,3 +37,15 @@ Meteor.publish("public-settings", function() {
 
   return Settings.find({}, options);
 });
+
+
+// platform settings for stack creation page
+Meteor.publish("platform-settings", function() {
+  if (Users.is.admin(this.userId)) {
+    return Settings.find({}, {
+      fields: {
+        defaultPlatform: 1
+      }
+    });
+  }
+});

@@ -57,6 +57,17 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  defaultPlatform: {
+    type: String,
+    optional: true,
+    label: 'Default Deployment Platform',
+    allowedValues: ['Rancher', 'Tutum'],
+    defaultValue: 'Rancher',
+    autoform: {
+      private: true
+    }
+  },
+
   tutumUsername: {
     type: String,
     optional: true,
