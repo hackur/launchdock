@@ -35,8 +35,9 @@ const startEventsStream = () => {
       const resource = msg.data.resource;
 
       if (resource.type == "service" || resource.type == "environment") {
-
+        // convert "environent" to "stack" until Rancher fixes that nonsense in the API
         const resourceType = (resource.type == "environment") ? "stack" : resource.type;
+
         const msgType = (resource.transitioning === "error") ? "ERROR" : "INFO";
 
         console.log("\n******************************************");
@@ -52,24 +53,35 @@ const startEventsStream = () => {
 
         console.log("******************************************");
 
+        // convert a few state strings to preferred names
+        let state;
+        switch (resource.state) {
+          case "activating":
+            state = "Starting";
+            break;
+          case "active":
+            state = "Running";
+            break;
+          default:
+            state = resource.state;
+        }
+
+        // If this message is for a stack that exists in the database, update its state
+        if (resourceType == "stack" && !!Stacks.findOne({ rancherId: resource.id })) {
+          Stacks.update({ rancherId: resource.id }, { $set: { state: state } });
+        }
+
+        // If this message is for a service that exists in the database, update its state
+        if (resourceType == "service" && !!Services.findOne({ rancherId: resource.id })) {
+          Services.update({ rancherId: resource.id }, { $set: { state: state } });
+        }
       }
 
     }
-
-    // // If this message is for a stack that exists in the database, update its state
-    // if (msg.type == "stack" && !!Stacks.findOne({ uri: msg.resource_uri })) {
-    //   Stacks.update({ uri: msg.resource_uri }, { $set: { state: msg.state } });
-    // }
-    //
-    // // If this message is for a service that exists in the database, update its state
-    // if (msg.type == "service" && !!Services.findOne({ uri: msg.resource_uri })) {
-    //   Services.update({ uri: msg.resource_uri }, { $set: { state: msg.state } });
-    // }
   }));
 
   socket.on("error", Meteor.bindEnvironment((err) => {
-    Logger.error("Rancher events websocket error!");
-    Logger.error(err);
+    Logger.error("Rancher events websocket error!", err);
   }));
 
   socket.on("close", Meteor.bindEnvironment(() => {
