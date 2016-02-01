@@ -1,7 +1,7 @@
 
 Template.stack_info.onCreated(function() {
   this.autorun(() => {
-    var stackId = FlowRouter.getParam('_id');
+    const stackId = FlowRouter.getParam('_id');
     this.subscribe('stack-page', stackId);
   });
 });
@@ -10,6 +10,20 @@ Template.stack_info.onCreated(function() {
 Template.stack_info.helpers({
   stack() {
     return Stacks.find();
+  },
+  stackLink() {
+    const stackId = FlowRouter.getParam('_id');
+    const stack = Stacks.findOne(stackId);
+
+    if (stack.platform === "Rancher") {
+      const rancherHost = Settings.get("rancherApiUrl");
+      if (!rancherHost) {
+        return null;
+      }
+      return `${rancherHost}/apps/${stack.rancherId}`;
+    } else if (stack.platform === "Tutum") {
+      return `https://dashboard.tutum.co/stack/show/{{stack.uuid}}/`;
+    }
   },
   stackUrlReady() {
     // TODO: do some health checks to make sure app is actually ready to view
