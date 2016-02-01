@@ -131,6 +131,15 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  rancherDefaultBalancer: {
+    type: String,
+    optional: true,
+    label: 'Rancher Default Load Balancer ID',
+    autoform: {
+      private: true
+    }
+  },
+
   awsKey: {
     type: String,
     optional: true,
