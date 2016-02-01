@@ -284,7 +284,7 @@ Meteor.methods({
       $set: {
         uuid: tutumStack.data.uuid,
         uri: tutumStack.data.resource_uri,
-        publicUrl: "https://" + siteUrl, // TODO change to defaultUrl across app
+        defaultUrl: "https://" + siteUrl, 
         defaultDomain: siteUrl,
         state: tutumStack.data.state,
         services: tutumStack.data.services,
