@@ -17,8 +17,6 @@ Template.stack_services_links.helpers({
   serviceLink() {
     const service = Template.instance().data;
     const stack = Stacks.findOne(service.stackId);
-    console.log("service ", service);
-    console.log("stack ", stack);
     if (service && stack) {
       if (stack.platform === "Rancher") {
         const rancherHost = Settings.get("rancherApiUrl");
@@ -28,7 +26,7 @@ Template.stack_services_links.helpers({
         return `${rancherHost}/apps/${stack.rancherId}/services/${service.rancherId}/`;
       }
       if (stack.platform === "Tutum") {
-        return `https://dashboard.tutum.co/container/service/show/{{service.uuid}}/`;
+        return `https://dashboard.tutum.co/container/service/show/${service.uuid}/`;
       }
     }
   },
