@@ -17,7 +17,7 @@ Rancher = class Rancher {
       }
     };
 
-    // fix Rancher's horrible resource naming in their API
+    // fix Rancher's horrible API resource naming
     // (supposed to be fixed in API V2)
     this.convertApiNames = (resourceType) => {
       if (resourceType === "stacks") {
@@ -101,33 +101,108 @@ Rancher = class Rancher {
   }
 
 
-  logs(containerUuid, callback) {
+  setLinks(serviceId, links) {
+    const url = `${this.apiFullUrl}services/${serviceId}/?action=setservicelinks`;
+    return HTTP.call("POST", url, {
+      headers: {
+        "Authorization": `Basic ${this.apiCredentials}`,
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      data: {
+        serviceLinks: links
+      }
+    });
+  }
+
+
+  addLoadBalancerLink(balancerId, serviceId, domains) {
+    const url = `${this.apiFullUrl}loadbalancerservices/${balancerId}/?action=addservicelink`;
+
+    return HTTP.call("POST", url, {
+      headers: {
+        "Authorization": `Basic ${this.apiCredentials}`,
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      data: {
+        serviceLink: {
+          serviceId: serviceId,
+          ports: _.isArray(domains) ? domains : [domains]
+        }
+      }
+    });
+  }
+
+
+  removeLoadBalancerLink(balancerId, serviceId) {
+    const url = `${this.apiFullUrl}loadbalancerservices/${balancerId}/?action=removeservicelink`;
+
+    return HTTP.call("POST", url, {
+      headers: {
+        "Authorization": `Basic ${this.apiCredentials}`,
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      data: {
+        serviceLink: {
+          serviceId: serviceId
+        }
+      }
+    });
+  }
+
+
+  getStackServices(stackId) {
+    return HTTP.call("GET", `${this.apiFullUrl}environments/${stackId}/services`, {
+      headers: {
+        "Authorization": `Basic ${this.apiCredentials}`,
+        "Accept": "application/json"
+      }
+    }).data.data;
+  }
+
+
+  getServiceContainers(serviceId) {
+    return HTTP.call("GET", `${this.apiFullUrl}services/${serviceId}/instances`, {
+      headers: {
+        "Authorization": `Basic ${this.apiCredentials}`,
+        "Accept": "application/json"
+      }
+    }).data.data;
+  }
+
+
+  logs(containerId, callback) {
     const WebSocket = Npm.require("ws");
 
-    // grab credentials
-    const accessKey = this.apiKey;
-    const secretKey = this.apiSecret;
+    const url = `${this.apiFullUrl}containers/${containerId}/?action=logs`;
 
-    // parse the hostname out of the URL
-    const baseUrl = this.apiBaseUrl;
-    const host = baseUrl.substr(baseUrl.indexOf("//") + 2);
-
-    // build the websocket URL
-    const url = `wss://${accessKey}:${secretKey}@${host}/v1/subscribe?eventNames=resource.logs`;
-
-    const socket = new WebSocket(url);
-
-    socket.on('open', () => {
-      Logger.info('Rancher: Tailing logs for container ' + containerUuid);
+    // get the websocket URL and token
+    const logsSocket = HTTP.call("POST", url, {
+      headers: {
+        "Authorization": `Basic ${this.apiCredentials}`,
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      data: {
+        "follow": true,
+        "lines": 100
+      }
     });
 
-    socket.on('message', Meteor.bindEnvironment((messageStr) => {
-      const msg = JSON.parse(messageStr);
+    const socketUrl = `${logsSocket.data.url}?token=${logsSocket.data.token}`;
+    const socket = new WebSocket(socketUrl);
 
+    socket.on('open', () => {
+      Logger.info('Rancher: Tailing logs for container ' + containerId);
+    });
+
+    socket.on('message', Meteor.bindEnvironment((msg) => {
       if (_.isFunction(callback)) {
         callback(null, msg, socket);
       } else {
-        Logger.info(msg.log);
+        Logger.info(msg);
       }
     }));
 
@@ -137,8 +212,24 @@ Rancher = class Rancher {
     });
 
     socket.on('close', () => {
-      Logger.info('Rancher: Log tailing stopped for container ' + containerUuid);
+      Logger.info('Rancher: Log tailing stopped for container ' + containerId);
     });
   }
 
+
+  checkMongoState(containerId, callback) {
+    // start streaming logs of mongo primary
+    this.logs(containerId, (err, msg, socket) => {
+      if (err) {
+        callback(err);
+      }
+      
+      // watch log output for replica set to be ready
+      const readyStr = "transition to primary complete; database writes are now permitted";
+      if (msg && ~msg.indexOf(readyStr)) {
+        socket.close();
+        callback(null, true);
+      }
+    });
+  }
 };
