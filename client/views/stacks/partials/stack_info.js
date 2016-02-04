@@ -22,7 +22,7 @@ Template.stack_info.helpers({
       }
       return `${rancherHost}/apps/${stack.rancherId}`;
     } else if (stack.platform === "Tutum") {
-      return `https://dashboard.tutum.co/stack/show/{{stack.uuid}}/`;
+      return `https://dashboard.tutum.co/stack/show/${stack.uuid}/`;
     }
   },
   stackUrlReady() {
