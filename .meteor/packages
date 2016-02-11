@@ -40,6 +40,7 @@ tmeasday:publish-counts
 aslagle:reactive-table
 meteorhacks:ssr
 percolate:synced-cron
+percolate:migrations
 ongoworks:bunyan-logger
 vsivsi:job-collection
 meteorhacks:kadira
@@ -76,6 +77,7 @@ launchdock:analytics
 launchdock:core
 launchdock:email
 launchdock:lib
+launchdock:migrations
 launchdock:rancher
 launchdock:settings
 launchdock:stripe

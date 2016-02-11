@@ -72,6 +72,7 @@ launchdock:analytics@0.0.0
 launchdock:core@0.1.0
 launchdock:email@0.0.0
 launchdock:lib@0.0.0
+launchdock:migrations@0.0.0
 launchdock:rancher@0.0.0
 launchdock:settings@0.0.0
 launchdock:stripe@0.0.0
@@ -110,6 +111,7 @@ ongoworks:bunyan-logger@2.5.0
 ongoworks:mongo-tools@0.1.0
 ongoworks:security@1.3.0
 ordered-dict@1.0.4
+percolate:migrations@0.9.8
 percolate:synced-cron@1.3.0
 promise@0.5.1
 raix:eventemitter@0.1.3
