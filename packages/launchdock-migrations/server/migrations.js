@@ -77,3 +77,31 @@ Migrations.add({
     Logger.info("[Migrations]: No reverse migration available for version 2");
   }
 });
+
+
+/**
+ * Ensure platform is specified on stacks (for old Tutum stacks)
+ */
+Migrations.add({
+  version: 3,
+  name: "Ensure platform is specified on stacks",
+
+  up() {
+    let i = 0;
+    Stacks.find({ platform: { $exists: false }}).forEach((stack) => {
+      Logger.info(`[Migrations]: Migrating stack ${stack._id}`);
+      i++;
+      Stacks.update(stack._id, {
+        $set: {
+          "platform": "Tutum"
+        }
+      });
+    });
+    Logger.info(`[Migrations]: Added platform specifier to ${i} stacks.`);
+  },
+
+  down() {
+    // reverse shouldn't ever be needed and would break things
+    Logger.info("[Migrations]: No reverse migration available for version 3");
+  }
+});
