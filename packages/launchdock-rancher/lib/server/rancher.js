@@ -64,8 +64,9 @@ Rancher = class Rancher {
   }
 
 
-  update(resourceUri, data) {
-    return HTTP.call("POST", this.apiBaseUrl + resourceUri, {
+  update(resourceType, id, data) {
+    const resource = this.convertApiNames(resourceType);
+    return HTTP.call("PUT", this.apiFullUrl + resource + "/" + id, {
       headers: {
         "Authorization": `Basic ${this.apiCredentials}`,
         "Accept": "application/json",
@@ -223,7 +224,7 @@ Rancher = class Rancher {
       if (err) {
         callback(err);
       }
-      
+
       // watch log output for replica set to be ready
       const readyStr = "transition to primary complete; database writes are now permitted";
       if (msg && ~msg.indexOf(readyStr)) {
