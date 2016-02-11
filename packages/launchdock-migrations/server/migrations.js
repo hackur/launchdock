@@ -51,7 +51,7 @@ Migrations.add({
       const stack = Stacks.findOne({ uri: service.stack });
 
       if (!stack) {
-        Logger.warn("No stack found for this service. Skipping migration.");
+        Logger.warn("[Migrations]: No stack found for this service. Skipping migration.");
         return;
       }
 
