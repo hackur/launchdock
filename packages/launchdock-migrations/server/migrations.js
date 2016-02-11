@@ -44,11 +44,16 @@ Migrations.add({
 
   up() {
     let i = 0;
-    Services.find({ stackId: { $exists: false }}).forEach((service) => {
+    Services.find({ stackId: { $exists: false }, stack: { $exists: true }}).forEach((service) => {
       Logger.info(`[Migrations]: Migrating service ${service._id}`);
       i++;
       // get the stack that this service belongs to
       const stack = Stacks.findOne({ uri: service.stack });
+
+      if (!stack) {
+        Logger.warn("No stack found for this service. Skipping migration.");
+        return;
+      }
 
       // rename stack to stackId
       Services.update(service._id, {
