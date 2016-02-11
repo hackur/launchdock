@@ -10,8 +10,8 @@ aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 aldeed:template-extension@4.0.0
 anti:i18n@0.4.3
-arillo:flow-router-helpers@0.5.0
-aslagle:reactive-table@0.8.23
+arillo:flow-router-helpers@0.5.1
+aslagle:reactive-table@0.8.24
 autoupdate@1.2.4
 babel-compiler@5.8.24_1
 babel-runtime@0.1.4
@@ -64,7 +64,7 @@ juliancwirko:s-alert-scale@3.1.3
 juliancwirko:s-alert-slide@3.1.3
 juliancwirko:s-alert-stackslide@3.1.3
 kadira:blaze-layout@2.3.0
-kadira:flow-router@2.10.0
+kadira:flow-router@2.10.1
 kevohagan:sweetalert@1.0.0
 launch-screen@1.0.4
 launchdock:accounts-reaction@0.0.0
@@ -97,7 +97,7 @@ mizzao:timesync@0.3.4
 mizzao:user-status@0.6.6
 mobile-experience@1.0.1
 mobile-status-bar@1.0.6
-momentjs:moment@2.11.1
+momentjs:moment@2.11.2
 mongo@1.1.3
 mongo-id@1.0.1
 mongo-livedata@1.0.9
@@ -123,7 +123,7 @@ reload@1.1.4
 retry@1.0.4
 routepolicy@1.0.6
 sacha:spin@2.3.1
-seba:minifiers-autoprefixer@0.0.1
+seba:minifiers-autoprefixer@0.0.2
 service-configuration@1.0.5
 session@1.1.1
 sha@1.0.4
