@@ -2,26 +2,42 @@
 <template name="stack_ssl">
   <div class="container">
     {{> stack_info}}
-    <div class="row">
-      <div class="col-sm-12">
-        <div class="panel">
-          <div class="panel-body ssl-settings">
-            <div class="col-sm-6 col-sm-offset-3">
-              <h4 class="text-center">Custom SSL Settings</h4>
-              {{#autoForm collection="Stacks" id="sslUpdateForm" doc=currentStack type="method-update" meteormethod="tutum/updateSSLCert" }}
-                {{> afQuickField name='sslDomainName' label='Domain Name'}}
-                {{> afQuickField name='sslPrivateKey' label='Private Key' type='textarea' style='height: 175px;'}}
-                {{> afQuickField name='sslPublicCert' label='Public Certificate' type='textarea' style='height: 175px;'}}
-                {{> afQuickField name='stackId' type='hidden' value=currentStack._id}}
-                <!--
-                  {{> afQuickField name='customSSLActive' label='Is Active?'}}
-                -->
-                <button type="submit" class="btn btn-primary pull-right">Save</button>
-              {{/autoForm}}
+    {{#with stack}}
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="panel">
+            <div class="panel-body ssl-settings">
+              <div class="col-sm-6 col-sm-offset-3">
+                <h4 class="text-center">Custom SSL Settings</h4>
+                <form>
+                  <div class="form-group">
+                    <label for="name" class="control-label">Domain Name</label>
+                    <input type="text" name="name" class="form-control" value="{{sslDomainName}}">
+                  </div>
+                  <div class="form-group">
+                    <label for="description" class="control-label">Description</label>
+                    <textarea rows="3" name="description" class="form-control">{{sslCertDescription}}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="key" class="control-label">Private Key</label>
+                    <textarea rows="6" name="key" class="form-control">{{sslPrivateKey}}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="cert" class="control-label">Certificate</label>
+                    <textarea rows="6" name="cert" class="form-control">{{sslPublicCert}}</textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="certChain" class="control-label">Certificate Chain</label>
+                    <span class="helper-text">(optional)</span>
+                    <textarea rows="6" name="certChain" class="form-control">{{sslCertChain}}</textarea>
+                  </div>
+                  <button type="submit" class="btn btn-primary pull-right">Save</button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    {{/with}}
   </div>
 </template>
