@@ -40,18 +40,18 @@ const startEventsStream = () => {
 
         const msgType = (resource.transitioning === "error") ? "ERROR" : "INFO";
 
-        console.log("\n******************************************");
-        console.log(`Type: ${resourceType}`);
-        console.log(`ID: ${resource.id}`);
-        console.log(`Name: ${resource.name}`);
-        console.log(`State: ${resource.state}`);
-
-        if (resource.transitioningMessage) {
-          console.log(`Msg Type: ${msgType}`);
-          console.log(`Message: ${resource.transitioningMessage}`);
-        }
-
-        console.log("******************************************");
+        // console.log("\n******************************************");
+        // console.log(`Type: ${resourceType}`);
+        // console.log(`ID: ${resource.id}`);
+        // console.log(`Name: ${resource.name}`);
+        // console.log(`State: ${resource.state}`);
+        //
+        // if (resource.transitioningMessage) {
+        //   console.log(`Msg Type: ${msgType}`);
+        //   console.log(`Message: ${resource.transitioningMessage}`);
+        // }
+        //
+        // console.log("******************************************");
 
         // convert a few state strings to preferred names
         let state;

@@ -1,14 +1,14 @@
 
-Meteor.publish('stacks-count', function () {
-  Counts.publish(this, 'stacks-count', Stacks.find());
+Meteor.publish("stacks-count", function () {
+  Counts.publish(this, "stacks-count", Stacks.find());
   return [];
 });
 
 
-Meteor.publish('stack-page', function (id) {
+Meteor.publish("stack-page", function (id) {
   check(id, String);
-  var stack = Stacks.findOne({ _id: id });
-  if (stack.userId == this.userId || Users.is.admin(this.userId) ) {
+  const stack = Stacks.findOne({ _id: id });
+  if (Users.is.owner(this.userId, stack) || Users.is.admin(this.userId)) {
     return [
       Stacks.find({ _id: id }),
       Services.find({ stackId: id })
@@ -21,7 +21,7 @@ Meteor.publish('stack-page', function (id) {
 
 // Limit, filter, and sort handled by reactive-table.
 // https://github.com/aslagle/reactive-table#server-side-pagination-and-filtering-beta
-ReactiveTable.publish('stacks-list', function () {
+ReactiveTable.publish("stacks-list", function () {
   if ( Users.is.admin(this.userId) ) {
     return Stacks;
   } else {

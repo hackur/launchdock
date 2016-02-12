@@ -14,7 +14,7 @@ Template.stacks_list.helpers({
       rowsPerPage: 20,
       showFilter: true,
       fields: [
-        { key: 'publicUrl', label: 'URL', tmpl: Template.stacks_list_url, sortable: false},
+        { key: 'defaultUrl', label: 'URL', tmpl: Template.stacks_list_url, sortable: false},
         { key: 'name', label: 'Name'},
         { key: 'state', label: 'State'},
         { key: 'createdAt', label: 'Created', sort: 'descending',

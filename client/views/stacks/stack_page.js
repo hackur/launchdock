@@ -1,7 +1,7 @@
 Template.stack_page.onCreated(function() {
   this.autorun(() => {
-    const stackId = FlowRouter.getParam('_id');
-    this.subscribe('stack-page', stackId);
+    const stackId = FlowRouter.getParam("_id");
+    this.subscribe("stack-page", stackId);
   });
 });
 
@@ -31,7 +31,7 @@ Template.stack_services_links.helpers({
     }
   },
   platform() {
-    const stack = Stacks.findOne(FlowRouter.getParam('_id'));
+    const stack = Stacks.findOne(FlowRouter.getParam("_id"));
     return stack.platform;
   }
 });
