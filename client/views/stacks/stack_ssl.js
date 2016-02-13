@@ -7,6 +7,13 @@ Template.stack_ssl.onCreated(function() {
 });
 
 
+Template.stack_ssl.onRendered(function() {
+  // submit button animations
+  const btn = this.find('button[type=submit]');
+  Ladda.bind(btn);
+});
+
+
 Template.stack_ssl.helpers({
   stack() {
     return Stacks.findOne();

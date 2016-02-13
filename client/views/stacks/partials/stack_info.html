@@ -48,6 +48,15 @@
                   <a href="https://{{sslDomainName}}" target="_blank">
                     <p>https://{{sslDomainName}}</p>
                   </a>
+                  {{#if isRancher}}
+                    {{#unless isStackPage}}
+                      <button type="submit" id="delete-cert"
+                              class="ladda-button btn btn-danger pull-right"
+                              data-style="slide-left">
+                        <span class="ladda-label">Delete Custom Certificate</span>
+                      </button>
+                    {{/unless}}
+                  {{/if}}
                 {{/if}}
               </div>
             </div>

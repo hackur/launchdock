@@ -27,10 +27,38 @@ Template.stack_info.helpers({
   },
   stackUrlReady() {
     // TODO: do some health checks to make sure app is actually ready to view
-    var stack = Stacks.findOne();
+    const stack = Stacks.findOne();
     return (stack.services.length === 4 && stack.state === 'Running');
   },
   isStackPage() {
     return (FlowRouter.getRouteName() === "stack_page");
+  },
+  isRancher() {
+    const stackId = FlowRouter.getParam('_id');
+    const stack = Stacks.findOne(stackId);
+    return (stack.platform === "Rancher");
+  }
+});
+
+
+Template.stack_info.events({
+  "click #delete-cert"(e, t) {
+    const stackId = FlowRouter.getParam('_id');
+    const stack = Stacks.findOne(stackId);
+
+    Alert.confirm({
+      title: "Are you sure?",
+      text: "There's no going back!"
+    }, () => {
+      const relinkApp = true;
+      Meteor.call(`rancher/deleteStackSSLCert`, stackId, relinkApp, (err) => {
+        if (err) {
+          Alert.error({
+            title: "Oops!",
+            text: `Something went wrong deleting the certificate.`
+          });
+        }
+      });
+    });
   }
 });
