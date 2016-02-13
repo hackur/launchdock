@@ -20,7 +20,7 @@ Meteor.methods({
       appImage: Match.Optional(String),
       domainName: Match.Optional(String),
       platform: Match.Optional(String),
-      appEnvVars: Match.Optional([Object]),
+      appEnvVars: Match.Optional(Object),
       token: Match.Optional(String)
     });
 
@@ -322,8 +322,9 @@ Meteor.methods({
 
     // add custom environment variables to app (if any were provided)
     if (doc.appEnvVars) {
-      logger.debug("Appending custom env vars to stack", doc.appEnvVars);
-      app.environment = _.extend(app.environment, doc.appEnvVars);
+      const currentEnvVars = app.launchConfig.environment;
+      app.launchConfig.environment = _.extend(currentEnvVars, doc.appEnvVars);
+      logger.info("Appended custom env vars to stack", app.launchConfig.environment);
     };
 
     // watch for mongo stack to be running, then start trying to connect to it
