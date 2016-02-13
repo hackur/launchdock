@@ -227,7 +227,7 @@ Rancher = class Rancher {
 
       // watch log output for replica set to be ready
       const readyStr = "transition to primary complete; database writes are now permitted";
-      if (msg && ~msg.indexOf(readyStr)) {
+      if (msg && msg.includes(readyStr)) {
         socket.close();
         callback(null, true);
       }
