@@ -465,10 +465,14 @@ Meteor.methods({
 
     const stack = Stacks.findOne(id);
 
-    let res;
-    try {
-      res = rancher.delete("stacks", stack.rancherId);
+    // if there's a cert to delete on Rancher, do that first
+    if (stack.sslRancherCertId) {
+      Meteor.call("rancher/deleteStackSSLCert", stack._id);
+    }
 
+    try {
+      const res = rancher.delete("stacks", stack.rancherId);
+      
       if (res.statusCode == 200) {
         Stacks.remove({ _id: id });
         Services.remove({ stackId: id });
