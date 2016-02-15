@@ -10,11 +10,11 @@ Template.stacks_list_actions.events({
         if (err) {
           Alert.error({
             title: "Oops!",
-            text: `Something went wrong deleting the stack.`
+            text: "Something went wrong deleting the stack."
           });
           return;
         }
-        Notify.success("Successfully deleted!", "top-right");
+        Notify.success("Successfully deleted!", "top-right")
       });
     } else {
       Alert.confirm({
@@ -25,7 +25,7 @@ Template.stacks_list_actions.events({
           if (err) {
             Alert.error({
               title: "Oops!",
-              text: `Something went wrong deleting the stack.`
+              text: "Something went wrong deleting the stack."
             });
           }
         });
