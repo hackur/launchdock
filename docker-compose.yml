@@ -1,15 +1,15 @@
 
-app:
-  # build: .
+launchdock:
   image: ongoworks/launchdock2:latest
   links:
     - mongo
   ports:
     - "80:80"
   environment:
-    ROOT_URL: "http://localhost"
-    MONGO_URL: "mongodb://mongo:27017/myapp"
+    ROOT_URL: "http://example.com"
+    MONGO_URL: "mongodb://mongo:27017/launchdock"
+
 
 mongo:
   image: mongo:latest
-  command: mongod --smallfiles --storageEngine=wiredTiger
+  command: mongod --storageEngine=wiredTiger
