@@ -29,6 +29,18 @@
               {{> afQuickField name="loadBalancerEndpoint" label="Load Balancer Endpoint"}}
               <div class="info-text">(where users will point their custom CNAME)</div>
             </div>
+            <div class="row">
+              {{> afQuickField name="wildcardDomain" label="Default Wildcard Domain"}}
+              <div class="info-text">
+                (base domain that all stacks get a subdomain of if no domain is specified)
+              </div>
+            </div>
+            <div class="row">
+              {{> afQuickField name="defaultPlatform" options="allowed" label="Default Deployment Platform"}}
+              <div class="info-text">
+                (you can change this per stack)
+              </div>
+            </div>
 
             <div class="row settings-group-heading">
               <h3>Tutum</h3>
@@ -42,15 +54,13 @@
             <div class="row">
               {{> afQuickField name="tutumBalancerUuid" label="Load Balancer UUID"}}
             </div>
-            <div class="row">
-              {{> afQuickField name="tutumWildcardDomain" label="Default Wildcard Domain"}}
-            </div>
 
             <div class="row settings-group-heading">
               <h3>Rancher</h3>
             </div>
             <div class="row">
               {{> afQuickField name="rancherApiUrl" label="Host URL"}}
+              <div class="info-text">(Must include http:// or https:// and no trailing slash)</div>
             </div>
             <div class="row">
               {{> afQuickField name="rancherApiKey" label="Access Key"}}
@@ -60,6 +70,9 @@
             </div>
             <div class="row">
               {{> afQuickField name="rancherDefaultEnv" label="Default Environment" }}
+            </div>
+            <div class="row">
+              {{> afQuickField name="rancherDefaultBalancer" label="Default Load Balancer ID" }}
             </div>
 
             <div class="row settings-group-heading">

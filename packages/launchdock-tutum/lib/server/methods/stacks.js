@@ -19,6 +19,7 @@ Meteor.methods({
       name: String,
       appImage: Match.Optional(String),
       domainName: Match.Optional(String),
+      platform: Match.Optional(String),
       appEnvVars: Match.Optional([Object]),
       token: Match.Optional(String)
     });
@@ -56,7 +57,7 @@ Meteor.methods({
       throw new Meteor.Error(err);
     }
 
-    const wildcardDomain = Settings.get("tutumWildcardDomain");
+    const wildcardDomain = Settings.get("wildcardDomain");
 
     if (!doc.domainName && !wildcardDomain) {
       const err = "Wildcard domain not configured on settings page.";
@@ -67,6 +68,7 @@ Meteor.methods({
     const stackId = Stacks.insert({
       name: doc.name,
       appImage: appImage,
+      platform: "Tutum",
       state: "Creating",
       userId: user
     });
@@ -282,7 +284,7 @@ Meteor.methods({
       $set: {
         uuid: tutumStack.data.uuid,
         uri: tutumStack.data.resource_uri,
-        publicUrl: "https://" + siteUrl, // TODO change to defaultUrl across app
+        defaultUrl: "https://" + siteUrl,
         defaultDomain: siteUrl,
         state: tutumStack.data.state,
         services: tutumStack.data.services,
@@ -428,7 +430,7 @@ Meteor.methods({
         // TODO - set stack to "terminated" and
         // then remove it after a minute or two delay
         Stacks.remove({ _id: id });
-        Services.remove({ stack: stack.uri });
+        Services.remove({ stackId: id });
       }
 
       logger.info("Stack " + id + " deleted successfully.");
@@ -449,22 +451,19 @@ Meteor.methods({
   },
 
 
-  'tutum/updateSSLCert'(doc, stackId) {
+  'tutum/updateStackSSLCert'(stackId, options) {
 
     const logger = Logger.child({
       meteor_method: 'tutum/updateSSLCert',
-      meteor_method_args: doc,
+      meteor_method_args: options,
       userId: this.userId
     });
 
-    // TODO: make this a setting on the client
-    doc.$set.customSSLActive = true;
-
-    check(doc.$set, {
+    check(options.$set, {
       sslPrivateKey: String,
       sslPublicCert: String,
       sslDomainName: String,
-      customSSLActive: Boolean,
+      customSSLActive: Match.Optional(Boolean),
       updatedAt: Date,
       lastUpdatedBy: String
     });
@@ -480,7 +479,7 @@ Meteor.methods({
     }
 
     // must either own the stack or be an admin
-    if (stack.userId !== this.userId || !Users.is.admin(this.userId)) {
+    if (!Users.is.owner(this.userId, stack) && !Users.is.admin(this.userId)) {
       const err = "AUTH ERROR: You can't do that.";
       logger.error(err);
       throw new Meteor.Error(err);
@@ -495,7 +494,7 @@ Meteor.methods({
     }
 
     // combine private key and cert to create pem file
-    const customPem = doc.$set.sslPrivateKey + "\n" + doc.$set.sslPublicCert;
+    const customPem = options.$set.sslPrivateKey + "\n" + options.$set.sslPublicCert;
 
     // grab default wildcard pem for default url's
     const defaultPem = Launchdock.ssl.getDefaultPem();
@@ -504,14 +503,14 @@ Meteor.methods({
     const pem = customPem + "\n" + defaultPem;
 
     // add to update object
-    doc.$set.sslPem = customPem;
+    options.$set.sslPem = customPem;
 
     // replace all new lines with "\n" for haproxy environment variable
     const pemEnvVar = pem.replace(/(?:\r\n|\r|\n)/g, '\\n');
 
     const sslOpts = {
       defaultDomain: stack.defaultDomain,
-      customDomain: doc.$set.sslDomainName,
+      customDomain: options.$set.sslDomainName,
       pem: pemEnvVar
     };
 
@@ -533,7 +532,7 @@ Meteor.methods({
       throw new Meteor.Error(e);
     }
 
-    Stacks.update(stackId, doc);
+    Stacks.update(stackId, options);
 
     logger.info("Updated SSL cert for stack: " + stackId);
 
@@ -549,6 +548,18 @@ Meteor.methods({
     });
 
     return true;
+  },
+
+
+  // legacy wrapper
+  'tutum/updateSSLCert'(options, stackId) {
+    const logger = Logger.child({
+      meteor_method: 'tutum/updateSSLCert',
+      meteor_method_args: [options, stackId],
+      userId: this.userId
+    });
+    logger.warn("Method 'tutum/updateSSLCert' has been deprecated. Please use 'tutum/updateStackSSLCert'");
+    return Meteor.call('tutum/updateStackSSLCert', stackId, options);
   },
 
 

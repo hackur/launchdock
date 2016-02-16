@@ -1,7 +1,0 @@
-{
-  "includePaths": [ ".meteor/local/build/programs/server/assets/packages/poetic_materialize-scss/bower_components" ],
-  "enableAutoprefixer": true,
-  "outputStyle": "compressed",
-  "sourceComments": false,
-  "sourceMap": true
-}

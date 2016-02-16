@@ -48,6 +48,26 @@ Settings.schema = new SimpleSchema({
     }
   },
 
+  wildcardDomain: {
+    type: String,
+    optional: true,
+    label: 'Default Wildcard Domain',
+    autoform: {
+      private: true
+    }
+  },
+
+  defaultPlatform: {
+    type: String,
+    optional: true,
+    label: 'Default Deployment Platform',
+    allowedValues: ['Rancher', 'Tutum'],
+    defaultValue: 'Rancher',
+    autoform: {
+      private: true
+    }
+  },
+
   tutumUsername: {
     type: String,
     optional: true,
@@ -70,15 +90,6 @@ Settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     label: 'Tutum Load Balancer UUID',
-    autoform: {
-      private: true
-    }
-  },
-
-  tutumWildcardDomain: {
-    type: String,
-    optional: true,
-    label: 'Tutum Default Wildcard Domain',
     autoform: {
       private: true
     }
@@ -115,6 +126,15 @@ Settings.schema = new SimpleSchema({
     type: String,
     optional: true,
     label: 'Rancher Default Environment',
+    autoform: {
+      private: true
+    }
+  },
+
+  rancherDefaultBalancer: {
+    type: String,
+    optional: true,
+    label: 'Rancher Default Load Balancer ID',
     autoform: {
       private: true
     }

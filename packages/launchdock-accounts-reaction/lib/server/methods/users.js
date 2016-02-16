@@ -50,41 +50,22 @@ Meteor.methods({
 
     const stackCreateDetails = {
       name: shopNameSlug,
-      appImage: "reactioncommerce/reaction:latest",
-      appEnvVars: [
-        {
-          "key": "REACTION_SHOP_NAME",
-          "value": doc.shopName
-        }, {
-          "key": "REACTION_EMAIL",
-          "value": doc.email
-        }, {
-          "key": "REACTION_AUTH",
-          "value": doc.password
-        }, {
-          "key": "METEOR_USER",
-          "value": doc.email
-        }, {
-          "key": "LAUNCHDOCK_USERID",
-          "value": launchdockUserId
-        }, {
-          "key": "LAUNCHDOCK_USERNAME",
-          "value": launchdockUsername
-        }, {
-          "key": "LAUNCHDOCK_AUTH",
-          "value": launchdockAuth
-        }, {
-          "key": "LAUNCHDOCK_URL",
-          "value": Meteor.absoluteUrl()
-        }, {
-          "key": "MAIL_URL",
-          "value": process.env.MAIL_URL
-        }
-      ],
+      appEnvVars: {
+        REACTION_SHOP_NAME: doc.shopName,
+        REACTION_EMAIL: doc.email,
+        REACTION_AUTH: doc.password,
+        METEOR_USER: doc.email,
+        LAUNCHDOCK_USERID: launchdockUserId,
+        LAUNCHDOCK_USERNAME: launchdockUsername,
+        LAUNCHDOCK_AUTH: launchdockAuth,
+        LAUNCHDOCK_URL: Meteor.absoluteUrl(),
+        MAIL_URL: process.env.MAIL_URL,
+        NODE: "node"
+      },
       token: doc.token
     };
 
-    Meteor.call('tutum/createStack', stackCreateDetails, launchdockUserId);
+    Meteor.call("rancher/createStack", stackCreateDetails, launchdockUserId);
 
     analytics.identify({
       userId: launchdockUserId,

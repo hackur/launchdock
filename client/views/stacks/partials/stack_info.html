@@ -11,21 +11,24 @@
             <div class="row">
               <div class="col-sm-12">
                 <p><strong>Name:</strong> {{name}}</p>
-                <p><strong>Tutum uuid:</strong> {{uuid}}</p>
+                <p><strong>UUID:</strong> {{uuid}}</p>
                 <p><strong>Created:</strong> {{moment createdAt 'LLL'}}</p>
-                <p><strong>State:</strong> <span class="{{stateClass this}}-text">{{state}}</span></p>
-                {{#if stackUrlReady}}
-                  <p><strong>URL:</strong> <a href="{{publicUrl}}" target="_blank">{{publicUrl}}</a></p>
-                {{/if}}
+                <p><strong>State: </strong>
+                  <span class="{{stateClass this}}-text text-capitalize">
+                    {{state}}
+                  </span>
+                </p>
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-8">
-                <a href="https://dashboard.tutum.co/stack/show/{{uuid}}/" target="_blank">
-                  View stack in Tutum
-                </a>
+            {{#if stackLink}}
+              <div class="row">
+                <div class="col-sm-8">
+                  <a href="{{stackLink}}" target="_blank">
+                    View stack in {{platform}}
+                  </a>
+                </div>
               </div>
-            </div>
+            {{/if}}
           </div>
         </div>
       </div>
@@ -36,8 +39,8 @@
             <div class="row">
               <div class="col-sm-12">
                 <p><strong>Default URL:</strong></p>
-                <a href="{{publicUrl}}" target="_blank">
-                  <p>{{publicUrl}}</p>
+                <a href="{{defaultUrl}}" target="_blank">
+                  <p>{{defaultUrl}}</p>
                 </a>
                 <br>
                 {{#if sslDomainName}}
@@ -45,6 +48,15 @@
                   <a href="https://{{sslDomainName}}" target="_blank">
                     <p>https://{{sslDomainName}}</p>
                   </a>
+                  {{#if isRancher}}
+                    {{#unless isStackPage}}
+                      <button type="submit" id="delete-cert"
+                              class="ladda-button btn btn-danger pull-right"
+                              data-style="slide-left">
+                        <span class="ladda-label">Delete Custom Certificate</span>
+                      </button>
+                    {{/unless}}
+                  {{/if}}
                 {{/if}}
               </div>
             </div>

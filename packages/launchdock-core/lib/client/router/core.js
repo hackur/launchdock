@@ -26,7 +26,10 @@ const mustBeLoggedIn = () => {
 
 Launchdock.routes.private = FlowRouter.group({
   name: "private",
-  triggersEnter: [mustBeLoggedIn]
+  triggersEnter: [mustBeLoggedIn],
+  subscriptions() {
+    this.register("settings", Meteor.subscribe("settings"));
+  }
 });
 
 
