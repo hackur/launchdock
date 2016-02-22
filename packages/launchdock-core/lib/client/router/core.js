@@ -18,15 +18,9 @@ Launchdock.routes.public = FlowRouter.group({
  * Private routes group
  */
 
-const mustBeLoggedIn = () => {
-  if (!Meteor.loggingIn() && !Meteor.userId()) {
-    FlowRouter.go("login");
-  }
-};
-
 Launchdock.routes.private = FlowRouter.group({
   name: "private",
-  triggersEnter: [mustBeLoggedIn],
+  triggersEnter: [AccountsTemplates.ensureSignedIn],
   subscriptions() {
     this.register("settings", Meteor.subscribe("settings"));
   }
