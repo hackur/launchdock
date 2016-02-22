@@ -73,7 +73,22 @@ Alert = {
         showConfirmButton: false
       });
       if (_.isFunction(callback)) {
-        callback()
+        callback();
+      }
+    });
+  },
+
+  input(options, callback) {
+    swal({
+      title: options.title,
+      text: options.text,
+      type: "input",
+      showCancelButton: true,
+      closeOnConfirm: false,
+      animation: "slide-from-top"
+    }, (inputValue) => {
+      if (_.isFunction(callback)) {
+        callback(inputValue);
       }
     });
   },
