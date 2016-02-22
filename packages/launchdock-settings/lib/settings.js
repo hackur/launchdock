@@ -230,12 +230,30 @@ Settings.schema = new SimpleSchema({
     autoform: {
       private: true
     }
-  },  
+  },
 
   sslRootCertificate: {
     type: String,
     optional: true,
     label: 'Root Certificate',
+    autoform: {
+      private: true
+    }
+  },
+
+  intercomAppId: {
+    type: String,
+    optional: true,
+    label: 'App Id',
+    autoform: {
+      private: true
+    }
+  },
+
+  intercomApiKey: {
+    type: String,
+    optional: true,
+    label: 'API key',
     autoform: {
       private: true
     }
