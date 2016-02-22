@@ -1,15 +1,18 @@
 
-Meteor.publish("reaction-account-info", function (id) {
+Meteor.publish("reaction-account-info", function(id) {
   check(id, String);
+  const subName = "reaction-account-info";
+  const uid = this.userId;
 
   if (!this.userId) {
-    return;
+    return [];
   }
 
   const stack = Stacks.findOne({ _id: id });
 
   if (!stack) {
-    return;
+    Logger.warn(`[${subName}] Reaction user ${uid} subscribed to unknown stack id ${id}`);
+    return [];
   }
 
   if (Users.is.owner(this.userId, stack) || Users.is.admin(this.userId)) {
@@ -28,8 +31,9 @@ Meteor.publish("reaction-account-info", function (id) {
           createdAt: 1
         }
       })
-    ]
-  } else {
-    return [];
+    ];
   }
+
+  Logger.warn(`[${subName}] Reaction user ${uid} subscribed to a stack id they don't own: ${id}`);
+  return [];
 });
