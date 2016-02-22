@@ -3,8 +3,8 @@
  */
 Meteor.startup(function() {
   sAlert.config({
-    effect: 'jelly',
-    position: 'bottom-right',
+    effect: "jelly",
+    position: "bottom-right",
     timeout: 3000,
     html: false,
     onRouteClose: false,
@@ -18,31 +18,31 @@ Meteor.startup(function() {
 Notify = {
   success(text, location) {
     sAlert.info(text, {
-      effect: 'stackslide',
-      position: location || 'top'
+      effect: "stackslide",
+      position: location || "top"
     });
   },
 
   info(text, location) {
     sAlert.info(text, {
-      position: location || 'bottom-right'
+      position: location || "bottom-right"
     });
   },
 
   warn(text, location) {
     sAlert.warning(text, {
-      position: location || 'top-right',
+      position: location || "top-right",
       timeout: 7000
     });
   },
 
   error(text, location) {
     sAlert.error(text, {
-      position: location || 'top',
+      position: location || "top",
       timeout: 7000
     });
   }
-}
+};
 
 
 // better namespace for kevohagan:sweetalert
@@ -81,4 +81,4 @@ Alert = {
   error(options) {
     swal(options.title || "Oops!", options.text || "Something went wrong.", "error");
   }
-}
+};
