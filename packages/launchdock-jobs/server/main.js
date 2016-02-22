@@ -1,9 +1,10 @@
 
 Logger = Logger.child({ meteor_package: "launchdock:jobs" });
 
-
-// define jobs collection
-Launchdock.Jobs = JobCollection("jobs");
+// custom event logging for jobs
+// Launchdock.Jobs.events.on("call", (event) => {
+//   Logger.info("Job queue call", event);
+// });
 
 
 // custom error logging for jobs
