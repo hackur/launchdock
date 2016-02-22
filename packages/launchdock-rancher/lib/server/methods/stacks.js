@@ -103,9 +103,9 @@ Meteor.methods({
         defaultDomain: siteUrl,
         rancherId: rancherStack.data.id,
         uuid: rancherStack.data.uuid,
-        state: rancherStack.data.state,
+        state: rancherStack.data.state
       }
-    }, (err, num) => {
+    }, (err) => {
       if (err) {
         logger.error(err);
       } else {
@@ -165,7 +165,7 @@ Meteor.methods({
     let mongo1RancherId;
     try {
       const service = rancher.create("services", mongo1);
-      const id = Services.insert({
+      Services.insert({
         name: service.data.name,
         imageName: service.data.launchConfig.imageUuid,
         rancherId: service.data.id,
@@ -472,7 +472,7 @@ Meteor.methods({
 
     try {
       const res = rancher.delete("stacks", stack.rancherId);
-      
+
       if (res.statusCode == 200) {
         Stacks.remove({ _id: id });
         Services.remove({ stackId: id });

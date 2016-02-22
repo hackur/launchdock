@@ -5,28 +5,26 @@
 ReactiveTable.publish("all-users", function() {
   if (Users.is.admin(this.userId)) {
     return Users;
-  } else {
-    return [];
   }
+  return [];
 }, { roles: "customer" });
 
 
 // single user account
-Meteor.publish("user-account", function (id) {
-  if (Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
+Meteor.publish("user-account", function(id) {
+  if (Roles.userIsInRole(this.userId, ["admin", "manager"])) {
     return [
       Users.find({ _id: id }),
       Stacks.find({ userId: id }),
       Services.find({ userId: id })
     ];
-  } else {
-    return null;
   }
+  return [];
 });
 
 
 // user logged in state
-Meteor.publish("user-status", function () {
+Meteor.publish("user-status", function() {
   if (Users.is.admin(this.userId)) {
     return Users.find({}, {
       fields: {
@@ -36,29 +34,28 @@ Meteor.publish("user-status", function () {
         username: 1
       }
     });
-  } else {
-    return null;
   }
+  return [];
 });
 
 
 // Roles
-Meteor.publish(null, function () {
+Meteor.publish(null, function() {
   return Meteor.roles.find();
 });
 
 
 // accounts and invites management page
-Meteor.publish('accounts-management', function () {
+Meteor.publish("accounts-management", function() {
   // only publish to admins and managers
-  if (Roles.userIsInRole(this.userId, ['manager', 'admin'])) {
+  if (Roles.userIsInRole(this.userId, ["manager", "admin"])) {
 
     // by default, only publish customers (for managers)
-    let roles = ['customer'];
+    let roles = ["customer"];
 
     // but publish all users for admins
-    if (Roles.userIsInRole(this.userId, ['admin'])) {
-      roles = ['customer', 'manager', 'admin'];
+    if (Roles.userIsInRole(this.userId, ["admin"])) {
+      roles = ["customer", "manager", "admin"];
     }
 
     return [
@@ -81,14 +78,13 @@ Meteor.publish('accounts-management', function () {
         }
       })
     ];
-  } else {
-    return null;
   }
+  return [];
 });
 
 
 // invite link landing page
-Meteor.publish('invite', function (token) {
+Meteor.publish("invite", function(token) {
   check(token, String);
   return Invitations.find({ token: token }, {
     fields: {

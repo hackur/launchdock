@@ -1,2 +1,2 @@
 
-Users.permit(['insert', 'update', 'remove']).ifHasRole('admin').apply();
+Users.permit(["insert", "update", "remove"]).ifHasRole("admin").apply();

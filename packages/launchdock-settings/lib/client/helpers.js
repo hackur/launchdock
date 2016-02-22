@@ -1,5 +1,4 @@
 
-Template.registerHelper('getSetting', function(setting, defaultValue){
-  setting = Settings.get(setting, defaultValue);
-  return setting;
+Template.registerHelper("getSetting", (setting, defaultValue) => {
+  return Settings.get(setting, defaultValue);
 });

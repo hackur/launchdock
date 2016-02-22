@@ -8,11 +8,12 @@ Users.is = {};
 /**
  * Check if a user is an admin
  * @param {Object|String} userOrUserId - The user or their userId
+ * @return {Boolean} returns true if user is an admin, false otherwise
  */
-Users.is.admin = function (userOrUserId) {
+Users.is.admin = (userOrUserId) => {
   try {
-    var user = Users.getUser(userOrUserId);
-    return !!user && Roles.userIsInRole(user, ['admin']);
+    const user = Users.getUser(userOrUserId);
+    return !!user && Roles.userIsInRole(user, ["admin"]);
   } catch (e) {
     return false; // user not logged in
   }
@@ -23,17 +24,17 @@ Users.is.admin = function (userOrUserId) {
  * Check if a user owns a document
  * @param {Object|String} userOrUserId - The user or their userId
  * @param {Object} doc - The document to check
+ * @return {Boolean} returns true if user owns a document, false otherwise
  */
-Users.is.owner = function (userOrUserId, doc) {
+Users.is.owner = (userOrUserId, doc) => {
   try {
-    var user = Users.getUser(userOrUserId);
+    const user = Users.getUser(userOrUserId);
     if (!!doc.userId) {
       // case 1: use document.userId to check
       return user._id === doc.userId;
-    } else {
-      // case 2: document is a user, use _id to check
-      return user._id === doc._id;
     }
+    // case 2: document is a user, use _id to check
+    return user._id === doc._id;
   } catch (e) {
     return false; // user not logged in
   }
@@ -45,7 +46,7 @@ Users.is.owner = function (userOrUserId, doc) {
  * https://atmospherejs.com/dburles/collection-helpers
  */
 Users.helpers({
-  isAdmin: function() {
+  isAdmin() {
     return Users.is.admin(this);
   }
 });

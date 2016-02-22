@@ -14,7 +14,7 @@ Template.stacks_list_actions.events({
           });
           return;
         }
-        Notify.success("Successfully deleted!", "top-right")
+        Notify.success("Successfully deleted!", "top-right");
       });
     } else {
       Alert.confirm({

@@ -1,2 +1,2 @@
 
-Logger = Logger.child({ meteor_package: 'launchdock:users' });
+Logger = Logger.child({ meteor_package: "launchdock:users" });
