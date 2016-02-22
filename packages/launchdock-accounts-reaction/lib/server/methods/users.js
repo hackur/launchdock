@@ -222,6 +222,68 @@ Meteor.methods({
     });
 
     return true;
+  },
+
+
+  "reaction/bulkInvite"(amount) {
+
+    const logger = Logger.child({
+      meteor_method: "reaction/bulkInvite",
+      userId: this.userId
+    });
+
+    if (!Users.is.admin(this.userId)) {
+      const err = "AUTH ERROR: Must be admin.";
+      logger.error(err);
+      throw new Meteor.Error(err);
+    }
+
+    check(amount, Match.Optional(Number));
+
+    const total = amount || 100;
+
+    let page = 0;
+    let users = [];
+
+    for (; users.length < total;) {
+      let options = {
+        page: page++
+      };
+
+      const pageOfUsers = Meteor.call("intercom/getUsers", options);
+
+      pageOfUsers.forEach((user) => {
+        if (!user.email || user.custom_attributes.invited) {
+          return;
+        }
+        users.push(user);
+      });
+    }
+
+    users.forEach((user) => {
+      Meteor.call("sendReactionInvite", {
+        email: user.email,
+        role: "customer"
+      }, (err) => {
+        if (!err) {
+          logger.info(`Successfully invited ${user.email}`);
+          Meteor.call("intercom/updateUser", {
+            id: user.id,
+            email: user.email,
+            updates: {
+              plan: "none",
+              invited: true,
+              invite_accepted: false
+            }
+          });
+          logger.info(`Updated user details on Intercom for user ${user.email}`);
+        }
+      });
+    });
+
+    logger.info(`Successfully invited ${users.length} users`);
+
+    return true;
   }
 
 });
