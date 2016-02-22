@@ -251,24 +251,34 @@ Meteor.methods({
 
     check(amount, Match.Optional(Number));
 
-    const total = amount || 100;
+    const total = amount || 10;
 
     let page = 0;
     let users = [];
 
+    // keep grabbing more users from intercom until we have the amount
     for (; users.length < total;) {
-      let options = {
+      // get the next page each time around
+      const options = {
         page: page++
       };
 
+      // gets 50 users per call
       const pageOfUsers = Meteor.call("intercom/getUsers", options);
 
+      // make sure they have an email and haven't already been invited
       pageOfUsers.forEach((user) => {
         if (!user.email || user.custom_attributes.invited) {
           return;
         }
         users.push(user);
       });
+    }
+
+    // if we went over, remove the last entries until
+    // it exactly matches the specified amount
+    if (users.length > total) {
+      users.splice(amount);
     }
 
     users.forEach((user) => {
