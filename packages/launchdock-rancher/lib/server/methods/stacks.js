@@ -310,6 +310,7 @@ Meteor.methods({
           ROOT_URL: `https://${siteUrl}`,
           VIRTUAL_HOST: virtualHosts,
           PORT: 80,
+          NODE: "node",
           FORCE_SSL: "yes"
         },
         labels: {
