@@ -212,12 +212,23 @@ Meteor.methods({
     const msg = `${invite.email} has accepted their invite to Reaction!`;
     Meteor.call("util/slackMessage", msg);
 
+    analytics.identify({
+      userId: userId,
+      traits: {
+        email: options.email,
+        shop_name: options.shopName,
+        plan: "trial",
+        invite_accepted: true
+      }
+    });
+
     analytics.track({
       userId: userId,
       event: "Reaction invite accepted",
       properties: {
-        shopName: options.shopName,
-        plan: "trial"
+        shop_name: options.shopName,
+        plan: "trial",
+        invite_accepted: true
       }
     });
 
