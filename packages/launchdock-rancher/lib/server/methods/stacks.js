@@ -149,7 +149,8 @@ Meteor.methods({
           MONGO_APP_USER: mongoUser,
           MONGO_APP_PASSWORD: mongoPw,
           REP_SET: mongoRepSetId,
-          MONGO_APP_DATABASE: mongoDatabase
+          MONGO_APP_DATABASE: mongoDatabase,
+          MONGO_DB_PATH: `/data/${stackId}`
         },
         labels: {
           "io.rancher.scheduler.affinity:host_label": "host_type=mongo1"
@@ -190,7 +191,8 @@ Meteor.methods({
         hostname: `mongo2-${stackId}`,
         imageUuid: `docker:${mongoImage}`,
         environment: {
-          REP_SET: mongoRepSetId
+          REP_SET: mongoRepSetId,
+          MONGO_DB_PATH: `/data/${stackId}`
         },
         labels: {
           "io.rancher.scheduler.affinity:host_label": "host_type=mongo2"
