@@ -38,20 +38,25 @@ Template.send_invite.events({
   "click button.bulk-invite"(e) {
     e.preventDefault();
 
-    Alert.confirm({
-      title: "Are you sure?",
-      text: "You're about to invite a bunch of users!"
-    }, () => {
-      Meteor.call("reaction/bulkInvite", (err) => {
-        if (err) {
-          Alert.error({
-            title: "Oops!",
-            text: "Something went wrong inviting users."
-          });
-        }
-        Notify.info("Successfully invited bulk users!", "top-right");
+    Alert.input({
+      title: "Bulk invite users from Intercom",
+      text: "How many users would you like to invite?"
+    }, (userCount) => {
+      Alert.confirm({
+        title: "Are you absolutely sure?!",
+        text: `Do you really want to send an invite email to ${userCount} users?`
+      }, () => {
+        Meteor.call("reaction/bulkInvite", Number(userCount), (err) => {
+          if (err) {
+            Alert.error({
+              title: "Oops!",
+              text: "Something went wrong inviting users. See server errors."
+            });
+            return;
+          }
+          Notify.info(`Successfully invited ${userCount.toString()} users!`, "top-right");
+        });
       });
     });
-
   }
 });
