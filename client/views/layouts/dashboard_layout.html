@@ -1,12 +1,13 @@
 <template name="dashboard_layout">
-  {{#if subsReady}}
-    {{#if currentUser}}
-      {{> top_nav }}
+  <div id="dash-wrapper">
+    {{#if subsReady}}
+      {{> side_nav}}
+      <main id="dash-content-wrapper" class="main-content">
+        <button id="sidenav-toggle" class="btn btn-default">Menu</button>
+        {{>Template.dynamic template=content}}
+      </main>
+    {{else}}
+      {{>spinner}}
     {{/if}}
-    <main class="main-content container">
-      {{>Template.dynamic template=content}}
-    </main>
-  {{else}}
-    {{>spinner}}
-  {{/if}}
+  </div>
 </template>
