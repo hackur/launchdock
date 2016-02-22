@@ -33,5 +33,25 @@ Template.send_invite.events({
     } else {
       Notify.warn("Please set an email and at least one role!");
     }
+  },
+
+  "click button.bulk-invite"(e) {
+    e.preventDefault();
+
+    Alert.confirm({
+      title: "Are you sure?",
+      text: "You're about to invite a bunch of users!"
+    }, () => {
+      Meteor.call("reaction/bulkInvite", (err) => {
+        if (err) {
+          Alert.error({
+            title: "Oops!",
+            text: "Something went wrong inviting users."
+          });
+        }
+        Notify.info("Successfully invited bulk users!", "top-right");
+      });
+    });
+
   }
 });

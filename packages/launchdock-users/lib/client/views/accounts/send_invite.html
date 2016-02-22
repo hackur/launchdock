@@ -1,7 +1,12 @@
 <template name="send_invite">
-  <button class="btn btn-primary invite-user" data-toggle="modal" data-target="#invite-user-modal">
+  <button class="btn btn-primary" data-toggle="modal" data-target="#invite-user-modal">
     Send Invitation
   </button>
+  {{#if isInRole 'admin'}}
+    <button class="btn btn-danger bulk-invite pull-right">
+      Send Bulk Invites
+    </button>
+  {{/if}}
   <div class="modal fade" id="invite-user-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -32,7 +37,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">Send</button>
+          <button type="submit" class="btn btn-primary invite-user">Send</button>
         </div>
       </div>
     </div>
