@@ -1,4 +1,3 @@
-
 // official Intercom API client for Node
 // https://www.npmjs.com/package/intercom-client
 // const Intercom = Npm.require('intercom-client');
@@ -83,14 +82,14 @@ Meteor.methods({
     const opts = options || {};
 
     check(opts, {
-      id: Match.Optional(String),
+      user_id: Match.Optional(String),
       email: Match.Optional(String),
       updates: Object
     });
 
     // either the user id or email must be provided
     if (!opts.id && !opts.email) {
-      const err = "Need to provide an Intercom user ID or email.";
+      const err = "Need to provide a user ID or email.";
       logger.error(err);
       throw new Meteor.Error(err);
     }
@@ -109,9 +108,9 @@ Meteor.methods({
 
     let data = {};
 
-    // set the id or email
+    // set the user_id or email
     if (opts.id) {
-      data.id = opts.id;
+      data.user_id = opts.user_id;
     } else if (opts.email) {
       data.email = opts.email;
     }

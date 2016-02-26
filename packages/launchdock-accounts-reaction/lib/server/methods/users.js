@@ -67,24 +67,6 @@ Meteor.methods({
 
     Meteor.call("rancher/createStack", stackCreateDetails, launchdockUserId);
 
-    analytics.identify({
-      userId: launchdockUserId,
-      traits: {
-        email: doc.email,
-        username: launchdockUsername,
-        shop_name: doc.shopName,
-        plan: "trial"
-      }
-    });
-
-    analytics.track({
-      userId: launchdockUserId,
-      event: "New Reaction shop launched",
-      properties: {
-        shop_name: doc.shopName,
-        plan: "trial"
-      }
-    });
 
     return launchdockUserId;
   },
@@ -143,6 +125,18 @@ Meteor.methods({
     Meteor.call("util/slackMessage", msg);
 
     logger.info(`Invite successfully sent to ${options.email}`);
+
+    Meteor.call("intercom/updateUser", {
+      email: options.email,
+      updates: {
+        invited: true,
+        invite_accepted: false
+      }
+    }, (err) => {
+      if (!err) {
+        logger.info(`Updated user details on Intercom for user ${user.email}`);
+      }
+    });
 
     return true;
   },
@@ -212,20 +206,10 @@ Meteor.methods({
     const msg = `${invite.email} has accepted their invite to Reaction!`;
     Meteor.call("util/slackMessage", msg);
 
-    analytics.identify({
-      userId: userId,
-      traits: {
-        email: options.email,
-        shop_name: options.shopName,
-        plan: "trial",
-        invite_accepted: true
-      }
-    });
-
-    analytics.track({
-      userId: userId,
-      event: "Reaction invite accepted",
-      properties: {
+    Meteor.call("intercom/updateUser", {
+      user_id: userId,
+      email: options.email,
+      updates: {
         shop_name: options.shopName,
         plan: "trial",
         invite_accepted: true
@@ -288,16 +272,6 @@ Meteor.methods({
       }, (err) => {
         if (!err) {
           logger.info(`Successfully invited ${user.email}`);
-          Meteor.call("intercom/updateUser", {
-            id: user.id,
-            email: user.email,
-            updates: {
-              plan: "none",
-              invited: true,
-              invite_accepted: false
-            }
-          });
-          logger.info(`Updated user details on Intercom for user ${user.email}`);
         }
       });
     });
