@@ -5,7 +5,7 @@
  */
 
 // https://www.npmjs.com/package/bunyan-loggly
-var Bunyan2Loggly = Npm.require('bunyan-loggly').Bunyan2Loggly;
+const Bunyan2Loggly = Npm.require("bunyan-loggly").Bunyan2Loggly;
 
 const logLevel = process.env.LAUNCHDOCK_LOG_LEVEL || "INFO";
 
@@ -19,20 +19,25 @@ if (process.env.VELOCITY_CI === "1") {
 
 // default console config
 let streams = [{
-  level: 'info',
-  stream: logLevel !== "DEBUG" ? formatOut : process.stdout,
-}]
+  level: "info",
+  stream: logLevel !== "DEBUG" ? formatOut : process.stdout
+}];
 
 // Loggly config (only used in production)
 if (Launchdock.isProduction()) {
-  const logglyStream = {
-    type: 'raw',
-    stream: new Bunyan2Loggly({
-      token: process.env.LOGGLY_TOKEN,
-      subdomain: process.env.LOGGLY_SUBDOMAIN,
-    })
+  const logglyToken = process.env.LOGGLY_TOKEN;
+  const logglySubdomain = process.env.LOGGLY_SUBDOMAIN;
+
+  if (logglyToken && logglySubdomain) {
+    const logglyStream = {
+      type: "raw",
+      stream: new Bunyan2Loggly({
+        token: logglyToken,
+        subdomain: logglySubdomain
+      })
+    };
+    streams.push(logglyStream);
   }
-  streams.push(logglyStream);
 }
 
 // create default logger instance
