@@ -41,7 +41,6 @@ aslagle:reactive-table
 meteorhacks:ssr
 percolate:synced-cron
 percolate:migrations
-ongoworks:bunyan-logger
 vsivsi:job-collection
 meteorhacks:kadira
 

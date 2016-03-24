@@ -1,21 +1,16 @@
 /**
  * Global logging config
- * Using ongoworks:bunyan-logger
- * https://atmospherejs.com/ongoworks/bunyan-logger
  */
-
-// https://www.npmjs.com/package/bunyan-loggly
+const bunyan = Npm.require("bunyan");
+const bunyanFormat = Npm.require("bunyan-format");
 const Bunyan2Loggly = Npm.require("bunyan-loggly").Bunyan2Loggly;
 
 const logLevel = process.env.LAUNCHDOCK_LOG_LEVEL || "INFO";
 
-if (process.env.VELOCITY_CI === "1") {
-  formatOut = process.stdout;
-} else {
-  formatOut = logger.format({
-    levelInString: false
-  });
-}
+// console output formatting
+const formatOut = bunyanFormat({
+  outputMode: "short"
+});
 
 // default console config
 let streams = [{
@@ -41,7 +36,7 @@ if (Launchdock.isProduction()) {
 }
 
 // create default logger instance
-Logger = logger.bunyan.createLogger({
+Logger = bunyan.createLogger({
   name: "Launchdock",
   streams: streams
 });
