@@ -20,10 +20,11 @@ Template.stack_services_links.helpers({
     if (service && stack) {
       if (stack.platform === "Rancher") {
         const rancherHost = Settings.get("rancherApiUrl");
-        if (!rancherHost) {
+        const rancherEnv = Settings.get("rancherDefaultEnv");
+        if (!rancherHost || !rancherEnv) {
           return null;
         }
-        return `${rancherHost}/apps/${stack.rancherId}/services/${service.rancherId}/`;
+        return `${rancherHost}/env/${rancherEnv}/apps/stacks/${stack.rancherId}/services/${service.rancherId}/`;
       }
       if (stack.platform === "Tutum") {
         return `https://dashboard.tutum.co/container/service/show/${service.uuid}/`;
