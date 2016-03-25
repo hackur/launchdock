@@ -17,10 +17,11 @@ Template.stack_info.helpers({
 
     if (stack.platform === "Rancher") {
       const rancherHost = Settings.get("rancherApiUrl");
-      if (!rancherHost) {
+      const rancherEnv = Settings.get("rancherDefaultEnv");
+      if (!rancherHost || !rancherEnv) {
         return null;
       }
-      return `${rancherHost}/apps/${stack.rancherId}`;
+      return `${rancherHost}/env/${rancherEnv}/apps/stacks/${stack.rancherId}`;
     } else if (stack.platform === "Tutum") {
       return `https://dashboard.tutum.co/stack/show/${stack.uuid}/`;
     }
