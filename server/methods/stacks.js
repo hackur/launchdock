@@ -401,9 +401,9 @@ export default function() {
                 const balancerId = Settings.get('rancherDefaultBalancer');
 
                 if (!balancerId) {
-                  const err = 'No default load balancer configured.';
-                  logger.error(err);
-                  throw new Meteor.Error(err);
+                  const e = 'No default load balancer configured.';
+                  logger.error(e);
+                  throw new Meteor.Error(e);
                 }
 
                 // link the load balancer to the app service
@@ -484,7 +484,7 @@ export default function() {
       try {
         const res = rancher.delete('stacks', stack.rancherId);
 
-        if (res.statusCode == 200) {
+        if (res.statusCode === 200) {
           Stacks.remove({ _id: id });
           Services.remove({ stackId: id });
         }

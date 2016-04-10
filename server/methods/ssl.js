@@ -180,7 +180,7 @@ export default function() {
       let lbCerts = lb.data.certificateIds || [];
 
       // check if certificate is in use on the load balancer
-      if (lbCerts.find(certId => certId === certId)) {
+      if (lbCerts.find(certId => certId === certId)) { // eslint-disable-line
         // remove certificate from the array
         lbCertsUpdated = _.without(lbCerts, certId);
 
