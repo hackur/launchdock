@@ -1,4 +1,4 @@
-import emailAdmins from './email_admins';
+import { emailAdmins } from './utils';
 
 export {
   emailAdmins

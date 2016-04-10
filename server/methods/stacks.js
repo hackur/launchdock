@@ -423,6 +423,7 @@ export default function() {
       });
 
       // notify admins via email if in production
+      // TODO: create settings for admin emails
       if (Launchdock.isProduction()) {
         const currentUser = Users.findOne({ _id: user });
 

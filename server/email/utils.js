@@ -22,7 +22,7 @@ export function emailAdmins(subject, content, isHtml) {
 
   // find all admins
   // TODO: maybe this instead?  Roles.getUsersInRole('admin').fetch()
-  const admins = Users.find({ roles: { $in: ['admin'] } }).fetch();
+  const admins = Users.find({ roles: { $in: ['superuser'] } }).fetch();
 
   // send the email to each admin
   admins.forEach((admin) => {
