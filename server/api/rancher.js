@@ -10,18 +10,25 @@ export default class Rancher {
   constructor(apiKey, secret, env) {
     this.apiKey = apiKey || Settings.get('rancherApiKey');
     this.apiSecret = secret || Settings.get('rancherApiSecret');
-    this.apiCredentials = new Buffer(`${this.apiKey}:${this.apiSecret}`).toString('base64');
-    this.apiVersion = '/v1/';
     this.apiBaseUrl = Settings.get('rancherApiUrl');
-    this.hostname = this.apiBaseUrl.substr(this.apiBaseUrl.indexOf('//') + 2);
-    this.apiFullUrl = this.apiBaseUrl + this.apiVersion;
     this.env = env || Settings.get('rancherDefaultEnv');
 
-    this.checkCredentials = function() {
-      if (!this.apiKey || !this.apiSecret) {
-        throw new Meteor.Error('Missing Rancher API credentials.');
-      }
-    };
+    if (!this.apiKey || !this.apiSecret) {
+      throw new Meteor.Error('Missing Rancher API credentials.');
+    }
+
+    if (!this.apiBaseUrl) {
+      throw new Meteor.Error('Missing Rancher host URL.');
+    }
+
+    if (!this.env) {
+      throw new Meteor.Error('Missing default Rancher environment.');
+    }
+
+    this.hostname = this.apiBaseUrl.substr(this.apiBaseUrl.indexOf('//') + 2);
+    this.apiVersion = '/v1/';
+    this.apiFullUrl = this.apiBaseUrl + this.apiVersion;
+    this.apiCredentials = new Buffer(`${this.apiKey}:${this.apiSecret}`).toString('base64');
 
     // fix Rancher's horrible API resource naming
     // (supposed to be fixed in API V2)

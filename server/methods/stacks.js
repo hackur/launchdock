@@ -52,8 +52,6 @@ export default function() {
 
       const rancher = new Rancher();
 
-      rancher.checkCredentials();
-
       if (Stacks.findOne({ name: doc.name, userId: user })) {
         const err = `A stack called ${doc.name} already exists.`;
         logger.error(err);
@@ -474,8 +472,6 @@ export default function() {
       check(id, String);
 
       const rancher = new Rancher();
-
-      rancher.checkCredentials();
 
       const stack = Stacks.findOne(id);
 

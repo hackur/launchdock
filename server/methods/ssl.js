@@ -40,7 +40,6 @@ export default function() {
       }
 
       const rancher = new Rancher();
-      rancher.checkCredentials();
 
       // TODO: check for existing cert and do an update if one exists
 
@@ -161,7 +160,6 @@ export default function() {
       }
 
       const rancher = new Rancher();
-      rancher.checkCredentials();
 
       const balancerId = Settings.get('rancherDefaultBalancer');
 
