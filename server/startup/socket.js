@@ -11,7 +11,6 @@ import { Logger, Rancher } from '/server/api';
 const startEventsStream = () => {
 
   const rancher = new Rancher();
-  rancher.checkCredentials();
 
   // grab Rancher credentials
   const accessKey = rancher.apiKey;
