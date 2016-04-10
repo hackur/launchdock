@@ -71,16 +71,5 @@ juliancwirko:s-alert-slide
 juliancwirko:s-alert-scale
 juliancwirko:s-alert-bouncyflip
 
-launchdock:accounts-reaction
-launchdock:analytics
-launchdock:core
-launchdock:email
-launchdock:lib
-launchdock:migrations
-launchdock:rancher
-launchdock:settings
-launchdock:stripe
-launchdock:tutum
-launchdock:users
 
 jeremy:stripe
