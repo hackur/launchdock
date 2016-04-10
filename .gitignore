@@ -1,3 +1,4 @@
+node_modules
 private/certs
 lib-cov
 *.seed
