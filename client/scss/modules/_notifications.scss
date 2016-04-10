@@ -6,7 +6,7 @@
 }
 
 // Center the text in top alerts
-.s-alert-top p {
+.s-alert-top > .s-alert-box-inner {
   width: 100%;
   text-align: center;
 }

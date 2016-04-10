@@ -1,3 +1,4 @@
+import { Notify, Alert } from '/client/modules/core/configs/notifications';
 
 Template.stacks_list_actions.events({
   "click .delete-stack"(e, t) {
