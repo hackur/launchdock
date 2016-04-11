@@ -1,5 +1,5 @@
 # Launchdock
-Launchdock is an automated orchestration tool built with [Meteor.js](https://meteor.com) that uses [Docker](https://docker.com) and [Tutum](https://tutum.co) to configure and launch Meteor stacks that consist of a Meteor app, MongoDB replica set, and HaProxy load balancer(s) - all on your own infrastructure with any major cloud provider.
+Launchdock is an automated [Docker](https://docker.com) orchestration tool built with [Meteor.js](https://meteor.com) that uses either [Docker Cloud](https://cloud.docker.com/) or [Rancher](https://rancher.com)to configure and launch Meteor application container stacks that consist of a Meteor app, MongoDB replica set, and HaProxy load balancer(s) - all on your own infrastructure with any major cloud provider.
 [![Code Climate](https://codeclimate.com/github/reactioncommerce/launchdock/badges/gpa.svg)](https://codeclimate.com/github/reactioncommerce/launchdock)
 
 ## Setup
