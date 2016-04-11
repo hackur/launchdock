@@ -1,6 +1,8 @@
-# Launchdock
-Launchdock is an automated [Docker](https://docker.com) orchestration tool built with [Meteor.js](https://meteor.com) that uses either [Docker Cloud](https://cloud.docker.com/) or [Rancher](https://rancher.com) to configure and launch Meteor application container stacks that consist of a Meteor app, MongoDB replica set, and HaProxy load balancer(s) - all on your own infrastructure with any major cloud provider.
+# Launchdock 
 [![Code Climate](https://codeclimate.com/github/reactioncommerce/launchdock/badges/gpa.svg)](https://codeclimate.com/github/reactioncommerce/launchdock)
+
+Launchdock is an automated [Docker](https://docker.com) orchestration tool built with [Meteor.js](https://meteor.com) that uses either [Docker Cloud](https://cloud.docker.com/) or [Rancher](https://rancher.com) to configure and launch Meteor application container stacks that consist of a Meteor app, MongoDB replica set, and HaProxy load balancer(s) - all on your own infrastructure with any major cloud provider.
+
 
 ## Setup
 The first thing you will need to do is deploy Launchdock itself. Any standard Meteor deployment method is supported, but the recommended approach is to use [the Docker family of tools](https://www.docker.com/docker-toolbox). Specifically, we'll be using Docker to build a container image of Launchdock, then use [Docker Machine](https://docs.docker.com/machine/) to set up a server on AWS and deploy the container to it. ([Most major providers are an option](https://docs.docker.com/machine/drivers/), but we'll be using AWS for the duration of these docs). Ok, let's get started!
