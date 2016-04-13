@@ -5,12 +5,8 @@ mongo
 blaze-html-templates
 gadicc:blaze-react-component # temporary fix until Blaze is totally gone
 # static-html
-session
 tracker
-logging
-reload
 random
-ejson
 check
 ecmascript
 accounts-base
@@ -25,7 +21,7 @@ ddp-rate-limiter
 less
 
 kadira:flow-router
-std:react-accounts-ui
+std:accounts-ui
 std:accounts-basic
 aldeed:simple-schema
 aldeed:collection2
