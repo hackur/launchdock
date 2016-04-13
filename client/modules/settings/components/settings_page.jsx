@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import TextArea from 'react-textarea-autosize';
 
 class SettingsPage extends React.Component {
   constructor(props) {
@@ -182,6 +183,96 @@ class SettingsPage extends React.Component {
                     name='rancherDefaultBalancer'
                     className='form-control'
                     value={settings.rancherDefaultBalancer}
+                    onChange={this.handleStateChange.bind(this)} />
+                </div>
+
+                <div className='form-group'>
+                  <label className='control-label'>
+                    <span>Default Certificate ID</span>
+                  </label>
+                  <input
+                    type='text'
+                    name='rancherDefaultCert'
+                    className='form-control'
+                    value={settings.rancherDefaultCert}
+                    onChange={this.handleStateChange.bind(this)} />
+                </div>
+
+                <Row className='settings-group-heading'><h3>SSL</h3></Row>
+
+                <div className='form-group'>
+                  <label className='control-label'>
+                    <span>Private Key</span>
+                  </label>
+                  <TextArea
+                    rows={6}
+                    type='text'
+                    name='sslPrivateKey'
+                    className='form-control'
+                    value={settings.sslPrivateKey}
+                    onChange={this.handleStateChange.bind(this)} />
+                </div>
+
+                <div className='form-group'>
+                  <label className='control-label'>
+                    <span>Public Certificate</span>
+                  </label>
+                  <TextArea
+                    rows={6}
+                    name='sslCertificate'
+                    className='form-control'
+                    value={settings.sslCertificate}
+                    onChange={this.handleStateChange.bind(this)} />
+                </div>
+
+                <div className='form-group'>
+                  <label className='control-label'>
+                    <span>Root Certificate</span>
+                  </label>
+                  <TextArea
+                    rows={6}
+                    name='sslRootCertificate'
+                    className='form-control'
+                    value={settings.sslRootCertificate}
+                    onChange={this.handleStateChange.bind(this)} />
+                    <div className="info-text">(optional)</div>
+                </div>
+
+                <Row className='settings-group-heading'><h3>AWS</h3></Row>
+
+                <div className='form-group'>
+                  <label className='control-label'>
+                    <span>Access Key</span>
+                  </label>
+                  <input
+                    type='text'
+                    name='awsKey'
+                    className='form-control'
+                    value={settings.awsKey}
+                    onChange={this.handleStateChange.bind(this)} />
+                </div>
+
+                <div className='form-group'>
+                  <label className='control-label'>
+                    <span>Secret Key</span>
+                  </label>
+                  <input
+                    type='text'
+                    name='awsSecret'
+                    className='form-control'
+                    value={settings.awsSecret}
+                    onChange={this.handleStateChange.bind(this)} />
+                </div>
+
+                <div className='form-group'>
+                  <label className='control-label'>
+                    <span>Region</span>
+                  </label>
+                  <input
+                    type='text'
+                    name='awsRegion'
+                    className='form-control'
+                    value={settings.awsRegion}
                     onChange={this.handleStateChange.bind(this)} />
                 </div>
 
