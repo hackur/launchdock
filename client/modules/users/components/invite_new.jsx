@@ -17,7 +17,7 @@ class InviteNew extends React.Component {
   sendInvite(e) {
     e.preventDefault();
     const { sendInvite } = this.props;
-    const { email, role, modal } = this.refs;
+    const { email, role } = this.refs;
     sendInvite(email.value, role.value);
     this.setState({ showModal: false });
   }
@@ -39,7 +39,7 @@ class InviteNew extends React.Component {
             <Modal.Title>Send Invitation</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <form id='send-invite-form'>
+            <form id='send-invite-form' onSubmit={this.sendInvite.bind(this)}>
               <div className='form-group'>
                 <label>Email address</label>
                 <input ref='email' type='email' className='form-control' name='invite-user-email' />

@@ -1,8 +1,14 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Table, Button } from 'react-bootstrap';
 import InviteNew from '../containers/invite_new';
+import moment from 'moment';
 
 class InvitesList extends React.Component {
+
+  revoke(id, e) {
+    const { revokeInvite } = this.props;
+    revokeInvite(id);
+  }
 
   render() {
     const { invites } = this.props;
@@ -16,9 +22,10 @@ class InvitesList extends React.Component {
                 <h3>Invitations <small className='text-muted'>({'openInviteCount'})</small></h3>
                 <hr/>
                 <InviteNew />
+                <br/>
               </Col>
             </Row>
-            {invites > 0 ?
+            {invites.length > 0 ?
               <Row>
                 <Col sm={12}>
                   <Table bordered>
@@ -41,7 +48,10 @@ class InvitesList extends React.Component {
                               <small>({moment(invite.createdAt).fromNow()})</small>
                             </td>
                             <td>
-                              <Button bsStyle='danger' className='revoke-invite'>
+                              <Button
+                                bsStyle='danger'
+                                className='revoke-invite'
+                                onClick={this.revoke.bind(this, invite._id)}>
                                 Revoke
                               </Button>
                             </td>
@@ -61,5 +71,10 @@ class InvitesList extends React.Component {
     );
   }
 }
+
+InvitesList.propTypes = {
+  invites: React.PropTypes.array.isRequired,
+  revokeInvite: React.PropTypes.func.isRequired
+};
 
 export default InvitesList;

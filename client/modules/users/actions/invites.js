@@ -29,6 +29,22 @@ export default {
     } else {
       Notify.warn('Please set an email and at least one role!');
     }
+  },
+
+  revokeInvite({ Meteor, Roles, Alert }, id) {
+    Alert.confirm({
+      title: 'Are you sure?',
+      text: 'There\'s no going back!'
+    }, () => {
+      Meteor.call('revokeInvitation', id, (err, res) => {
+        if (err) {
+          Alert.error({
+            title: 'Oops!',
+            text: `Something went wrong revoking the invite. <br> ${err}`
+          });
+        }
+      });
+    });
   }
 
 };

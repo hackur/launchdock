@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Table, Button, ButtonToolbar } from 'react-bootstrap';
-import InvitesList from './invites_list.jsx';
+import InvitesList from '../containers/invites_list';
 
 class UsersList extends React.Component {
 
