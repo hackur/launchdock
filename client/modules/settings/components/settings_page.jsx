@@ -62,6 +62,7 @@ class SettingsPage extends React.Component {
                     className='form-control'
                     value={settings.adminEmail}
                     onChange={this.handleStateChange.bind(this)} />
+                  <div className='info-text'>(used for automated emails)</div>
                 </div>
 
                 <div className='form-group'>
@@ -74,6 +75,9 @@ class SettingsPage extends React.Component {
                     className='form-control'
                     value={settings.defaultAppImage}
                     onChange={this.handleStateChange.bind(this)} />
+                  <div className='info-text'>
+                    (all stacks will launch this unless specified otherwise)
+                  </div>
                 </div>
 
                 <div className='form-group'>
@@ -98,6 +102,7 @@ class SettingsPage extends React.Component {
                     className='form-control'
                     value={settings.loadBalancerEndpoint}
                     onChange={this.handleStateChange.bind(this)} />
+                  <div className='info-text'>(where users will point their custom CNAME)</div>
                 </div>
 
                 <div className='form-group'>
@@ -110,6 +115,9 @@ class SettingsPage extends React.Component {
                     className='form-control'
                     value={settings.wildcardDomain}
                     onChange={this.handleStateChange.bind(this)} />
+                  <div className='info-text'>
+                    (base domain that all stacks get a subdomain of if no domain is specified)
+                  </div>
                 </div>
 
                 <Row className='settings-group-heading'><h3>Rancher</h3></Row>
@@ -124,6 +132,9 @@ class SettingsPage extends React.Component {
                     className='form-control'
                     value={settings.rancherApiUrl}
                     onChange={this.handleStateChange.bind(this)} />
+                  <div className="info-text">
+                    (Must include http:// or https:// and no trailing slash)
+                  </div>
                 </div>
 
                 <div className='form-group'>
