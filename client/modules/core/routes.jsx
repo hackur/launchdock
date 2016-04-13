@@ -24,7 +24,6 @@ export default function(injectDeps, { FlowRouter, Meteor }) {
 
   FlowRouter.route('/', {
     name: 'home',
-    triggersEnter: [mustBeLoggedIn],
     action() {
       mount(MainLayoutCtx, {
         content: () => (<Dashboard />)
