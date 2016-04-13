@@ -9,6 +9,13 @@ import { Stacks, Services, Settings } from '/lib/collections';
 import { Logger, Rancher } from '/server/api';
 
 const startEventsStream = () => {
+  const s = Settings.findOne();
+
+  if (!s.rancherApiUrl || !s.rancherApiKey ||
+      !s.rancherApiSecret || !s.rancherDefaultEnv) {
+    Logger.warn('Missing Rancher settings. Events websocket not opened.');
+    return;
+  }
 
   const rancher = new Rancher();
 
