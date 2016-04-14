@@ -18,12 +18,32 @@ class InviteNew extends React.Component {
     e.preventDefault();
     const { sendInvite } = this.props;
     const { email, role } = this.refs;
-    sendInvite(email.value, role.value);
+
+    if (!email.value) {
+      this.setState({ error: 'Please choose an email.' });
+      return;
+    }
+
+    const roleValue = role.value || 'manager';
+
+    sendInvite(email.value, roleValue);
     this.setState({ showModal: false });
   }
 
+  clearError() {
+    this.setState({ error: null });
+  }
+
+  renderError(error) {
+    return (
+      <div className='error text-center'>
+        {error}
+      </div>
+    );
+  }
+
   render() {
-    const { Meteor, Roles } = this.props.context();
+    const { error } = this.state;
 
     return (
       <div>
@@ -42,7 +62,13 @@ class InviteNew extends React.Component {
             <form id='send-invite-form' onSubmit={this.sendInvite.bind(this)}>
               <div className='form-group'>
                 <label>Email address</label>
-                <input ref='email' type='email' className='form-control' name='invite-user-email' />
+                <input
+                  ref='email'
+                  type='email'
+                  className='form-control'
+                  name='invite-user-email'
+                  onChange={this.clearError.bind(this)}/>
+                {error ? this.renderError(error) : null}
               </div>
               <div className='form-group'>
                 <label>Role</label>
