@@ -21,10 +21,6 @@ export default class Rancher {
       throw new Meteor.Error('Missing Rancher host URL.');
     }
 
-    if (!this.env) {
-      throw new Meteor.Error('Missing default Rancher environment.');
-    }
-
     this.hostname = this.apiBaseUrl.substr(this.apiBaseUrl.indexOf('//') + 2);
     this.apiVersion = '/v1/';
     this.apiFullUrl = this.apiBaseUrl + this.apiVersion;
