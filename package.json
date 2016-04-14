@@ -49,5 +49,19 @@
     "underscore.string": "^3.3.4",
     "utf-8-validate": "^1.2.1",
     "ws": "^1.1.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "postcss-scss": "^0.1.7"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {
+        "browsers": [
+          "last 2 versions"
+        ]
+      }
+    },
+    "parser": "postcss-scss"
   }
 }

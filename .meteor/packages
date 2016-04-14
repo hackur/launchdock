@@ -1,5 +1,6 @@
 meteor-base
-seba:minifiers-autoprefixer
+juliancwirko:postcss
+standard-minifier-js
 mobile-experience
 mongo
 blaze-html-templates
