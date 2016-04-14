@@ -31,6 +31,8 @@ export default class Rancher {
     this.convertApiNames = (resourceType) => {
       if (resourceType === 'stacks') {
         return 'environments';
+      } else if (resourceType === 'environments') {
+        return 'projects';
       }
       return resourceType;
     };
