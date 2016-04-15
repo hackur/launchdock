@@ -17,7 +17,6 @@ http
 jquery
 reactive-var
 reactive-dict
-react-meteor-data
 ddp-rate-limiter
 less
 
