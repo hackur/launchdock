@@ -1,3 +1,4 @@
+import balancers from './balancers';
 import hosts from './hosts';
 import settings from './settings';
 import ssl from './ssl';
@@ -6,6 +7,7 @@ import users from './users';
 import utils from './utils';
 
 export default function() {
+  balancers();
   hosts();
   settings();
   ssl();
