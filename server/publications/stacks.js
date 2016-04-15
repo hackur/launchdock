@@ -9,7 +9,9 @@ import { Stacks, Services } from '/lib/collections';
 export default function() {
 
   Meteor.publish('stacks-count', function() {
-    Counts.publish(this, 'stacks-count', Stacks.find());
+    if (Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
+      Counts.publish(this, 'stacks-count', Stacks.find());
+    }
     return [];
   });
 
