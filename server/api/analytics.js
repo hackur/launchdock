@@ -16,10 +16,10 @@ export default function initAnalytics() {
   } else {
     analytics = {
       identify() {
-        Logger.warn('Analtyics not configured. Not tracking events!', arguments);
+        Logger.warn({ data: arguments }, 'Analtyics not configured. Not tracking events!');
       },
       track() {
-        Logger.warn('Analtyics not configured. Not tracking events!', arguments);
+        Logger.warn({ data: arguments }, 'Analtyics not configured. Not tracking events!');
       }
     };
   }
