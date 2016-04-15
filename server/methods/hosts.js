@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { checkm, Match } from 'meteor/check';
+import { check, Match } from 'meteor/check';
 import { Random } from 'meteor/random';
 import { Hosts, Settings } from '/lib/collections';
 import { Logger, Rancher } from '/server/api';
