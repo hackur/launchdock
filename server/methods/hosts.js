@@ -28,8 +28,6 @@ export default function() {
         rootSize: Match.Optional(Number)
       });
 
-      const defaultInstanceType = 't2.large'; // 'r3.2xlarge';
-
       const s = Settings.findOne();
 
       if (!s.awsKey || !s.awsSecret || !s.awsRegion) {
@@ -39,9 +37,9 @@ export default function() {
       const rancher = new Rancher();
 
       // set some defaults if options weren't provided
-      const hostTypes = options.hostTypes || ['lb', 'app', 'mongo1', 'mongo2', 'mongo3'];
-      const instanceType = options.instanceType || 't2.large';
-      const lbInstanceType = options.lbInstanceType || 't2.large';
+      const hostTypes =  ['lb', 'app', 'mongo1', 'mongo2', 'mongo3'];
+      const instanceType =  'r3.2xlarge';
+      const lbInstanceType =  't2.large';
 
       const clusterId = Random.id(7);
 
@@ -70,7 +68,7 @@ export default function() {
         let host;
         try {
           host = rancher.create('machines', machineConfig);
-          Logger.info('Start machine via Rancher', host);
+          Logger.info({ data: host.data }, 'Start machine via Rancher');
         } catch(e) {
           Logger.error(e);
           throw new Meteor.Error(e);
