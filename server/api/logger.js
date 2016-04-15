@@ -1,7 +1,9 @@
 import bunyan from 'bunyan';
 import bunyanFormat from 'bunyan-format';
 import { Bunyan2Loggly } from 'bunyan-loggly';
+import BunyanMongo from './logger-mongo';
 import Launchdock from './core';
+import { Logs, Settings } from '/lib/collections';
 
 /**
  * Global logging config
@@ -20,6 +22,7 @@ let streams = [{
   stream: logLevel !== 'DEBUG' ? formatOut : process.stdout
 }];
 
+
 // Loggly config (only used in production)
 if (Launchdock.isProduction()) {
   const logglyToken = process.env.LOGGLY_TOKEN;
@@ -37,41 +40,24 @@ if (Launchdock.isProduction()) {
   }
 }
 
+
+// Mongo logger config
+const mongoStream = {
+  type: 'raw',
+  stream: new BunyanMongo()
+};
+streams.push(mongoStream);
+
+
+const name = Settings.get('siteTitle', 'Launchdock');
+
 // create default logger instance
 const Logger = bunyan.createLogger({
-  name: 'Launchdock',
-  streams: streams
+  name,
+  streams
 });
 
 // set default level
 Logger.level(logLevel);
-
-
-/**
- * Parse Meteor errors and return a string to log out
- * @param  {Object} error - the error object to parse
- * @return {String} the parsed error string
- */
-Logger.parseError = (error) => {
-  let result = '';
-
-  if (error.message) {
-    result += error.message + '; ';
-  }
-
-  if (error.reason) {
-    result += error.reason + '; ';
-  }
-
-  if (error.details) {
-    result += error.details;
-  }
-
-  if (!(result.length > 0)) {
-    result = 'No error details found';
-  }
-
-  return result;
-};
 
 export default Logger;
