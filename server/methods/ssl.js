@@ -7,6 +7,80 @@ export default function() {
 
   Meteor.methods({
 
+    'rancher/createDefaultCert'() {
+
+      const logger = Logger.child({
+        meteor_method: 'rancher/createDefaultCert',
+        userId: this.userId
+      });
+
+      if (!Roles.userIsInRole(this.userId, 'admin')) {
+        const err = 'AUTH ERROR: Access denied';
+        logger.error(err);
+        throw new Meteor.Error(err);
+      }
+
+      const rancher = new Rancher();
+
+      const defaultCert = Settings.get('rancherDefaultCert');
+
+      if (defaultCert) {
+        const cert = rancher.get('certificates', defaultCert);
+
+        if (cert.state === 'active') {
+          const msg = `Default certificate ${cert.id} is already active`;
+          logger.info({ data: cert.data }, msg);
+          return defaultCert;
+        }
+
+        if (!!cert.id) {
+          const err1 = `Default certificate ${cert.id} exists, but isn't active`;
+          logger.error({ error: cert.data }, err1);
+          throw new Meteor.Error(err1);
+        }
+
+        const err2 = 'Default certificate not found on Rancher';
+        logger.error(err2);
+        throw new Meteor.Error(err2);
+      }
+
+      const s = Settings.findOne();
+
+      // configure new certificate
+      const certOptions = {
+        name: s.wildcardDomain + '-' + Random.id(7),
+        key: s.sslPrivateKey,
+        cert: s.sslCertificate
+      };
+
+      // add root cert if it exists
+      if (s.sslRootCertificate) {
+        certOptions.certChain = s.sslRootCertificate;
+      }
+
+      // create the new cert on Rancher
+      let newCert;
+      try {
+        newCert = rancher.create('certificates', certOptions);
+      } catch(error) {
+        const msg = 'Error adding certificate.';
+        logger.error({ error }, msg);
+        throw new Meteor.Error(msg);
+      }
+
+      logger.info({ data: newCert.data }, 'Created new default cert on Rancher');
+
+      // update local settings with new cert
+      Settings.update({ _id: s._id }, {
+        $set: {
+          rancherDefaultCert: newCert.id
+        }
+      });
+
+      return newCert.id;
+    },
+
+
     'rancher/updateStackSSLCert'(stackId, options) {
 
       const logger = Logger.child({
