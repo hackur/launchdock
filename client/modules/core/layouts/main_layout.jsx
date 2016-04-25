@@ -1,18 +1,16 @@
 import React from 'react';
-import Tracker from 'tracker-component';
 import SideNav from '../components/side_nav.jsx';
 import Alert from 'react-s-alert';
 
-class MainLayout extends Tracker.Component {
+class MainLayout extends React.Component {
 
   constructor(props) {
     super(props);
-    this.autorun(() => {
-      this.setState({
-        isAuthenticated: Meteor.user(),
-        sidebarToggled: false
-      });
-    });
+
+    this.state = {
+      isAuthenticated: !!Meteor.user(),
+      sidebarToggled: false
+    };
   }
 
   componentWillMount() {
