@@ -23,7 +23,8 @@
   "dependencies": {
     "analytics-node": "^2.1.0",
     "autoprefixer": "^6.4.0",
-    "aws-sdk": "^2.5.0",
+    "aws-sdk": "^2.5.2",
+    "bcrypt": "^0.8.7",
     "bufferutil": "^1.2.1",
     "bunyan": "^1.8.1",
     "bunyan-format": "^0.2.1",
