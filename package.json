@@ -34,7 +34,7 @@
     "moment": "^2.13.0",
     "react": "15.1.0",
     "react-addons-pure-render-mixin": "15.1.0",
-    "react-bootstrap": "0.29.5",
+    "react-bootstrap": "0.30.2",
     "react-dom": "15.1.0",
     "react-komposer": "^1.11.0",
     "react-ladda": "^4.0.5",
@@ -48,11 +48,11 @@
     "ws": "^1.1.1"
   },
   "devDependencies": {
-    "autoprefixer": "^6.3.6",
-    "babel-eslint": "^6.0.3",
-    "eslint": "^2.8.0",
-    "eslint-plugin-react": "^5.0.1",
-    "postcss-scss": "^0.1.7"
+    "autoprefixer": "^6.4.0",
+    "babel-eslint": "^6.1.2",
+    "eslint": "^3.3.1",
+    "eslint-plugin-react": "^6.1.2",
+    "postcss-scss": "^0.1.9"
   },
   "postcss": {
     "plugins": {
