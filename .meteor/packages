@@ -12,10 +12,11 @@ juliancwirko:postcss
 less@2.7.5
 meteor-base@1.0.4
 mobile-experience@1.0.4
-mongo@1.1.11
+mongo@1.1.12
 random@1.0.10
 reactive-dict@1.1.8
 reactive-var@1.0.10
+shell-server@0.2.1
 standard-minifier-js@1.2.0
 tracker@1.1.0
 
@@ -40,4 +41,3 @@ tmeasday:publish-counts
 # percolate:migrations
 # ongoworks:mongo-tools
 # vsivsi:job-collection
-shell-server
