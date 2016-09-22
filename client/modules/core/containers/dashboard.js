@@ -1,19 +1,18 @@
-import { useDeps, composeAll, composeWithTracker, compose } from 'mantra-core';
-import loading from '../components/loading.jsx';
-import error from '../components/error.jsx';
-import Dashboard from '../components/dashboard.jsx';
+import { useDeps, composeAll, composeWithTracker } from 'mantra-core';
+import loading from '../components/loading';
+import error from '../components/error';
+import Dashboard from '../components/dashboard';
 
 export const composer = ({ context }, onData) => {
-  const { Meteor, Collections } = context();
-  const countSub = Meteor.subscribe('stacks-count');
+  const { Meteor } = context();
 
-  if (countSub.ready()) {
+  if (Meteor.subscribe('dashboard').ready()) {
     const count = Counts.get('stacks-count');
     onData(null, { count });
   }
 };
 
-export const depsMapper = (context, actions) => ({
+export const depsMapper = (context) => ({
   context: () => context
 });
 

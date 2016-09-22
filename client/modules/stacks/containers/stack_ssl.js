@@ -1,6 +1,6 @@
 import { useDeps, composeAll, composeWithTracker, compose } from 'mantra-core';
-import loading from '/client/modules/core/components/loading.jsx';
-import StackSSL from '../components/stack_ssl.jsx';
+import loading from '/client/modules/core/components/loading';
+import StackSSL from '../components/stack_ssl';
 
 export const composer = ({ context, id }, onData) => {
   const { Meteor, Collections } = context();

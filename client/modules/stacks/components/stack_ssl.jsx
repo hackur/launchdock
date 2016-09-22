@@ -1,6 +1,6 @@
 import React from 'react';
 import Blaze from 'meteor/gadicc:blaze-react-component';
-import StackInfo from './stack_info.jsx';
+import StackInfo from './stack_info';
 
 
 class StackSSL extends React.Component {

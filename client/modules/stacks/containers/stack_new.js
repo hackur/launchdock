@@ -1,5 +1,5 @@
 import { useDeps, composeAll, composeWithTracker, compose } from 'mantra-core';
-import StackNew from '../components/stack_new.jsx';
+import StackNew from '../components/stack_new';
 
 export const composer = ({ context, clearErrors }, onData) => {
   const { LocalState } = context();

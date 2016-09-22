@@ -1,6 +1,6 @@
 import { useDeps, composeAll, composeWithTracker, compose } from 'mantra-core';
-import loading from '/client/modules/core/components/loading.jsx';
-import InvitesList from '../components/invites_list.jsx';
+import loading from '/client/modules/core/components/loading';
+import InvitesList from '../components/invites_list';
 
 export const composer = ({ context }, onData) => {
   const { Meteor, Collections } = context();

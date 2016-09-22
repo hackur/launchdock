@@ -1,10 +1,10 @@
 import React from 'react';
 import { mount } from 'react-mounter';
 import { Accounts } from 'meteor/std:accounts-ui';
-import MainLayout from './layouts/main_layout.jsx';
-import LoginLayout from './layouts/login_layout.jsx';
+import MainLayout from './layouts/main_layout';
+import LoginLayout from './layouts/login_layout';
 import Dashboard from './containers/dashboard';
-import NotFound from './components/not_found.jsx';
+import NotFound from './components/not_found';
 
 export default function(injectDeps, { FlowRouter, Meteor }) {
   const MainLayoutCtx = injectDeps(MainLayout);

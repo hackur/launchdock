@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'react-mounter';
-import MainLayout from '/client/modules/core/layouts/main_layout.jsx';
+import MainLayout from '/client/modules/core/layouts/main_layout';
 import StacksList from './containers/stacks_list';
 import StackNew from './containers/stack_new';
 import StackPage from './containers/stack_page';

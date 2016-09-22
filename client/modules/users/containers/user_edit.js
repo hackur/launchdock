@@ -1,6 +1,6 @@
 import { useDeps, composeAll, composeWithTracker, compose } from 'mantra-core';
-import loading from '/client/modules/core/components/loading.jsx';
-import UserEdit from '../components/user_edit.jsx';
+import loading from '/client/modules/core/components/loading';
+import UserEdit from '../components/user_edit';
 
 export const composer = ({ context }, onData) => {
   const { Meteor, Collections } = context();

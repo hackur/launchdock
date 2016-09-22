@@ -1,5 +1,5 @@
 import React from 'react';
-import SideNav from '../components/side_nav.jsx';
+import SideNav from '../components/side_nav';
 import Alert from 'react-s-alert';
 
 class MainLayout extends React.Component {

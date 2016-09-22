@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'react-mounter';
-import MainLayout from '/client/modules/core/layouts/main_layout.jsx';
+import MainLayout from '/client/modules/core/layouts/main_layout';
 import SettingsPage from './containers/settings_page';
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Table } from 'react-bootstrap';
-import StackInfo from './stack_info.jsx';
-import ServiceListItem from './service_list_item.jsx';
+import StackInfo from './stack_info';
+import ServiceListItem from './service_list_item';
 
 class StackPage extends React.Component {
 

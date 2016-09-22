@@ -1,6 +1,6 @@
 import { useDeps, composeAll, composeWithTracker, compose } from 'mantra-core';
-import loading from '/client/modules/core/components/loading.jsx';
-import InviteNew from '../components/invite_new.jsx';
+import loading from '/client/modules/core/components/loading';
+import InviteNew from '../components/invite_new';
 
 export const composer = ({ context }, onData) => {
   onData(null, {});

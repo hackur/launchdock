@@ -23,6 +23,11 @@ const SideNav = () => (
         </a>
       </li>
       <li>
+        <a href="/hosts">
+          Hosts
+        </a>
+      </li>
+      <li>
         <a href="/stacks">
           Stacks
         </a>
