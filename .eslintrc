@@ -210,7 +210,7 @@
     }],
     "space-before-blocks": 2, // http://eslint.org/docs/rules/space-before-blocks
     "space-before-function-paren": [2, {
-      "anonymous": "never",
+      "anonymous": "always",
       "named": "never"
     }], // http://eslint.org/docs/rules/space-before-function-paren
     "space-infix-ops": 2, // http://eslint.org/docs/rules/space-infix-ops
