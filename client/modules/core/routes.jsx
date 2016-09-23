@@ -1,6 +1,6 @@
 import React from 'react';
 import { mount } from 'react-mounter';
-import { Accounts } from 'meteor/std:accounts-ui';
+import { Accounts } from 'meteor/jeremy:react-accounts-ui';
 import MainLayout from './layouts/main_layout';
 import LoginLayout from './layouts/login_layout';
 import Dashboard from './containers/dashboard';
@@ -35,7 +35,7 @@ export default function(injectDeps, { FlowRouter, Meteor }) {
     name: 'login',
     action() {
       mount(LoginLayout, {
-        content: () => (<Accounts.ui.LoginForm />)
+        content: () => (<Accounts.UI.LoginForm />)
       });
     }
   });

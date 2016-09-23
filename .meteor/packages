@@ -8,7 +8,6 @@ email@1.1.17
 gadicc:blaze-react-component # temporary fix until Blaze is totally gone
 http@1.2.9
 jquery@1.11.9
-juliancwirko:postcss
 less@2.7.5
 meteor-base@1.0.4
 mobile-experience@1.0.4
@@ -25,14 +24,14 @@ aldeed:collection2
 aldeed:simple-schema
 aslagle:reactive-table
 fourseven:scss
+jeremy:react-accounts-ui
 jeremy:stripe
+juliancwirko:postcss
 kadira:flow-router
 meteorhacks:kadira
 meteorhacks:ssr
 mizzao:user-status
 nemo64:bootstrap
-std:accounts-basic
-std:accounts-ui
 tmeasday:publish-counts
 
 # std:react-accounts-ui-bootstrap
