@@ -1,6 +1,6 @@
 
 launchdock:
-  image: ongoworks/launchdock2:latest
+  image: launchdock
   links:
     - mongo
   ports:
