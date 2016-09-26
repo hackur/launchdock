@@ -1,28 +1,17 @@
-import React from 'react';
-import SideNav from '../components/side_nav';
+import React, { Component, PropTypes } from 'react';
 import Alert from 'react-s-alert';
+import SideNav from '../containers/side_nav';
 
-class MainLayout extends React.Component {
+class MainLayout extends Component {
 
   constructor(props) {
     super(props);
 
     this.state = {
-      isAuthenticated: !!Meteor.user(),
       sidebarToggled: false
     };
-  }
 
-  componentWillMount() {
-    if (!this.state.isAuthenticated) {
-      FlowRouter.go('/login');
-    }
-  }
-
-  componentDidUpdate() {
-    if (!this.state.isAuthenticated) {
-      FlowRouter.go('/login');
-    }
+    this.toggleSidebar = this.toggleSidebar.bind(this);
   }
 
   toggleSidebar() {
@@ -43,10 +32,12 @@ class MainLayout extends React.Component {
 
     return (
       <div id='dash-wrapper' className={this.state.sidebarToggled ? 'toggled' : null}>
-        {SideNav()}
+        <SideNav/>
         <main id='dash-content-wrapper' className='main-content'>
-          <button id='sidenav-toggle' className='btn btn-default'
-                  onClick={this.toggleSidebar.bind(this)}>
+          <button
+            id='sidenav-toggle'
+            className='btn btn-default'
+            onClick={this.toggleSidebar}>
             Menu
           </button>
           {this.props.content()}
@@ -56,5 +47,10 @@ class MainLayout extends React.Component {
     );
   }
 }
+
+MainLayout.propTypes = {
+  content: PropTypes.func,
+  siteTitle: PropTypes.string
+};
 
 export default MainLayout;

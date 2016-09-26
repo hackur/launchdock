@@ -1,12 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
+import { Counts } from 'meteor/tmeasday:publish-counts';
 import { Invitations, Users } from '/lib/collections';
 
-export default function() {
+export default function () {
+
+  // user count
+  Meteor.publish('users-count', function () {
+    if (Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
+      Counts.publish(this, 'users-count', Users.find());
+    }
+    return [];
+  });
 
   // single user account
-  Meteor.publish('user-account', function(id) {
+  Meteor.publish('user-account', function (id) {
     if (Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
       return [
         Users.find({ _id: id }),
@@ -19,7 +28,7 @@ export default function() {
 
 
   // user logged in state
-  Meteor.publish('user-status', function() {
+  Meteor.publish('user-status', function () {
     if (Users.is.admin(this.userId)) {
       return Users.find({}, {
         fields: {
@@ -35,13 +44,13 @@ export default function() {
 
 
   // Roles
-  Meteor.publish(null, function() {
+  Meteor.publish(null, function () {
     return Meteor.roles.find();
   });
 
 
   // accounts and invites management page
-  Meteor.publish('accounts-management', function() {
+  Meteor.publish('accounts-management', function () {
     // only publish to admins and managers
     if (Roles.userIsInRole(this.userId, ['manager', 'admin'])) {
 
@@ -79,7 +88,7 @@ export default function() {
 
 
   // invite link landing page
-  Meteor.publish('invite', function(token) {
+  Meteor.publish('invite', function (token) {
     check(token, String);
     return Invitations.find({ token: token }, {
       fields: {

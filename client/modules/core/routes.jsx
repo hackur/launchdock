@@ -1,24 +1,17 @@
 import React from 'react';
 import { mount } from 'react-mounter';
-import { Accounts } from 'meteor/jeremy:react-accounts-ui';
-import MainLayout from './layouts/main_layout';
-import LoginLayout from './layouts/login_layout';
+import MainLayout from './containers/main_layout';
+import FrontendLayout from './containers/frontend_layout';
+import Login from './components/login';
 import Dashboard from './containers/dashboard';
 import NotFound from './components/not_found';
 
-export default function(injectDeps, { FlowRouter, Meteor }) {
+export default function (injectDeps, { FlowRouter, Meteor }) {
   const MainLayoutCtx = injectDeps(MainLayout);
-
-  // enforce login
-  function mustBeLoggedIn() {
-    if (!Meteor.user() && !Meteor.loggingIn()) {
-      FlowRouter.redirect('/login');
-    }
-  }
-  FlowRouter.triggers.enter([mustBeLoggedIn], { except: ['login'] });
+  const FrontendLayoutCtx = injectDeps(FrontendLayout);
 
   // Global subscriptions
-  FlowRouter.subscriptions = function() {
+  FlowRouter.subscriptions = function () {
     this.register('settings', Meteor.subscribe('settings'));
   };
 
@@ -34,8 +27,8 @@ export default function(injectDeps, { FlowRouter, Meteor }) {
   FlowRouter.route('/login', {
     name: 'login',
     action() {
-      mount(LoginLayout, {
-        content: () => (<Accounts.UI.LoginForm />)
+      mount(FrontendLayoutCtx, {
+        content: () => (<Login />)
       });
     }
   });
