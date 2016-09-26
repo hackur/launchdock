@@ -3,12 +3,12 @@ MAINTAINER Jeremy Shimko <jeremy@reactioncommerce.com>
 
 ENV DEV_BUILD "true"
 
-ENV NODE_VERSION "0.10.43"
+ENV NODE_VERSION "4.5.0"
 
 # Install MongoDB
-ENV INSTALL_MONGO_TOOLS "true"
+ENV INSTALL_MONGO_TOOLS "false"
 ENV MONGO_MAJOR "3.2"
-ENV MONGO_VERSION "3.2.4"
+ENV MONGO_VERSION "3.2.9"
 
 # Meteor environment variables
 ENV PORT "80"
