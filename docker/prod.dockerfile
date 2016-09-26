@@ -3,6 +3,9 @@ MAINTAINER Jeremy Shimko <jeremy@reactioncommerce.com>
 
 ENV NODE_VERSION "4.5.0"
 
+# Docker
+ENV DOCKER_MACHINE_VERSION "0.7.0"
+
 # Install MongoDB
 ENV INSTALL_MONGO_TOOLS "false"
 ENV MONGO_MAJOR "3.2"
