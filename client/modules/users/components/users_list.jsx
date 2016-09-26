@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Table, Button, ButtonToolbar } from 'react-bootstrap';
+import Head from '/client/modules/core/components/head';
 import InvitesList from '../containers/invites_list';
 
 class UsersList extends React.Component {
@@ -10,6 +11,7 @@ class UsersList extends React.Component {
 
     return (
       <Grid fluid={true}>
+        <Head title='Users'/>
         <Row>
           <Col sm={10} smOffset={1}>
             <Panel>

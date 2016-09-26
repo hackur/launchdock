@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import TextArea from 'react-textarea-autosize';
+import Head from '/client/modules/core/components/head';
 
 class SettingsPage extends React.Component {
   constructor(props) {
@@ -34,6 +35,7 @@ class SettingsPage extends React.Component {
 
     return (
       <Grid className='settings-page'>
+        <Head title='Settings'/>
         <Row>
           <Col sm={12} md={6} mdOffset={3}>
             <Panel className='settings-page-form'>

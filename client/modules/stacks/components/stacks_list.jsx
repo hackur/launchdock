@@ -1,7 +1,8 @@
 import React from 'react';
 import { Row, Col, Panel } from 'react-bootstrap';
-import Blaze from 'meteor/gadicc:blaze-react-component';
 import moment from 'moment';
+import Blaze from 'meteor/gadicc:blaze-react-component';
+import Head from '/client/modules/core/components/head';
 
 class StacksList extends React.Component {
 
@@ -23,6 +24,7 @@ class StacksList extends React.Component {
 
     return (
       <Row>
+        <Head title='Stacks'/>
         <Col sm={10} smOffset={1}>
           <Panel>
             <a href='/stacks/new'>
@@ -41,5 +43,9 @@ class StacksList extends React.Component {
     );
   }
 }
+
+StacksList.propTypes = {
+  stacks: React.PropTypes.array
+};
 
 export default StacksList;

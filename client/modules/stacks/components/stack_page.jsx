@@ -1,15 +1,17 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Table } from 'react-bootstrap';
+import Head from '/client/modules/core/components/head';
 import StackInfo from './stack_info';
 import ServiceListItem from './service_list_item';
 
 class StackPage extends React.Component {
 
   render() {
-    const { stack, services, settings, context } = this.props;
+    const { stack, services } = this.props;
 
     return (
       <Grid>
+        <Head title={`Stack Info - ${stack._id}`}/>
         <StackInfo {...this.props} />
         <Row>
           <Col sm={12}>
@@ -46,9 +48,9 @@ class StackPage extends React.Component {
 }
 
 StackPage.propTypes = {
-  stack: React.PropTypes.object.isRequired,
   services: React.PropTypes.array.isRequired,
-  settings: React.PropTypes.object.isRequired
+  settings: React.PropTypes.object.isRequired,
+  stack: React.PropTypes.object.isRequired
 };
 
 export default StackPage;
