@@ -4,7 +4,7 @@ set -e
 
 if [ "${INSTALL_MONGO_TOOLS}" = "true" ]; then
 
-	: ${MONGO_VERSION:=3.2.4}
+	: ${MONGO_VERSION:=3.2.9}
 	: ${MONGO_MAJOR:=3.2}
 
   printf "\n[-] Installing MongoDB tools ${MONGO_VERSION}...\n\n"
