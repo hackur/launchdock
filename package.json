@@ -22,7 +22,7 @@
   "homepage": "https://github.com/reactioncommerce/launchdock",
   "dependencies": {
     "analytics-node": "^2.1.0",
-    "aws-sdk": "^2.6.4",
+    "aws-sdk": "^2.6.5",
     "bcrypt": "^0.8.7",
     "bufferutil": "^1.2.1",
     "bunyan": "^1.8.1",
@@ -30,20 +30,21 @@
     "bunyan-loggly": "^1.1.0",
     "classnames": "^2.2.5",
     "domkit": "0.0.1",
-    "lodash": "^4.16.1",
+    "lodash": "^4.16.2",
     "mantra-core": "^1.7.0",
     "meteor-node-stubs": "^0.2.3",
     "moment": "^2.15.1",
     "react": "^15.3.2",
     "react-addons-pure-render-mixin": "^15.3.2",
-    "react-bootstrap": "0.30.2",
+    "react-bootstrap": "^0.30.3",
     "react-dom": "^15.3.2",
     "react-helmet": "^3.1.0",
-    "react-komposer": "^1.11.0",
-    "react-ladda": "^4.0.5",
+    "react-komposer": "^1.13.1",
+    "react-ladda": "^5.0.3",
     "react-mounter": "^1.2.0",
-    "react-s-alert": "^1.1.4",
+    "react-s-alert": "^1.2.0",
     "react-textarea-autosize": "^4.0.5",
+    "shelljs": "^0.7.4",
     "sweetalert": "^1.1.3",
     "tracker-component": "^1.3.21",
     "underscore": "^1.8.3",
@@ -52,11 +53,11 @@
     "ws": "^1.1.1"
   },
   "devDependencies": {
-    "autoprefixer": "^6.4.1",
-    "babel-eslint": "^6.1.2",
-    "eslint": "^3.5.0",
+    "autoprefixer": "^6.5.0",
+    "babel-eslint": "^7.0.0",
+    "eslint": "^3.6.1",
     "eslint-plugin-react": "^6.3.0",
-    "postcss-scss": "^0.1.9"
+    "postcss-scss": "^0.3.0"
   },
   "postcss": {
     "plugins": {
