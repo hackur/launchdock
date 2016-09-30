@@ -30,7 +30,7 @@ rm -rf /opt/nodejs/bin/npm
 rm -rf /opt/nodejs/lib/node_modules/npm/
 
 # remove meteor
-rm -rf /usr/bin/meteor
+rm -rf /usr/local/bin/meteor
 rm -rf /root/.meteor
 
 # remove os dependencies
