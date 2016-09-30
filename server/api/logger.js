@@ -19,7 +19,7 @@ const formatOut = bunyanFormat({
 // default console config
 const streams = [{
   level: 'info',
-  stream: logLevel !== 'DEBUG' ? formatOut : process.stdout
+  stream: formatOut
 }];
 
 
@@ -42,11 +42,11 @@ if (Launchdock.isProduction()) {
 
 
 // Mongo logger config
-const mongoStream = {
-  type: 'raw',
-  stream: new BunyanMongo()
-};
-streams.push(mongoStream);
+// const mongoStream = {
+//   type: 'raw',
+//   stream: new BunyanMongo()
+// };
+// streams.push(mongoStream);
 
 
 const name = Settings.get('siteTitle', 'Launchdock');
