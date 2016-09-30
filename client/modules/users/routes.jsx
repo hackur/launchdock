@@ -1,12 +1,14 @@
 import React from 'react';
 import { mount } from 'react-mounter';
-import MainLayout from '/client/modules/core/layouts/main_layout';
+import MainLayout from '/client/modules/core/containers/main_layout';
+import FrontendLayout from '/client/modules/core/containers/frontend_layout';
 import UsersList from './containers/users_list';
 import UserPage from './containers/user_page';
 import InviteAccept from './containers/invite_accept';
 
 export default function (injectDeps, { FlowRouter }) {
   const MainLayoutCtx = injectDeps(MainLayout);
+  const FrontendLayoutCtx = injectDeps(FrontendLayout);
 
   FlowRouter.route('/users', {
     name: 'users_list',
@@ -38,7 +40,7 @@ export default function (injectDeps, { FlowRouter }) {
   FlowRouter.route('/invite/:token', {
     name: 'invite_accept',
     action({ token }) {
-      mount(MainLayoutCtx, {
+      mount(FrontendLayoutCtx, {
         content: () => (<InviteAccept token={token} />)
       });
     }
