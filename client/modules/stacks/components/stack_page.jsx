@@ -1,6 +1,6 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Table } from 'react-bootstrap';
-import Head from '/client/modules/core/components/head';
+import Helmet from 'react-helmet';
 import StackInfo from './stack_info';
 import ServiceListItem from './service_list_item';
 
@@ -11,7 +11,7 @@ class StackPage extends React.Component {
 
     return (
       <Grid>
-        <Head title={`Stack Info - ${stack._id}`}/>
+        <Helmet title={`Stack Info - ${stack._id}`}/>
         <StackInfo {...this.props} />
         <Row>
           <Col sm={12}>
