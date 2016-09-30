@@ -39,4 +39,20 @@ export default {
     });
   },
 
+  deleteUser({ Meteor, Alert }, userId) {
+    Alert.confirm({
+      title: 'Are you sure?',
+      text: 'There\'s no going back!'
+    }, () => {
+      Meteor.call('deleteInvitedUser', userId, (err) => {
+        if (err) {
+          Alert.error({
+            title: 'Oops!',
+            text: `Something went wrong deleting the user. <br> ${err}`
+          });
+        }
+      });
+    });
+  }
+
 };

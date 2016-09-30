@@ -1,25 +1,31 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { Grid, Row, Col, Panel, Table, Button, ButtonToolbar } from 'react-bootstrap';
-import Head from '/client/modules/core/components/head';
 import InvitesList from '../containers/invites_list';
 
 class UsersList extends React.Component {
 
+  handleDeleteUser(id) {
+    const { deleteUser } = this.props;
+    deleteUser(id);
+  }
+
   render() {
-    const { users, invites, context } = this.props;
-    const { Meteor, Roles } = context();
+    const { users, invites, canDelete, context } = this.props;
+    const { Meteor } = context();
 
     return (
       <Grid fluid={true}>
-        <Head title='Users'/>
+        <Helmet title='Users' />
         <Row>
-          <Col sm={10} smOffset={1}>
+          <Col md={10} mdOffset={1}>
             <Panel>
               <h3>Active Users</h3>
               <hr/>
-              <Table bordered className='users-table'>
+              <Table bordered responsive className='users-table'>
                 <thead>
                   <tr>
+                    <th className='text-center'>Username</th>
                     <th className='text-center'>Email Address</th>
                     <th className='text-center'>Role</th>
                     <th className='text-center'>Actions</th>
@@ -30,23 +36,27 @@ class UsersList extends React.Component {
                     return (
                       <tr key={user._id}>
                         <td className='text-center'>
-                          {user.emails[0].address}
+                          {user.username}
                           {user._id === Meteor.userId() ?
                             <span className='flag'>You!</span>
                             : null }
+                        </td>
+                        <td className='text-center'>
+                          {user.emails[0].address}
                         </td>
                         <td className='text-center'>
                           {user.roles.toString()}
                         </td>
                         <td>
                           <ButtonToolbar>
-                            <a href={`/users/${user._id}`}>
-                              <Button bsStyle='primary'>
-                                Profile
-                              </Button>
-                            </a>
-                            {user._id !== Meteor.userId() ?
-                              <Button bsStyle='danger' className='delete-user'>
+                            <Button bsStyle='primary' href={`/users/${user._id}`}>
+                              Profile
+                            </Button>
+                            {canDelete(user._id) ?
+                              <Button
+                                bsStyle='danger'
+                                className='delete-user'
+                                onClick={this.handleDeleteUser.bind(this, user._id)}>
                                 Delete
                               </Button>
                               : null }
@@ -67,9 +77,11 @@ class UsersList extends React.Component {
 }
 
 UsersList.propTypes = {
+  canDelete: React.PropTypes.func.isRequired,
   context: React.PropTypes.func.isRequired,
-  users: React.PropTypes.array.isRequired,
-  invites: React.PropTypes.array.isRequired
+  deleteUser: React.PropTypes.func.isRequired,
+  invites: React.PropTypes.array.isRequired,
+  users: React.PropTypes.array.isRequired
 };
 
 export default UsersList;
