@@ -3,7 +3,6 @@ import { mount } from 'react-mounter';
 import MainLayout from '/client/modules/core/layouts/main_layout';
 import UsersList from './containers/users_list';
 import UserPage from './containers/user_page';
-import UserEdit from './containers/user_edit';
 import InviteAccept from './containers/invite_accept';
 
 export default function (injectDeps, { FlowRouter }) {
