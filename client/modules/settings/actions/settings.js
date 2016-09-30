@@ -8,7 +8,7 @@ export default {
         Notify.error('Oops! Something went wrong.');
         throw new Error(err);
       }
-      Notify.success('Settings saved!');
+      Notify.success('Settings saved!', 'top-right');
     });
   }
 
