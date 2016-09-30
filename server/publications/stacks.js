@@ -6,23 +6,23 @@ import { Random } from 'meteor/random';
 import { Stacks, Services } from '/lib/collections';
 
 
-export default function() {
+export default function () {
 
-  Meteor.publish('stacks-count', function() {
+  Meteor.publish('stacks-count', function () {
     if (Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
       Counts.publish(this, 'stacks-count', Stacks.find());
     }
     return [];
   });
 
-  Meteor.publish('stacks-list', function() {
+  Meteor.publish('stacks-list', function () {
     if (Roles.userIsInRole(this.userId, 'admin')) {
       return Stacks.find();
     }
     return [];
   });
 
-  Meteor.publish('stack-page', function(_id) {
+  Meteor.publish('stack-page', function (_id) {
     check(_id, String);
     const stack = Stacks.findOne({ _id });
     if (stack.userId === this.userId || Roles.userIsInRole(this.userId, 'admin')) {
@@ -36,7 +36,7 @@ export default function() {
 
   // Limit, filter, and sort handled by reactive-table.
   // https://github.com/aslagle/reactive-table#server-side-pagination-and-filtering-beta
-  ReactiveTable.publish('stacks-list', function() {
+  ReactiveTable.publish('stacks-list', function () {
     if (Roles.userIsInRole(this.userId, 'admin')) {
       return Stacks;
     }

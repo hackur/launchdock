@@ -1,4 +1,4 @@
-import { useDeps, composeAll, composeWithTracker, compose } from 'mantra-core';
+import { useDeps, composeAll, composeWithTracker } from 'mantra-core';
 import loading from '/client/modules/core/components/loading';
 import SettingsPage from '../components/settings_page';
 

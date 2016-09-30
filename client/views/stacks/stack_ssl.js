@@ -2,7 +2,7 @@ import { Stacks } from '/lib/collections';
 import { Notify } from '/client/modules/core/configs/notifications';
 
 
-Template.stack_ssl.onCreated(function() {
+Template.stack_ssl.onCreated(function () {
   this.autorun(() => {
     const stackId = FlowRouter.getParam('id');
     this.subscribe('stack-page', stackId);

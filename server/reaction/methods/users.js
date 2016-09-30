@@ -9,7 +9,7 @@ import { Launchdock, Logger, initAnalytics } from '/server/api';
 
 // const analytics = initAnalytics();
 
-export default function() {
+export default function () {
 
   Meteor.methods({
 

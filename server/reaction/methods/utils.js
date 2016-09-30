@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { Stacks } from '/lib/collections';
 import { Launchdock, Logger } from '/server/api';
 
-export default function() {
+export default function () {
 
   Meteor.methods({
 

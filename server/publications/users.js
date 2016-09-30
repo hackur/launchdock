@@ -90,7 +90,7 @@ export default function () {
   // invite link landing page
   Meteor.publish('invite', function (token) {
     check(token, String);
-    return Invitations.find({ token: token }, {
+    return Invitations.find({ token }, {
       fields: {
         email: 1,
         token: 1,

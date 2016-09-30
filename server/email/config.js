@@ -1,6 +1,6 @@
 import { Settings } from '/lib/collections';
 
-export default function() {
+export default function () {
   /**
    * Custom email configs
    */
@@ -12,7 +12,7 @@ export default function() {
 
 
   // enroll account
-  Accounts.emailTemplates.enrollAccount.subject = (user) => {
+  Accounts.emailTemplates.enrollAccount.subject = () => {
     return 'You\'ve been invited to Launchdock!';
   };
 
@@ -24,7 +24,7 @@ export default function() {
 
 
   // verifyEmail
-  Accounts.emailTemplates.verifyEmail.subject = (user) => {
+  Accounts.emailTemplates.verifyEmail.subject = () => {
     return 'Welcome to Launchdock! Just one more step...';
   };
 
@@ -36,7 +36,7 @@ export default function() {
 
 
   // reset password
-  Accounts.emailTemplates.resetPassword.subject = (user) => {
+  Accounts.emailTemplates.resetPassword.subject = () => {
     return 'Reset your Launchdock password';
   };
 

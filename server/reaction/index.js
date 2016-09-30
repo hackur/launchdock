@@ -3,7 +3,7 @@ import users from './methods/users';
 import utils from './methods/utils';
 import publications from './publications';
 
-export default function() {
+export default function () {
   intercom();
   users();
   utils();

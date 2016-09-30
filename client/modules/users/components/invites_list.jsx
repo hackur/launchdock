@@ -1,11 +1,11 @@
 import React from 'react';
-import { Grid, Row, Col, Panel, Table, Button } from 'react-bootstrap';
+import { Row, Col, Panel, Table, Button } from 'react-bootstrap';
 import InviteNew from '../containers/invite_new';
 import moment from 'moment';
 
 class InvitesList extends React.Component {
 
-  revoke(id, e) {
+  revoke(id) {
     const { revokeInvite } = this.props;
     revokeInvite(id);
   }

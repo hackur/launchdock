@@ -3,7 +3,7 @@ import { check } from 'meteor/check';
 import { Stacks, Services, Settings } from '/lib/collections';
 import { Logger, Rancher } from '/server/api';
 
-export default function() {
+export default function () {
 
   Meteor.methods({
     'rancher/createLoadBalancer'(lbName) {
@@ -30,7 +30,9 @@ export default function() {
         throw new Meteor.Error(err);
       }
 
-      let certId = Meteor.call('rancher/createDefaultCert');
+      const certId = Meteor.call('rancher/createDefaultCert');
+
+      Logger.info(`Using default cert ${certId} on new load balancer`);
 
       const rancher = new Rancher();
 

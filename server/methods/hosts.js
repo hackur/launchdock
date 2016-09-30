@@ -6,7 +6,7 @@ import { Hosts, Settings } from '/lib/collections';
 import { Logger, Rancher } from '/server/api';
 
 
-export default function() {
+export default function () {
 
   Meteor.methods({
     'hosts/createCluster'(options) {

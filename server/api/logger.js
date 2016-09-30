@@ -3,7 +3,7 @@ import bunyanFormat from 'bunyan-format';
 import { Bunyan2Loggly } from 'bunyan-loggly';
 import BunyanMongo from './logger-mongo';
 import Launchdock from './core';
-import { Logs, Settings } from '/lib/collections';
+import { Settings } from '/lib/collections';
 
 /**
  * Global logging config
@@ -17,7 +17,7 @@ const formatOut = bunyanFormat({
 });
 
 // default console config
-let streams = [{
+const streams = [{
   level: 'info',
   stream: logLevel !== 'DEBUG' ? formatOut : process.stdout
 }];

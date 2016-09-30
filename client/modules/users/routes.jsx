@@ -6,7 +6,7 @@ import UserPage from './containers/user_page';
 import UserEdit from './containers/user_edit';
 import InviteAccept from './containers/invite_accept';
 
-export default function(injectDeps, { FlowRouter }) {
+export default function (injectDeps, { FlowRouter }) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
   FlowRouter.route('/users', {

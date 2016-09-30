@@ -44,8 +44,8 @@ const startEventsStream = () => {
       // convert 'environent' to 'stack' until Rancher fixes that nonsense in the API
       const resourceType = resource.type === 'environment' ? 'stack' : resource.type;
 
-      const msgType = resource.transitioning === 'error' ? 'ERROR' : 'INFO';
-
+      // const msgType = resource.transitioning === 'error' ? 'ERROR' : 'INFO';
+      //
       // console.log('\n******************************************');
       // console.log(`Type: ${resourceType}`);
       // console.log(`ID: ${resource.id}`);
@@ -102,7 +102,7 @@ const startEventsStream = () => {
   }));
 };
 
-export default function() {
+export default function () {
   Settings.find().observe({
     // If the default settings doc has the credentials, try to connect.
     // This will always fire on app startup if credentials are already there.

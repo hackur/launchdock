@@ -2,9 +2,9 @@ import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Stacks, Services, Settings } from '/lib/collections';
-import { Launchdock, Logger, Rancher } from '/server/api';
+import { Logger, Rancher } from '/server/api';
 
-export default function() {
+export default function () {
 
   Meteor.methods({
 
@@ -252,7 +252,7 @@ export default function() {
       const certId = stack.sslRancherCertId;
 
       // certs currently on load balancer
-      let lbCerts = lb.data.certificateIds || [];
+      const lbCerts = lb.data.certificateIds || [];
 
       // check if certificate is in use on the load balancer
       if (lbCerts.find(certId => certId === certId)) { // eslint-disable-line

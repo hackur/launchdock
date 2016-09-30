@@ -6,7 +6,7 @@ import { ReactiveDict } from 'meteor/reactive-dict';
 import { Tracker } from 'meteor/tracker';
 import { Notify, Alert } from '/client/modules/core/configs/notifications';
 
-export default function() {
+export default function () {
   return {
     Meteor,
     Roles,

@@ -5,7 +5,7 @@ import { Roles } from 'meteor/alanning:roles';
 import { Settings } from '/lib/collections';
 import { Launchdock, Logger } from '/server/api';
 
-export default function() {
+export default function () {
 
   Meteor.methods({
 

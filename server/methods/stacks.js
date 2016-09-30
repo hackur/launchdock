@@ -1,4 +1,4 @@
-import Analytics from 'analytics-node';
+import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
@@ -8,7 +8,7 @@ import { emailAdmins } from '/server/email';
 
 const analytics = initAnalytics();
 
-export default function() {
+export default function () {
 
   Meteor.methods({
     'rancher/createStack'(doc, userId) {

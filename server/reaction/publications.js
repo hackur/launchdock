@@ -4,9 +4,9 @@ import { Roles } from 'meteor/alanning:roles';
 import { Stacks, Users } from '/lib/collections';
 import { Logger } from '/server/api';
 
-export default function() {
+export default function () {
 
-  Meteor.publish('reaction-account-info', function(id) {
+  Meteor.publish('reaction-account-info', function (id) {
 
     const logger = Logger.child({
       meteor_publication: 'reaction-account-info',

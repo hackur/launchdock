@@ -6,7 +6,7 @@ import { SSR } from 'meteor/meteorhacks:ssr';
 import { Invitations, Users } from '/lib/collections';
 import { Logger } from '/server/api';
 
-export default function() {
+export default function () {
 
   Meteor.methods({
 

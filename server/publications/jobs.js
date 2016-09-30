@@ -2,9 +2,9 @@ import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 import { Jobs } from '/lib/collections';
 
-export default function() {
+export default function () {
 
-  Meteor.publish('jobs-list', function(limit) {
+  Meteor.publish('jobs-list', function (limit) {
     check(limit, Match.Optional(Number));
 
     if (Roles.userIsInRole(this.userId, 'admin')) {

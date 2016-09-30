@@ -7,7 +7,7 @@ import stacks from './stacks';
 import users from './users';
 import utils from './utils';
 
-export default function() {
+export default function () {
   jobs();
   balancers();
   hosts();
