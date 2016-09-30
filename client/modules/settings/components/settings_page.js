@@ -1,21 +1,21 @@
 import React from 'react';
+import Helmet from 'react-helmet';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import TextArea from 'react-textarea-autosize';
-import Head from '/client/modules/core/components/head';
 
 class SettingsPage extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      settings: this.props.settings
+      settings: props.settings
     };
   }
 
   handleStateChange(e) {
     const { settings } = this.state;
 
-    let fieldState = {};
+    const fieldState = {};
     fieldState[e.target.name] = e.target.value;
 
     const newState = Object.assign(settings, fieldState);
@@ -25,8 +25,8 @@ class SettingsPage extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const { settings } = this.state;
     const { update } = this.props;
+    const { settings } = this.state;
     update(settings);
   }
 
@@ -35,11 +35,11 @@ class SettingsPage extends React.Component {
 
     return (
       <Grid className='settings-page'>
-        <Head title='Settings'/>
+        <Helmet title='Settings' />
         <Row>
           <Col sm={12} md={6} mdOffset={3}>
             <Panel className='settings-page-form'>
-              <h3 className='form-heading text-center'>Launchdock Settings</h3>
+              <h3 className='form-heading text-center'>Settings</h3>
               <form onSubmit={this.handleSubmit.bind(this)}>
                 <Row className='settings-group-heading'><h3>General</h3></Row>
 
@@ -437,5 +437,10 @@ class SettingsPage extends React.Component {
     );
   }
 }
+
+SettingsPage.propTypes = {
+  settings: React.PropTypes.object,
+  update: React.PropTypes.func.isRequired
+};
 
 export default SettingsPage;
