@@ -34,7 +34,9 @@ Settings.find().observe({
     if (doc.segmentKey) {
       Logger.info('Segment analytics initialized.');
     } else {
-      Logger.warn('No Segment key found in settings. Analytics not initialized.');
+      if (process.env.NODE_ENV === 'production') {
+        Logger.warn('No Segment key found in settings. Analytics not initialized.');
+      }
     }
   },
   // if the key has changed, re-initialize
