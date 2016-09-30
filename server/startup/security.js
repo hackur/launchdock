@@ -1,7 +1,7 @@
+import _ from 'lodash';
 import { DDPRateLimiter } from 'meteor/ddp-rate-limiter';
-import _ from 'underscore';
 
-export default function() {
+export default function () {
 
   // Get a list of all methods by running
   // `Meteor.server.method_handlers` in meteor shell.
@@ -26,7 +26,7 @@ export default function() {
   // Only allow 2 login attempts per connection per 5 seconds
   DDPRateLimiter.addRule({
     name(name) {
-      return _.contains(AUTH_METHODS, name);
+      return _.includes(AUTH_METHODS, name);
     },
 
     // Rate limit per connection ID

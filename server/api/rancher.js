@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import WebSocket from 'ws';
 import { Meteor } from 'meteor/meteor';
 import { HTTP } from 'meteor/http';

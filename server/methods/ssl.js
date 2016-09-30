@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Stacks, Services, Settings } from '/lib/collections';

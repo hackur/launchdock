@@ -1,10 +1,10 @@
+import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { SSR } from 'meteor/meteorhacks:ssr';
 import { Invitations, Users } from '/lib/collections';
 import { Logger } from '/server/api';
-import _ from 'underscore';
 
 export default function() {
 
@@ -34,7 +34,7 @@ export default function() {
         throw new Meteor.Error(err);
       }
 
-      if(_.isArray(options.users)) {
+      if(Array.isArray(options.users)) {
         _.each(options.users, (user) => {
           Logger.info(`Added user ${user} to role(s) ${options.roles}`);
         });
@@ -70,7 +70,7 @@ export default function() {
         throw new Meteor.Error(err);
       }
 
-      if(_.isArray(options.users)) {
+      if(Array.isArray(options.users)) {
         _.each(options.users, (user) => {
           Logger.info(`Set user ${user} to role(s) ${options.roles}`);
         });

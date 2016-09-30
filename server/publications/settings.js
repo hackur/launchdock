@@ -1,8 +1,7 @@
+import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { Roles } from 'meteor/alanning:roles';
 import { Settings } from '/lib/collections';
-import { check } from 'meteor/check';
-import _ from 'underscore';
 
 
 export default function() {
@@ -20,9 +19,7 @@ export default function() {
 
     // hide private fields for non-admins
     if (!Roles.userIsInRole(this.userId, 'admin')) {
-      options = _.extend(options, {
-        fields: privateFields
-      });
+      options = Object.assign({}, options, { fields: privateFields });
     }
 
     return Settings.find({}, options);

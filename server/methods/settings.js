@@ -1,12 +1,12 @@
+import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { Settings } from '/lib/collections';
 import { Logger } from '/server/api';
-import _ from 'underscore';
 
 
-export default function() {
+export default function () {
 
   Meteor.methods({
     'settings/update'(settings) {
@@ -31,7 +31,7 @@ export default function() {
         Settings.update(settings._id, { $set: updates });
       } catch(e) {
         const err = `Update failed: ${e}`;
-        logger.error(err);
+        logger.error(e);
         throw new Meteor.Error(err);
       }
 

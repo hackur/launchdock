@@ -335,7 +335,7 @@ export default function() {
       // add custom environment variables to app (if any were provided)
       if (doc.appEnvVars) {
         const currentEnvVars = app.launchConfig.environment;
-        app.launchConfig.environment = _.extend(currentEnvVars, doc.appEnvVars);
+        app.launchConfig.environment = Object.assign({}, currentEnvVars, doc.appEnvVars);
         logger.info('Appended custom env vars to stack', app.launchConfig.environment);
       }
 
