@@ -28,13 +28,13 @@ export default function () {
       if (defaultCert) {
         const cert = rancher.get('certificates', defaultCert);
 
-        if (cert.state === 'active') {
+        if (cert.data.state === 'active') {
           const msg = `Default certificate ${cert.id} is already active`;
           logger.info({ data: cert.data }, msg);
           return defaultCert;
         }
 
-        if (!!cert.id) {
+        if (!!cert.data.id) {
           const err1 = `Default certificate ${cert.id} exists, but isn't active`;
           logger.error({ error: cert.data }, err1);
           throw new Meteor.Error(err1);
@@ -78,7 +78,7 @@ export default function () {
         }
       });
 
-      return newCert.id;
+      return newCert.data.id;
     },
 
 
