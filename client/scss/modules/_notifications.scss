@@ -5,8 +5,11 @@
   z-index: 1040;
 }
 
-// Center the text in top alerts
-.s-alert-top > .s-alert-box-inner {
-  width: 100%;
-  text-align: center;
+// Center the text in alerts
+.s-alert-top, .s-alert-bottom {
+
+  & > .s-alert-box-inner {
+    width: 100%;
+    text-align: center;
+  }
 }

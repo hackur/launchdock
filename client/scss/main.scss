@@ -1,10 +1,11 @@
 
-//////////////////////////////
-// Launchdock Custom Styles //
-//////////////////////////////
+///////////////////
+// Global Styles //
+///////////////////
 
 @import "vars",
         "modules/colors",
+        "modules/accounts",
         "modules/badges",
         "modules/buttons",
         "modules/global",
@@ -12,6 +13,7 @@
         "modules/navbar",
         "modules/notifications",
         "modules/sidebar",
+        "modules/tables",
         "modules/tooltips",
         "modules/type",
         "modules/users";

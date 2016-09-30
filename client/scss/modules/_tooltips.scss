@@ -33,7 +33,6 @@
 
   &.hide {
     opacity: 0;
-    display: block !important; // hack to fix Materialize conflict
   }
 
   &.show {
