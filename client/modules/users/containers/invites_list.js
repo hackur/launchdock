@@ -3,12 +3,13 @@ import loading from '/client/modules/core/components/loading';
 import InvitesList from '../components/invites_list';
 
 export const composer = ({ context }, onData) => {
-  const { Meteor, Collections } = context();
+  const { Meteor, Collections, Roles } = context();
   const { Invitations } = Collections;
 
   if (Meteor.subscribe('accounts-management').ready()) {
     const invites = Invitations.find().fetch();
-    onData(null, invites);
+    const canRevoke = Roles.userIsInRole(Meteor.userId(), 'admin');
+    onData(null, { invites, canRevoke });
   }
 };
 
