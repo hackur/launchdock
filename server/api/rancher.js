@@ -24,7 +24,7 @@ export default class Rancher {
 
     this.hostname = this.apiBaseUrl.substr(this.apiBaseUrl.indexOf('//') + 2);
     this.apiVersion = '/v1/';
-    this.apiFullUrl = this.apiBaseUrl + this.apiVersion;
+    this.apiFullUrl = this.apiBaseUrl + this.apiVersion; // `projects/${this.env}/`
     this.apiCredentials = new Buffer(`${this.apiKey}:${this.apiSecret}`).toString('base64');
 
     // fix Rancher's horrible API resource naming
@@ -42,20 +42,24 @@ export default class Rancher {
 
   create(resourceType, data) {
     const resource = this.convertApiNames(resourceType);
-    return HTTP.call('POST', this.apiFullUrl + resource + '/', {
+    const url = this.apiFullUrl + resource + '/';
+    Logger.info({ data }, `[Rancher API] POST ${url}`);
+    return HTTP.call('POST', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      data: data
+      data
     });
   }
 
 
   list(resourceType) {
     const resource = this.convertApiNames(resourceType);
-    return HTTP.call('GET', this.apiFullUrl + resource + '/', {
+    const url = this.apiFullUrl + resource + '/';
+    Logger.info(`[Rancher API] GET ${url}`);
+    return HTTP.call('GET', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json'
@@ -66,7 +70,9 @@ export default class Rancher {
 
   get(resourceType, id) {
     const resource = this.convertApiNames(resourceType);
-    return HTTP.call('GET', this.apiFullUrl + resource + '/' + id, {
+    const url = this.apiFullUrl + resource + '/' + id;
+    Logger.info(`[Rancher API] GET ${url}`);
+    return HTTP.call('GET', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json'
@@ -77,20 +83,24 @@ export default class Rancher {
 
   update(resourceType, id, data) {
     const resource = this.convertApiNames(resourceType);
-    return HTTP.call('PUT', this.apiFullUrl + resource + '/' + id, {
+    const url = this.apiFullUrl + resource + '/' + id;
+    Logger.info({ data }, `[Rancher API] PUT ${url}`);
+    return HTTP.call('PUT', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      data: data
+      data
     });
   }
 
 
   delete(resourceType, id) {
     const resource = this.convertApiNames(resourceType);
-    return HTTP.call('DELETE', this.apiFullUrl + resource + '/' + id, {
+    const url = this.apiFullUrl + resource + '/' + id;
+    Logger.info(`[Rancher API] DELETE ${url}`);
+    return HTTP.call('DELETE', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json'
@@ -103,6 +113,7 @@ export default class Rancher {
     const resource = this.convertApiNames(resourceType);
     const action = resourceType === 'stacks' ? 'activateservices' : 'activate';
     const url = this.apiFullUrl + resource + '/' + id + '/?action=' + action;
+    Logger.info(`[Rancher API] POST ${url}`);
     return HTTP.call('POST', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
@@ -115,58 +126,62 @@ export default class Rancher {
 
   setLinks(serviceId, links) {
     const url = `${this.apiFullUrl}services/${serviceId}/?action=setservicelinks`;
+    const data = { serviceLinks: links };
+    Logger.info({ data }, `[Rancher API] POST ${url}`);
     return HTTP.call('POST', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      data: {
-        serviceLinks: links
-      }
+      data
     });
   }
 
 
   addLoadBalancerLink(balancerId, serviceId, domains) {
     const url = `${this.apiFullUrl}loadbalancerservices/${balancerId}/?action=addservicelink`;
-
+    const data = {
+      serviceLink: {
+        serviceId: serviceId,
+        ports: Array.isArray(domains) ? domains : [domains]
+      }
+    };
+    Logger.info({ data }, `[Rancher API] POST ${url}`);
     return HTTP.call('POST', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      data: {
-        serviceLink: {
-          serviceId: serviceId,
-          ports: _.isArray(domains) ? domains : [domains]
-        }
-      }
+      data
     });
   }
 
 
   removeLoadBalancerLink(balancerId, serviceId) {
     const url = `${this.apiFullUrl}loadbalancerservices/${balancerId}/?action=removeservicelink`;
-
+    const data = {
+      serviceLink: {
+        serviceId: serviceId
+      }
+    };
+    Logger.info({ data }, `[Rancher API] POST ${url}`);
     return HTTP.call('POST', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      data: {
-        serviceLink: {
-          serviceId: serviceId
-        }
-      }
+      data
     });
   }
 
 
   getStackServices(stackId) {
-    return HTTP.call('GET', `${this.apiFullUrl}environments/${stackId}/services`, {
+    const url = `${this.apiFullUrl}environments/${stackId}/services`;
+    Logger.info(`[Rancher API] GET ${url}`);
+    return HTTP.call('GET', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json'
@@ -176,7 +191,9 @@ export default class Rancher {
 
 
   getServiceContainers(serviceId) {
-    return HTTP.call('GET', `${this.apiFullUrl}services/${serviceId}/instances`, {
+    const url = `${this.apiFullUrl}services/${serviceId}/instances`;
+    Logger.info(`[Rancher API] GET ${url}`);
+    return HTTP.call('GET', url, {
       headers: {
         Authorization: `Basic ${this.apiCredentials}`,
         Accept: 'application/json'
@@ -187,6 +204,11 @@ export default class Rancher {
 
   logs(containerId, callback) {
     const url = `${this.apiFullUrl}containers/${containerId}/?action=logs`;
+    const data = {
+      follow: true,
+      lines: 100
+    };
+    Logger.info({ data }, `[Rancher API] GET ${url}`);
 
     // get the websocket URL and token
     const logsSocket = HTTP.call('POST', url, {
@@ -195,21 +217,18 @@ export default class Rancher {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      data: {
-        follow: true,
-        lines: 100
-      }
+      data
     });
 
     const socketUrl = `${logsSocket.data.url}?token=${logsSocket.data.token}`;
     const socket = new WebSocket(socketUrl);
 
     socket.on('open', () => {
-      Logger.info('Rancher: Tailing logs for container ' + containerId);
+      Logger.info('[Rancher API] Tailing logs for container ' + containerId);
     });
 
     socket.on('message', Meteor.bindEnvironment((msg) => {
-      if (_.isFunction(callback)) {
+      if (_.isfunction (callback)) {
         callback(null, msg, socket);
       } else {
         Logger.info(msg);
@@ -222,7 +241,7 @@ export default class Rancher {
     });
 
     socket.on('close', () => {
-      Logger.info('Rancher: Log tailing stopped for container ' + containerId);
+      Logger.info('[Rancher API] Log tailing stopped for container ' + containerId);
     });
   }
 
