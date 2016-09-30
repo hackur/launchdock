@@ -1,3 +1,4 @@
+import jobs from './jobs';
 import balancers from './balancers';
 import hosts from './hosts';
 import settings from './settings';
@@ -7,6 +8,7 @@ import users from './users';
 import utils from './utils';
 
 export default function() {
+  jobs();
   balancers();
   hosts();
   settings();
