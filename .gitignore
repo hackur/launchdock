@@ -12,3 +12,4 @@ lib-cov
 *.sublime-workspace
 .idea
 .DS_Store
+docker-compose.*.yml
