@@ -42,6 +42,5 @@ WORKDIR $APP_BUNDLE_DIR/bundle
 
 EXPOSE 80
 
-# start mongo and reaction
 ENTRYPOINT ["./entrypoint.sh"]
 CMD []
