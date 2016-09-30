@@ -34,10 +34,10 @@ meteorhacks:ssr
 mizzao:user-status
 nemo64:bootstrap
 tmeasday:publish-counts
+vsivsi:job-collection
 
 # std:react-accounts-ui-bootstrap
 # kadira:flow-router-ssr
 # percolate:synced-cron
 # percolate:migrations
 # ongoworks:mongo-tools
-# vsivsi:job-collection
