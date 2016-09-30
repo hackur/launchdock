@@ -26,6 +26,8 @@ export default {
             title: 'Oops!',
             text: 'Something went wrong deleting the certificate.'
           });
+        } else {
+          Alert.success('Success!', 'Certificate deleted.');
         }
       });
     });

@@ -1,7 +1,6 @@
-import { Meteor } from 'meteor/meteor';
-import React from 'react';
 import sAlert from 'react-s-alert';
-import swal from 'sweetalert';
+import swal from 'sweetalert2';
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 /**
  *  sAlerts defaults
@@ -40,8 +39,8 @@ export const Notify = {
 
 
 /**
- *  SweetAlert defaults
- *  https://github.com/t4t5/sweetalert
+ *  SweetAlert2 defaults
+ *  https://limonte.github.io/sweetalert2
  */
 export const Alert = {
   success(title, text) {
@@ -59,19 +58,22 @@ export const Alert = {
       type: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#DD6B55',
-      confirmButtonText: options.confirmButtonText || 'Do it!',
-      closeOnConfirm: false
-    }, () => {
-      swal({
-        title: 'Success!',
-        text: options.successMsg || '',
-        type: 'success',
-        timer: 1500,
-        showConfirmButton: false
-      });
+      confirmButtonText: options.confirmButtonText || 'Do it!'
+    }).then(() => {
       if (typeof callback === 'function') {
         callback();
+      } else {
+        swal({
+          title: 'Success!',
+          text: options.successMsg || '',
+          type: 'success',
+          timer: 1500,
+          showConfirmButton: false
+        });
       }
+    }, (/* dismiss */) => {
+      // dismiss can be 'cancel', 'overlay', 'close', and 'timer'
+      // Currently, do nothing if dismissed.
     });
   },
 
@@ -81,7 +83,6 @@ export const Alert = {
       text: options.text,
       type: 'input',
       showCancelButton: true,
-      closeOnConfirm: false,
       animation: 'slide-from-top'
     }, (inputValue) => {
       if (typeof callback === 'function') {

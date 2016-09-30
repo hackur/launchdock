@@ -31,17 +31,23 @@ export default {
     }
   },
 
-  revokeInvite({ Meteor, Roles, Alert }, id) {
+  revokeInvite({ Meteor, Alert, Notify }, inviteId) {
+    if (!inviteId) {
+      return Notify.error('ERROR: No invite ID provided');
+    }
+
     Alert.confirm({
       title: 'Are you sure?',
       text: 'There\'s no going back!'
     }, () => {
-      Meteor.call('revokeInvitation', id, (err, res) => {
+      Meteor.call('revokeInvitation', inviteId, (err) => {
         if (err) {
           Alert.error({
-            title: 'Oops!',
-            text: `Something went wrong revoking the invite. <br> ${err}`
+            title: 'Error!',
+            text: err.reason
           });
+        } else {
+          Alert.success('Success!', 'Invite revoked.');
         }
       });
     });
