@@ -1,11 +1,11 @@
 import _ from 'lodash';
 import { Meteor } from 'meteor/meteor';
-import { check } from 'meteor/check';
+import { check, Match } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { SSR } from 'meteor/meteorhacks:ssr';
 import { Invitations, Users } from '/lib/collections';
-import { Logger } from '/server/api';
+import { Logger, Slack } from '/server/api';
 
 export default function () {
 
@@ -64,9 +64,15 @@ export default function () {
      */
     'addUsersToRoles'(options) {
 
+      const logger = Logger.child({
+        meteor_method: 'addUsersToRoles',
+        meteor_method_args: options,
+        userId: this.userId
+      });
+
       if (!Roles.userIsInRole(this.userId, 'admin')) {
         const err = 'AUTH ERROR: Invalid credentials';
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
@@ -78,16 +84,16 @@ export default function () {
       try {
         Roles.addUsersToRoles(options.users, options.roles);
       } catch (err) {
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
       if(Array.isArray(options.users)) {
         _.each(options.users, (user) => {
-          Logger.info(`Added user ${user} to role(s) ${options.roles}`);
+          logger.info(`Added user ${user} to role(s) ${options.roles}`);
         });
       } else {
-        Logger.info(`Added user ${options.users} to role(s) ${options.roles}`);
+        logger.info(`Added user ${options.users} to role(s) ${options.roles}`);
       }
 
       return true;
@@ -100,9 +106,15 @@ export default function () {
      */
     'setUserRoles'(options) {
 
+      const logger = Logger.child({
+        meteor_method: 'setUserRoles',
+        meteor_method_args: options,
+        userId: this.userId
+      });
+
       if (!Roles.userIsInRole(this.userId, 'admin')) {
         const err = 'AUTH ERROR: Invalid credentials';
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
@@ -114,16 +126,16 @@ export default function () {
       try {
         Roles.setUserRoles(options.users, options.roles);
       } catch (err) {
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
       if(Array.isArray(options.users)) {
         _.each(options.users, (user) => {
-          Logger.info(`Set user ${user} to role(s) ${options.roles}`);
+          logger.info(`Set user ${user} to role(s) ${options.roles}`);
         });
       } else {
-        Logger.info(`Set user ${options.users} to role(s) ${options.roles}`);
+        logger.info(`Set user ${options.users} to role(s) ${options.roles}`);
       }
 
       return true;
@@ -132,9 +144,15 @@ export default function () {
 
     sendUserInvite(options) {
 
+      const logger = Logger.child({
+        meteor_method: 'sendUserInvite',
+        meteor_method_args: options,
+        userId: this.userId
+      });
+
       if (!Roles.userIsInRole(this.userId, 'admin')) {
         const err = 'AUTH ERROR: Invalid credentials';
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
@@ -147,7 +165,7 @@ export default function () {
 
       if (!!Invitations.findOne({ email: options.email })) {
         const err = 'Email has already been invited';
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
@@ -173,6 +191,10 @@ export default function () {
         Email.send(emailOpts);
       });
 
+      Slack.message(`${options.email} has been invited to be an admin.`);
+
+      logger.info(`New user invited: ${options.email}`);
+
       return true;
     },
 
@@ -185,18 +207,24 @@ export default function () {
         inviteToken: String
       });
 
-      let invite = Invitations.findOne({ token: options.inviteToken });
+      const logger = Logger.child({
+        meteor_method: 'activateUserInvite',
+        meteor_method_args: options,
+        userId: this.userId
+      });
+
+      const invite = Invitations.findOne({ token: options.inviteToken });
 
       if (!invite) {
         const err = 'Invitation not found.';
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
       // invite can only be used once
       if (invite.accepted) {
         const err = 'Invitation has already been used.';
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
@@ -207,7 +235,7 @@ export default function () {
 
       Roles.setUserRoles(userId, [invite.role]);
 
-      Logger.info(`New user created with email ${options.email} and role ${invite.role}`);
+      logger.info(`New user created with email ${options.email} and role ${invite.role}`);
 
       Invitations.update({ _id: invite._id }, {
         $set: {
@@ -217,9 +245,11 @@ export default function () {
         }
       }, (err, res) => {
         if (!err) {
-          Logger.info(`Invitation successfully accepted by ${invite.email}`);
+          logger.info(`Invitation successfully accepted by ${invite.email}`);
         }
       });
+
+      Slack.message(`Invitation successfully accepted by ${invite.email}`);
 
       return true;
     },
@@ -227,9 +257,15 @@ export default function () {
 
     revokeInvitation(inviteId) {
 
+      const logger = Logger.child({
+        meteor_method: 'revokeInvitation',
+        meteor_method_args: inviteId,
+        userId: this.userId
+      });
+
       if (!Roles.userIsInRole(this.userId, 'admin')) {
         const err = 'AUTH ERROR: Invalid credentials';
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
@@ -238,11 +274,11 @@ export default function () {
       try {
         Invitations.remove(inviteId);
       } catch (err) {
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
-      Logger.info(`Successfully removed invitation: ${inviteId}`);
+      logger.info(`Successfully removed invitation: ${inviteId}`);
 
       return true;
     },
@@ -250,9 +286,15 @@ export default function () {
 
     deleteInvitedUser(userId) {
 
+      const logger = Logger.child({
+        meteor_method: 'deleteInvitedUser',
+        meteor_method_args: userId,
+        userId: this.userId
+      });
+
       if (!Roles.userIsInRole(this.userId, 'admin')) {
         const err = 'AUTH ERROR: Invalid credentials';
-        Logger.error(err);
+        logger.error(err);
         throw new Meteor.Error(err);
       }
 
@@ -263,7 +305,7 @@ export default function () {
       Invitations.remove({ userId: userId });
       Users.remove(userId);
 
-      Logger.info(`User ${userId} succesfully deleted.`);
+      logger.info(`User ${userId} succesfully deleted.`);
 
       return true;
     }
