@@ -242,7 +242,7 @@ export default function () {
           hostname: `mongo3-${stackId}`,
           imageUuid: `docker:${mongoImage}`,
           environment: {
-            JOURNALING: 'no',
+            JOURNALING: false,
             REP_SET: mongoRepSetId
           },
           labels: {
