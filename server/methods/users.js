@@ -4,7 +4,7 @@ import { check, Match } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { SSR } from 'meteor/meteorhacks:ssr';
-import { Invitations, Users } from '/lib/collections';
+import { Invitations, Settings, Users } from '/lib/collections';
 import { Logger, Slack } from '/server/api';
 
 export default function () {
@@ -174,16 +174,19 @@ export default function () {
 
       Invitations.insert(options);
 
-      let url = Meteor.absoluteUrl() + 'invite/' + options.token;
-      let emailHtml = 'email/templates/admin-invitation.html';
+      const url = Meteor.absoluteUrl() + 'invite/' + options.token;
+      const emailHtml = 'email/templates/admin-invitation.html';
 
       SSR.compileTemplate('user-invite', Assets.getText(emailHtml));
-      let content = SSR.render('user-invite', { url: url });
+      const content = SSR.render('user-invite', { url });
 
-      let emailOpts = {
+      const siteTitle = Settings.get('siteTitle', 'Launchdock');
+      const adminEmail = Settings.get('adminEmail', 'no-reply@launchdock.io');
+
+      const emailOpts = {
         to: options.email,
-        from: 'Launchdock <invites@launchdock.io>',
-        subject: 'You\'re invited to Launchdock!',
+        from: `${siteTitle} <${adminEmail}>`,
+        subject: `You're invited to ${siteTitle}!`,
         html: content
       };
 
