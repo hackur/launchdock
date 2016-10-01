@@ -83,7 +83,7 @@ export default {
             text: err.reason
           });
         } else {
-          Alert.success('Success!', 'Invite revoked.');
+          Notify.success('Invitation revoked!', 'top-right');
         }
       });
     });

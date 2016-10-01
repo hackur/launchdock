@@ -50,6 +50,8 @@ export default {
             title: 'Oops!',
             text: `Something went wrong deleting the user. <br> ${err}`
           });
+        } else {
+          Notify.success('User deleted!');
         }
       });
     });
