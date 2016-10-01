@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { Counts } from 'meteor/tmeasday:publish-counts';
-import { Invitations, Users } from '/lib/collections';
+import { Invitations, Stacks, Services, Users } from '/lib/collections';
 
 export default function () {
 
@@ -11,7 +11,7 @@ export default function () {
     if (Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
       Counts.publish(this, 'users-count', Users.find());
     }
-    return [];
+    return this.ready();
   });
 
   // single user account
@@ -23,7 +23,7 @@ export default function () {
         Services.find({ userId: id })
       ];
     }
-    return [];
+    return this.ready();
   });
 
 
@@ -39,7 +39,7 @@ export default function () {
         }
       });
     }
-    return [];
+    return this.ready();
   });
 
 
@@ -66,7 +66,8 @@ export default function () {
         Users.find({ roles: { $in: roles } }, {
           fields: {
             'emails.address': 1,
-            roles: 1
+            roles: 1,
+            username: 1
           }
         }),
         Invitations.find({ accepted: false, role: { $in: roles } }, {
@@ -83,7 +84,7 @@ export default function () {
         })
       ];
     }
-    return [];
+    return this.ready();
   });
 
 
@@ -99,4 +100,22 @@ export default function () {
     });
   });
 
+
+  Meteor.publish('api-keys', function () {
+    if (Roles.userIsInRole(this.userId, 'admin')) {
+      return Users.find({ roles: { $in: ['api'] }}, {
+        fields: {
+          createdAt: 1,
+          createdBy: 1,
+          name: 1,
+          roles: 1,
+          username: 1
+        },
+        sort: {
+          createdAt: -1
+        }
+      });
+    }
+    return this.ready();
+  });
 }
