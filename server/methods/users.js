@@ -205,6 +205,7 @@ export default function () {
     activateUserInvite(options) {
 
       check(options, {
+        username: String,
         email: String,
         password: String,
         inviteToken: String
@@ -231,8 +232,15 @@ export default function () {
         throw new Meteor.Error(err);
       }
 
-      let userId = Accounts.createUser({
-        email: invite.email, // more secure than method arg
+      if (Accounts.findUserByUsername(options.username)) {
+        const msg = 'Username already exists';
+        logger.warn(msg);
+        throw new Meteor.Error(msg);
+      }
+
+      const userId = Accounts.createUser({
+        username: options.username,
+        email: invite.email,
         password: options.password
       });
 
