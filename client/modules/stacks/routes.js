@@ -6,7 +6,7 @@ import StackNew from './containers/stack_new';
 import StackPage from './containers/stack_page';
 import StackSSL from './containers/stack_ssl';
 
-export default function(injectDeps, { FlowRouter }) {
+export default function (injectDeps, { FlowRouter }) {
   const MainLayoutCtx = injectDeps(MainLayout);
 
   FlowRouter.route('/stacks', {
