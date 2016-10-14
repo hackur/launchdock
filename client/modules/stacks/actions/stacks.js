@@ -4,7 +4,7 @@ export default {
     if (!options.name) {
       return LocalState.set('STACK_CREATE_ERROR', 'Stack name is required.');
     }
-    Meteor.call('rancher/createStack', options, (err, id) => {
+    Meteor.call('rancher/createTrial', options, (err, id) => {
       if (err) {
         Notify.error(err);
         return;
