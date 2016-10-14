@@ -228,7 +228,7 @@ export default class Rancher {
     });
 
     socket.on('message', Meteor.bindEnvironment((msg) => {
-      if (_.isfunction (callback)) {
+      if (_.isFunction(callback)) {
         callback(null, msg, socket);
       } else {
         Logger.info(msg);
