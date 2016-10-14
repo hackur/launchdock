@@ -45,6 +45,7 @@
     "react-mounter": "^1.2.0",
     "react-s-alert": "^1.2.0",
     "react-textarea-autosize": "^4.0.5",
+    "run-parallel-limit": "^1.0.3",
     "shelljs": "^0.7.4",
     "stripe": "^4.11.0",
     "sweetalert2": "^5.2.0",
