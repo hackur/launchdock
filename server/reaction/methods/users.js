@@ -77,7 +77,7 @@ export default function () {
         token: doc.token
       };
 
-      Meteor.call('rancher/createStack', stackCreateDetails, launchdockUserId);
+      Meteor.call('rancher/createTrial', stackCreateDetails, launchdockUserId);
 
       analytics.identify({
         userId: launchdockUserId,
