@@ -134,7 +134,7 @@ export default function () {
       const mongoRepSetId = Random.id();
 
       // mongo urls
-      const mongoBaseUrl = `mongodb://${mongoUser}:${mongoPw}@mongo1-${stackId}:27017,mongo2-${stackId}:27017/`;
+      const mongoBaseUrl = `mongodb://${mongoUser}:${mongoPw}@mongo1-${stackId}:27017/`;
       const mongoUrl = mongoBaseUrl + mongoDatabase + '?replicaSet=' + mongoRepSetId;
       const mongoOplogUrl = mongoBaseUrl + 'local?authSource=' + mongoDatabase;
 
