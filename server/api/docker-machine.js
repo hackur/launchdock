@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import { camelCase, merge } from 'lodash';
 import { execFile, spawn } from 'child_process';
 import parallel from 'run-parallel-limit';
 
