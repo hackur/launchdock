@@ -25,18 +25,18 @@ const LIST_COLUMNS = [
 export default class DockerMachine {
 
   constructor(options = {}) {
-    this.options = typeof options === 'string' ? { name: options } : options;
-    this.name = this.options.name || process.env.DOCKER_MACHINE_NAME || 'default';
+    const opts = typeof options === 'string' ? { name: options } : options;
+    this.name = opts.name || process.env.DOCKER_MACHINE_NAME || 'default';
   }
 
-  command(args, done) {
+  static command(args, done) {
     execFile('docker-machine', [].concat(args), {
       cwd: process.env.DOCKER_MACHINE_PATH || '.',
       encoding: 'utf8'
     }, done);
   }
 
-  create(name, options, onData, done) {
+  static create(name, options, onData, done) {
     if (typeof name !== 'string') {
       throw new TypeError('A machine name must be provided');
     }
@@ -82,20 +82,20 @@ export default class DockerMachine {
     proc.on('close', done);
   }
 
-  status(name, done) {
-    this.command(['status', name], (err, stdout) => {
+  static status(name, done) {
+    DockerMachine.command(['status', name], (err, stdout) => {
       err ? done(err) : done(null, stdout.trim().toLowerCase());
     });
   }
 
-  isRunning(name, done) {
-    this.status(name, (err, status) => {
+  static isRunning(name, done) {
+    DockerMachine.status(name, (err, status) => {
       done(err, status === 'running');
     });
   }
 
-  start(name, done) {
-    this.command(['start', name], (err) => {
+  static start(name, done) {
+    DockerMachine.command(['start', name], (err) => {
       if (HOST_NON_EXISTENT.test(err)) {
         done(new Error(`Docker host "${name}" does not exist`));
       } else if (ALREADY_RUNNING.test(err)) {
@@ -106,8 +106,8 @@ export default class DockerMachine {
     });
   }
 
-  stop(name, done) {
-    this.command(['stop', name], (err) => {
+  static stop(name, done) {
+    DockerMachine.command(['stop', name], (err) => {
       if (HOST_NON_EXISTENT.test(err)) {
         done(new Error(`Docker host "${name}" does not exist`));
       } else if (ALREADY_STOPPED.test(err)) {
@@ -118,7 +118,7 @@ export default class DockerMachine {
     });
   }
 
-  env(name, options, callback) {
+  static env(name, options, callback) {
     let opts = options;
     let done = callback;
 
@@ -141,7 +141,7 @@ export default class DockerMachine {
 
     args.push(name);
 
-    this.command(args, function (err, stdout) {
+    DockerMachine.command(args, function (err, stdout) {
       if (err) {
         return done(err);
       }
@@ -164,7 +164,7 @@ export default class DockerMachine {
     });
   }
 
-  ssh(name, command, done) {
+  static ssh(name, command, done) {
     let cmd = command;
 
     if (Array.isArray(cmd)) {
@@ -179,17 +179,17 @@ export default class DockerMachine {
       throw new TypeError('Command may not be empty');
     }
 
-    this.command(['ssh', name, cmd], done);
+    DockerMachine.command(['ssh', name, cmd], done);
   }
 
-  inspect(name, done) {
+  static inspect(name, done) {
     let callback = done;
 
     if (typeof done !== 'function') {
       callback = () => {};
     }
 
-    this.command(['inspect', name], (err, stdout) => {
+    DockerMachine.command(['inspect', name], (err, stdout) => {
       if (err) {
         return callback(err);
       }
@@ -202,11 +202,11 @@ export default class DockerMachine {
         return callback(error);
       }
 
-      callback(null, _.merge({}, data));
+      callback(null, merge({}, data));
     });
   }
 
-  list(options, callback) {
+  static list(options, callback) {
     let opts = options;
     let done = callback;
 
@@ -231,7 +231,7 @@ export default class DockerMachine {
       args.push('-t', String(opts.timeout));
     }
 
-    this.command(args, (err, stdout) => {
+    DockerMachine.command(args, (err, stdout) => {
       if (err) {
         return done(err);
       }
@@ -241,7 +241,7 @@ export default class DockerMachine {
         const machine = {};
 
         LIST_COLUMNS.forEach((name, i) => {
-          const key = _.camelCase(name);
+          const key = camelCase(name);
           const val = values[i];
 
           machine[key] = val === '' ? null : decodeURIComponent(val);
@@ -266,7 +266,7 @@ export default class DockerMachine {
 
       // Add additional metadata from `docker-machine inspect <name>`
       parallel(machines.map((machine) => (next) => {
-        this.inspect(machine.name, (error, data) => {
+        DockerMachine.inspect(machine.name, (error, data) => {
           if (error) {
             next(error);
           } else {
@@ -277,3 +277,23 @@ export default class DockerMachine {
     });
   }
 }
+
+// static methods to add to the prototype of a class instance
+const INSTANCE_METHODS = [
+  'create',
+  'status',
+  'isRunning',
+  'start',
+  'stop',
+  'env',
+  'ssh',
+  'inspect'
+];
+
+INSTANCE_METHODS.forEach((method) => {
+  DockerMachine.prototype[method] = function () {
+    const args = Array.from(arguments);
+    args.unshift(this.name);
+    DockerMachine[method].apply(null, args);
+  };
+});
