@@ -1,4 +1,5 @@
-import { useDeps, composeAll, composeWithTracker } from 'mantra-core';
+import { composeWithTracker, composeAll } from 'react-komposer';
+import { useDeps } from 'react-simple-di';
 import ApiKeyNew from '../components/api_key_new';
 
 export const composer = ({ context }, onData) => {

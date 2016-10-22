@@ -1,4 +1,5 @@
-import { useDeps, composeAll, composeWithTracker, compose } from 'mantra-core';
+import { composeWithTracker, composeAll } from 'react-komposer';
+import { useDeps } from 'react-simple-di';
 import StackNew from '../components/stack_new';
 
 export const composer = ({ context, clearErrors }, onData) => {

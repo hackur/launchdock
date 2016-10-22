@@ -1,4 +1,4 @@
-import { createApp } from 'mantra-core';
+import { createApp } from '/client/lib/app';
 import initContext from './configs/context';
 
 // modules

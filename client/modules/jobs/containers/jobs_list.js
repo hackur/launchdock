@@ -1,4 +1,5 @@
-import { useDeps, composeAll, composeWithTracker } from 'mantra-core';
+import { composeWithTracker, composeAll } from 'react-komposer';
+import { useDeps } from 'react-simple-di';
 import loading from '/client/modules/core/components/loading';
 import JobsList from '../components/jobs_list';
 
