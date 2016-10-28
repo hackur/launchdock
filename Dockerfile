@@ -1,1 +1,1 @@
-docker/prod.dockerfile
+FROM jshimko/meteor-launchpad:latest
