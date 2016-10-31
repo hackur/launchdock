@@ -10,11 +10,6 @@ export default function (injectDeps, { FlowRouter, Meteor }) {
   const MainLayoutCtx = injectDeps(MainLayout);
   const FrontendLayoutCtx = injectDeps(FrontendLayout);
 
-  // Global subscriptions
-  FlowRouter.subscriptions = function () {
-    this.register('settings', Meteor.subscribe('settings'));
-  };
-
   FlowRouter.route('/', {
     name: 'home',
     action() {
