@@ -11,6 +11,14 @@ class ServiceListItem extends React.Component {
     };
   }
 
+  componentDidMount() {
+    this.setStateColor(this.props.service);
+  }
+
+  componentWillReceiveProps() {
+    this.setStateColor(this.props.service);
+  }
+
   setStateColor(item) {
     switch (item.state) {
       case 'Running':
@@ -37,6 +45,8 @@ class ServiceListItem extends React.Component {
       case 'Terminated':
         this.setState({ stateColor: 'text-muted' });
         break;
+      default:
+        this.setState({ stateColor: 'text-muted' });
     }
   }
 
@@ -46,14 +56,6 @@ class ServiceListItem extends React.Component {
     const rancherHost = settings.rancherApiUrl;
     const rancherEnv = settings.rancherDefaultEnv;
     return `${rancherHost}/env/${rancherEnv}/apps/stacks/${stack.rancherId}/services/${service.rancherId}/`;
-  }
-
-  componentDidMount() {
-    this.setStateColor(this.props.service);
-  }
-
-  componentWillReceiveProps() {
-    this.setStateColor(this.props.service);
   }
 
   render() {
@@ -70,8 +72,8 @@ class ServiceListItem extends React.Component {
         <td>{service.name}</td>
         <td>{service.imageName}</td>
         <td>
-          <div className="stack-service-links">
-            <a href={this.getServiceLink(service)} target="_blank">
+          <div className='stack-service-links'>
+            <a href={this.getServiceLink(service)} target='_blank'>
               <Glyphicon glyph='new-window' />
             </a>
           </div>
