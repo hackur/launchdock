@@ -34,11 +34,16 @@ const startEventsStream = () => {
 
   const socket = new WebSocket(url);
 
-  socket.on('open', () => {
+  socket.on('open', Meteor.bindEnvironment(() => {
     Logger.info('Rancher events websocket opened');
+    Settings.update(s._id, {
+      $set: {
+        rancherConnected: true
+      }
+    });
     // reset the error limit if we successfully connect
     socketErrors = 0;
-  });
+  }));
 
   socket.on('message', Meteor.bindEnvironment((messageStr) => {
     const msg = JSON.parse(messageStr);
@@ -102,7 +107,15 @@ const startEventsStream = () => {
 
   socket.on('close', Meteor.bindEnvironment(() => {
     Logger.warn('Rancher events websocket closed!');
+
+    Settings.update(s._id, {
+      $set: {
+        rancherConnected: false
+      }
+    });
+
     socketErrors++;
+
     // reopen websocket if it closes and the error
     // limit hasn't been exceeded
     if (socketErrors < 10) {
