@@ -7,6 +7,10 @@ import { Logger, Rancher } from '/server/api';
  * Monitor Rancher events over websocket stream API
  */
 
+// set an error iterator so we can prevent infinite reconnect
+// loops when we have connection issues that need human intervention
+let socketErrors = 0;
+
 const startEventsStream = () => {
   const s = Settings.findOne();
 
@@ -32,6 +36,8 @@ const startEventsStream = () => {
 
   socket.on('open', () => {
     Logger.info('Rancher events websocket opened');
+    // reset the error limit if we successfully connect
+    socketErrors = 0;
   });
 
   socket.on('message', Meteor.bindEnvironment((messageStr) => {
@@ -96,9 +102,17 @@ const startEventsStream = () => {
 
   socket.on('close', Meteor.bindEnvironment(() => {
     Logger.warn('Rancher events websocket closed!');
-
-    // reopen websocket if it closes
-    startEventsStream();
+    socketErrors++;
+    // reopen websocket if it closes and the error
+    // limit hasn't been exceeded
+    if (socketErrors < 10) {
+      Meteor.setTimeout(() => {
+        Logger.info('Attempting to reconnect to Rancher websocket...');
+        startEventsStream();
+      }, 10000);
+    } else {
+      Logger.error(`Failed to connect to Rancher websocket ${socketErrors} times. Stopping retries.`);
+    }
   }));
 };
 
