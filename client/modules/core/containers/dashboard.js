@@ -5,11 +5,11 @@ import error from '../components/error';
 import Dashboard from '../components/dashboard';
 
 export const composer = ({ context }, onData) => {
-  const { Meteor } = context();
+  const { Meteor, Settings } = context();
 
-  if (Meteor.subscribe('dashboard').ready()) {
-    const count = Counts.get('stacks-count');
-    onData(null, { count });
+  if (Meteor.subscribe('settings').ready()) {
+    const settings = Settings.findOne();
+    onData(null, { settings });
   }
 };
 
