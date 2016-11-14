@@ -1,7 +1,7 @@
-import { createApp } from '/client/lib/app';
 import initContext from './configs/context';
+import App from '/client/lib/app';
 
-// modules
+// import modules
 import coreModule from './modules/core';
 import jobsModule from './modules/jobs';
 import settingsModule from './modules/settings';
@@ -12,7 +12,7 @@ import usersModule from './modules/users';
 const context = initContext();
 
 // create app
-const app = createApp(context);
+const app = new App(context);
 app.loadModule(coreModule);
 app.loadModule(jobsModule);
 app.loadModule(settingsModule);
