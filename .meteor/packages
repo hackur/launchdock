@@ -1,14 +1,14 @@
 accounts-base@1.2.14
-accounts-password@1.3.2
+accounts-password@1.3.3
 blaze-html-templates@1.0.4
 check@1.2.4
 ddp-rate-limiter@1.0.6
-ecmascript@0.5.9
+ecmascript@0.6.1
 email@1.1.18
 gadicc:blaze-react-component # temporary fix until Blaze is totally gone
 http@1.2.10
 jquery@1.11.10
-less@2.7.7
+less@2.7.8
 meteor-base@1.0.4
 mobile-experience@1.0.4
 mongo@1.1.14
