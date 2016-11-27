@@ -172,6 +172,8 @@
         "allowSingleLine": true
       }
     ],
+    "object-curly-spacing": [2, "always"], // http://eslint.org/docs/rules/object-curly-spacing
+    "array-bracket-spacing": [2, "never"], // http://eslint.org/docs/rules/array-bracket-spacing
     "quotes": [
       2, "single", "avoid-escape" // http://eslint.org/docs/rules/quotes
     ],
