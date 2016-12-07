@@ -3,8 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import { check, Match } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import { Stacks, Services, Settings, Users } from '/lib/collections';
-import { Launchdock, Logger, Rancher, initAnalytics } from '/server/api';
-import { emailAdmins } from '/server/email';
+import { Email, Launchdock, Logger, Rancher, initAnalytics } from '/server/api';
 
 const analytics = initAnalytics();
 
@@ -674,10 +673,10 @@ export default function () {
 
         // define email options
         const subject = `New stack creation for ${siteUrl} by ${userInfo}`;
-        const text = `User: ${userInfo} \n Shop: https://${siteUrl}`;
+        const text = `User: ${userInfo} \n App: https://${siteUrl}`;
 
         // send the email to all users with admin role
-        emailAdmins(subject, text);
+        Email.notifyUsersInRole('admin', subject, text);
       }
 
       return stackId;

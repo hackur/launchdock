@@ -4,10 +4,10 @@ import { Accounts } from 'meteor/accounts-base';
 import { check, Match } from 'meteor/check';
 import { Random } from 'meteor/random';
 import { Roles } from 'meteor/alanning:roles';
-import { Invitations, Stacks, Users } from '/lib/collections';
-import { Launchdock, Logger, initAnalytics } from '/server/api';
+import { Invitations } from '/lib/collections';
+import { Email, Launchdock, Logger, initAnalytics } from '/server/api';
 
-// const analytics = initAnalytics();
+const analytics = initAnalytics();
 
 export default function () {
 
@@ -146,9 +146,7 @@ export default function () {
         html: content
       };
 
-      Meteor.defer(() => {
-        Email.send(emailOpts);
-      });
+      Email.send(emailOpts);
 
       Invitations.insert(options);
 
@@ -157,7 +155,7 @@ export default function () {
 
       logger.info(`Invite successfully sent to ${options.email}`);
 
-      let intercomUpdate = {
+      const intercomUpdate = {
         email: options.email,
         updates: {
           invited: true,
@@ -275,7 +273,7 @@ export default function () {
       const total = amount || 10;
 
       let page = 0;
-      let users = [];
+      const users = [];
 
       // keep grabbing more users from intercom until we have the amount
       for (; users.length < total;) {

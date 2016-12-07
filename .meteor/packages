@@ -4,7 +4,6 @@ blaze-html-templates@1.0.4
 check@1.2.4
 ddp-rate-limiter@1.0.6
 ecmascript@0.6.1
-email@1.1.18
 gadicc:blaze-react-component # temporary fix until Blaze is totally gone
 http@1.2.10
 jquery@1.11.10

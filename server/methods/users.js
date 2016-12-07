@@ -5,7 +5,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
 import { SSR } from 'meteor/meteorhacks:ssr';
 import { Invitations, Settings, Users } from '/lib/collections';
-import { Logger, Slack } from '/server/api';
+import { Email, Logger, Slack } from '/server/api';
 
 export default function () {
 
@@ -190,9 +190,7 @@ export default function () {
         html: content
       };
 
-      Meteor.defer(() => {
-        Email.send(emailOpts);
-      });
+      Email.send(emailOpts);
 
       Slack.message(`${options.email} has been invited to be an admin.`);
 

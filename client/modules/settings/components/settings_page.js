@@ -68,6 +68,13 @@ class SettingsPage extends Component {
                   onChange={this.handleStateChange}
                   info='(used for automated emails)'/>
                 <FieldGroup
+                  label='Mail URL'
+                  type='text'
+                  name='mailUrl'
+                  value={settings.mailUrl}
+                  onChange={this.handleStateChange}
+                  info='(used for automated emails)'/>
+                <FieldGroup
                   label='Default App Image'
                   type='text'
                   name='defaultAppImage'

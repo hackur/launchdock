@@ -39,6 +39,8 @@
     "react-addons-pure-render-mixin": "^15.3.2",
     "react-bootstrap": "^0.30.6",
     "react-dom": "^15.3.2",
+    "nodemailer": "^2.6.4",
+    "nodemailer-wellknown": "^0.2.0",
     "react-komposer": "^1.13.1",
     "react-helmet": "^3.2.1",
     "react-ladda": "^4.0.5",
