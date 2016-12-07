@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import format from 'date-fns/format';
 import { Row, Col, Panel } from 'react-bootstrap';
 import LaddaButton from 'react-ladda';
 
@@ -83,7 +83,7 @@ class StackInfo extends React.Component {
               <Col sm={12}>
                 <p><strong>Name:</strong> {stack.name}</p>
                 <p><strong>UUID:</strong> {stack.uuid}</p>
-                <p><strong>Created:</strong> {moment(stack.createdAt).format('LLL')}</p>
+                <p><strong>Created:</strong> {format(stack.createdAt, 'MMMM D, YYYY h:mma')}</p>
                 <p><strong>State: </strong>
                   <span className={`${this.state.stateColor} text-capitalize`}>
                     {stack.state}

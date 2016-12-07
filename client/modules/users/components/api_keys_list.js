@@ -1,7 +1,7 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Grid, Row, Col, Panel, Table, Button, ButtonToolbar } from 'react-bootstrap';
-import moment from 'moment';
+import format from 'date-fns/format';
 import ApiKeyNew from '../containers/api_key_new';
 
 class ApiKeysList extends React.Component {
@@ -46,7 +46,7 @@ class ApiKeysList extends React.Component {
                             {apiKey.username}
                           </td>
                           <td className='text-center'>
-                            {moment(apiKey.createdAt).format('LLL')}
+                            {format(apiKey.createdAt, 'MMMM D, YYYY h:mma')}
                           </td>
                           <td className='text-center'>
                             {apiKey.createdBy}

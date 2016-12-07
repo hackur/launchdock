@@ -1,7 +1,8 @@
 import React from 'react';
 import Helmet from 'react-helmet';
 import { Grid, Row, Col, Panel, Table, ButtonToolbar, Button } from 'react-bootstrap';
-import moment from 'moment';
+import format from 'date-fns/format';
+import { default as fromNow } from 'date-fns/distance_in_words_to_now';
 import _ from 'lodash';
 
 class JobsList extends React.Component {
@@ -61,7 +62,8 @@ class JobsList extends React.Component {
               return (
                 <tr key={job._id}>
                   <td>
-                    {moment(job.created).format('LLL')} ({moment(job.created).fromNow()})
+                    {format(job.created, 'MMMM D, YYYY h:mma')}
+                    <small> ({fromNow(job.created)} ago)</small>
                   </td>
                   <td>{job.type}</td>
                   <td>{job.status}</td>

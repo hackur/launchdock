@@ -1,4 +1,4 @@
-import moment from 'moment';
+import subDays from 'date-fns/sub_days';
 import { Jobs } from '/lib/collections';
 import { Logger } from '/server/api';
 
@@ -18,7 +18,7 @@ export default function () {
         $in: ['cancelled', 'completed', 'failed']
       },
       updated: {
-        $lt: moment().subtract(30, 'days')._d
+        $lt: subDays(new Date(), 30)
       }
     }, {
       fields: {

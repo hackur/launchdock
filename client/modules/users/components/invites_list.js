@@ -1,7 +1,8 @@
 import React from 'react';
 import { Row, Col, Panel, Table, Button } from 'react-bootstrap';
 import InviteNew from '../containers/invite_new';
-import moment from 'moment';
+import format from 'date-fns/format';
+import { default as fromNow } from 'date-fns/distance_in_words_to_now';
 
 class InvitesList extends React.Component {
 
@@ -44,8 +45,8 @@ class InvitesList extends React.Component {
                             <td>{invite.email}</td>
                             <td>{invite.role}</td>
                             <td>
-                              {moment(invite.createdAt).format('LLL')}
-                              <small>({moment(invite.createdAt).fromNow()})</small>
+                              {format(invite.createdAt, 'MMMM D, YYYY h:mma')}
+                              <small>({fromNow(invite.createdAt)})</small>
                             </td>
                             <td>
                               <Button
