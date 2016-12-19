@@ -11,7 +11,7 @@ export const composer = ({ context }, onData) => {
   const settingsSub = Meteor.subscribe('settings');
 
   if (userSub.ready() && settingsSub.ready()) {
-    const siteTitle = Settings.get('siteTitle');
+    const siteTitle = Settings.get('siteTitle', 'Launchdock');
     const user = Meteor.user() || {};
     onData(null, { siteTitle, user });
   }
