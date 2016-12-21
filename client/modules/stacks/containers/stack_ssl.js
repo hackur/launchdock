@@ -1,6 +1,5 @@
-import { composeWithTracker, composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
-import loading from '/client/modules/core/components/loading';
+import { composeWithTracker, merge } from '/client/api';
 import StackSSL from '../components/stack_ssl';
 
 export const composer = ({ context, id }, onData) => {
@@ -9,7 +8,7 @@ export const composer = ({ context, id }, onData) => {
 
   if (Meteor.subscribe('stack-page', id).ready()) {
     const stack = Stacks.findOne();
-    const services = Services.find({}, { sort: { name: 1 }}).fetch();
+    const services = Services.find({}, { sort: { name: 1 } }).fetch();
     const settings = Settings.findOne();
     onData(null, { stack, services, settings });
   }
@@ -20,7 +19,7 @@ export const depsMapper = (context, actions) => ({
   deleteCert: actions.stacks.deleteCert
 });
 
-export default composeAll(
+export default merge(
   composeWithTracker(composer, loading),
   useDeps(depsMapper)
 )(StackSSL);

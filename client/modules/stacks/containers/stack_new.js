@@ -1,5 +1,5 @@
-import { composeWithTracker, composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
+import { composeWithTracker, merge } from '/client/api';
 import StackNew from '../components/stack_new';
 
 export const composer = ({ context, clearErrors }, onData) => {
@@ -17,7 +17,7 @@ export const depsMapper = (context, actions) => ({
   clearErrors: actions.stacks.clearErrors
 });
 
-export default composeAll(
+export default merge(
   composeWithTracker(composer),
   useDeps(depsMapper)
 )(StackNew);

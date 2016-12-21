@@ -1,6 +1,5 @@
-import { composeWithTracker, composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
-import loading from '/client/modules/core/components/loading';
+import { composeWithTracker, merge } from '/client/api';
 import SettingsPage from '../components/settings_page';
 
 export const composer = ({ context }, onData) => {
@@ -18,7 +17,7 @@ export const depsMapper = (context, actions) => ({
   update: actions.settings.update
 });
 
-export default composeAll(
-  composeWithTracker(composer, loading),
+export default merge(
+  composeWithTracker(composer),
   useDeps(depsMapper)
 )(SettingsPage);

@@ -1,5 +1,5 @@
-import { composeWithTracker, composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
+import { composeWithTracker, merge } from '/client/api';
 import ApiKeyNew from '../components/api_key_new';
 
 export const composer = ({ context }, onData) => {
@@ -15,7 +15,7 @@ export const depsMapper = (context, actions) => ({
   saveApiKey: actions.api.saveApiKey
 });
 
-export default composeAll(
+export default merge(
   composeWithTracker(composer),
   useDeps(depsMapper)
 )(ApiKeyNew);

@@ -1,6 +1,5 @@
-import { composeWithTracker, composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
-import loading from '/client/modules/core/components/loading';
+import { composeWithTracker, merge } from '/client/api';
 import StackPage from '../components/stack_page';
 
 export const composer = ({ context, id }, onData) => {
@@ -20,7 +19,7 @@ export const depsMapper = (context, actions) => ({
   deleteCert: actions.stacks.deleteCert
 });
 
-export default composeAll(
-  composeWithTracker(composer, loading),
+export default merge(
+  composeWithTracker(composer),
   useDeps(depsMapper)
 )(StackPage);

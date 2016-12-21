@@ -1,6 +1,5 @@
-import { composeWithTracker, composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
-import loading from '/client/modules/core/components/loading';
+import { composeWithTracker, merge } from '/client/api';
 import StacksList from '../components/stacks_list';
 
 export const composer = ({ context }, onData) => {
@@ -17,7 +16,7 @@ export const depsMapper = (context, actions) => ({
   context: () => context
 });
 
-export default composeAll(
+export default merge(
   composeWithTracker(composer, loading),
   useDeps(depsMapper)
 )(StacksList);

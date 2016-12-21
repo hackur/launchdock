@@ -1,7 +1,5 @@
-import { composeWithTracker, composeAll } from 'react-komposer';
 import { useDeps } from 'react-simple-di';
-import loading from '../components/loading';
-import error from '../components/error';
+import { composeWithTracker, merge } from '/client/api';
 import Dashboard from '../components/dashboard';
 
 export const composer = ({ context }, onData) => {
@@ -17,7 +15,7 @@ export const depsMapper = (context) => ({
   context: () => context
 });
 
-export default composeAll(
-  composeWithTracker(composer, loading, error),
+export default merge(
+  composeWithTracker(composer),
   useDeps(depsMapper)
 )(Dashboard);
