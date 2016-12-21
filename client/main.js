@@ -1,5 +1,5 @@
+import App from '/client/api';
 import initContext from './configs/context';
-import App from '/client/lib/app';
 
 // import modules
 import coreModule from './modules/core';
