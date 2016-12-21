@@ -140,7 +140,7 @@ export default class Rancher {
 
 
   addLoadBalancerLink(balancerId, serviceId, domains) {
-    const url = `${this.apiFullUrl}loadbalancerservices/${balancerId}/?action=addservicelink`;
+    const url = `${this.apiFullUrl}loadbalancerservices/${balancerId}?action=addservicelink`;
     const data = {
       serviceLink: {
         serviceId: serviceId,
