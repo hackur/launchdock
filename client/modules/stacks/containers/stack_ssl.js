@@ -20,6 +20,6 @@ export const depsMapper = (context, actions) => ({
 });
 
 export default merge(
-  composeWithTracker(composer, loading),
+  composeWithTracker(composer),
   useDeps(depsMapper)
 )(StackSSL);
