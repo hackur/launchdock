@@ -1,4 +1,4 @@
-import App from '/client/api';
+import { App } from '/client/api';
 import initContext from './configs/context';
 
 // import modules
