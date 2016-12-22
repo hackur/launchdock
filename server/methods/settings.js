@@ -30,7 +30,7 @@ export default function () {
         throw new Meteor.Error(err);
       }
 
-      const updates = _.omit(settings, '_id');
+      const updates = _.omit(settings, ['_id', 'createdAt', 'updatedAt']);
 
       try {
         Settings.update(settings._id, { $set: updates });
