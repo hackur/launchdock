@@ -1,6 +1,6 @@
 export default {
 
-  update({ Notify }, settings) {
+  update({ Meteor, Notify }, settings) {
     Meteor.call('settings/update', settings, (err) => {
       if (err) {
         Notify.error('Oops! Something went wrong.');

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import _ from 'lodash';
 import { FieldGroup } from '/client/modules/core/components';
 
 class SettingsPage extends Component {
@@ -13,35 +14,23 @@ class SettingsPage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      settings: props.settings
-    };
+    this.state = props.settings || {};
 
     this.handleStateChange = this.handleStateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleStateChange(e) {
-    const { settings } = this.state;
-
-    const fieldState = {};
-    fieldState[e.target.name] = e.target.value;
-
-    const newState = Object.assign(settings, fieldState);
-
-    this.setState(newState);
+    this.setState(_.set(this.state, e.target.name, e.target.value));
   }
 
   handleSubmit(e) {
     e.preventDefault();
     const { update } = this.props;
-    const { settings } = this.state;
-    update(settings);
+    update(this.state);
   }
 
   render() {
-    const { settings } = this.state;
-
     return (
       <Grid className='settings-page'>
         <Helmet title='Settings'/>
@@ -55,43 +44,43 @@ class SettingsPage extends Component {
                   <h3>General</h3>
                 </Row>
                 <FieldGroup
-                  label='Site Title'
+                  label='App Name'
                   type='text'
-                  name='siteTitle'
-                  value={settings.siteTitle}
+                  name='app.name'
+                  defaultValue={_.get(this.state, 'app.name')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Admin Email'
                   type='text'
-                  name='adminEmail'
-                  value={settings.adminEmail}
+                  name='app.adminEmail'
+                  defaultValue={_.get(this.state, 'app.adminEmail')}
                   onChange={this.handleStateChange}
                   info='(used for automated emails)'/>
                 <FieldGroup
                   label='Mail URL'
                   type='text'
-                  name='mailUrl'
-                  value={settings.mailUrl}
+                  name='mail.smtpUrl'
+                  defaultValue={_.get(this.state, 'mail.smtpUrl')}
                   onChange={this.handleStateChange}
                   info='(used for automated emails)'/>
                 <FieldGroup
                   label='Default App Image'
                   type='text'
-                  name='defaultAppImage'
-                  value={settings.defaultAppImage}
+                  name='docker.defaultApp'
+                  defaultValue={_.get(this.state, 'docker.defaultApp')}
                   onChange={this.handleStateChange}
                   info='(all stacks will launch this unless specified otherwise)'/>
                 <FieldGroup
                   label='MongoDB Image'
                   type='text'
-                  name='mongoImage'
-                  value={settings.mongoImage}
+                  name='docker.mongoImage'
+                  defaultValue={_.get(this.state, 'docker.mongoImage')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Load Balancer Endpoint'
                   type='text'
                   name='loadBalancerEndpoint'
-                  value={settings.loadBalancerEndpoint}
+                  defaultValue={_.get(this.state, 'loadBalancerEndpoint')}
                   onChange={this.handleStateChange}
                   info='(where users will point their custom CNAME)'/>
 
@@ -101,39 +90,39 @@ class SettingsPage extends Component {
                 <FieldGroup
                   label='Host URL'
                   type='text'
-                  name='rancherApiUrl'
-                  value={settings.rancherApiUrl}
+                  name='rancher.url'
+                  defaultValue={_.get(this.state, 'rancher.url')}
                   onChange={this.handleStateChange}
                   info='(Must include http:// or https:// and no trailing slash)'/>
                 <FieldGroup
                   label='Access Key'
                   type='text'
-                  name='rancherApiKey'
-                  value={settings.rancherApiKey}
+                  name='rancher.apiKey'
+                  defaultValue={_.get(this.state, 'rancher.apiKey')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Secret Key'
                   type='text'
-                  name='rancherApiSecret'
-                  value={settings.rancherApiSecret}
+                  name='rancher.apiSecret'
+                  defaultValue={_.get(this.state, 'rancher.apiSecret')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Default Environment'
                   type='text'
-                  name='rancherDefaultEnv'
-                  value={settings.rancherDefaultEnv}
+                  name='rancher.defaultEnv'
+                  defaultValue={_.get(this.state, 'rancher.defaultEnv')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Default Load Balancer ID'
                   type='text'
-                  name='rancherDefaultBalancer'
-                  value={settings.rancherDefaultBalancer}
+                  name='rancher.defaultBalancer'
+                  defaultValue={_.get(this.state, 'rancher.defaultBalancer')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Default Certificate ID'
                   type='text'
-                  name='rancherDefaultCert'
-                  value={settings.rancherDefaultCert}
+                  name='rancher.defaultCert'
+                  defaultValue={_.get(this.state, 'rancher.defaultCert')}
                   onChange={this.handleStateChange}/>
 
                 <Row className='settings-group-heading'>
@@ -142,8 +131,8 @@ class SettingsPage extends Component {
                 <FieldGroup
                   label='Wildcard Domain'
                   type='text'
-                  name='wildcardDomain'
-                  value={settings.wildcardDomain}
+                  name='ssl.wildcardDomain'
+                  defaultValue={_.get(this.state, 'ssl.wildcardDomain')}
                   onChange={this.handleStateChange}
                   info='(base domain that all stacks get a subdomain of if no domain is specified)'/>
                 <FieldGroup
@@ -151,24 +140,24 @@ class SettingsPage extends Component {
                   type='textarea'
                   componentClass='textarea'
                   rows={7}
-                  name='sslPrivateKey'
-                  value={settings.sslPrivateKey}
+                  name='ssl.privateKey'
+                  defaultValue={_.get(this.state, 'ssl.privateKey')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Public Certificate'
                   type='textarea'
                   componentClass='textarea'
                   rows={7}
-                  name='sslCertificate'
-                  value={settings.sslCertificate}
+                  name='ssl.cert'
+                  defaultValue={_.get(this.state, 'ssl.cert')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Root Certificate'
                   type='textarea'
                   componentClass='textarea'
                   rows={7}
-                  name='sslRootCertificate'
-                  value={settings.sslRootCertificate}
+                  name='ssl.rootCert'
+                  defaultValue={_.get(this.state, 'ssl.rootCert')}
                   onChange={this.handleStateChange}
                   info='(optional)'/>
 
@@ -178,20 +167,20 @@ class SettingsPage extends Component {
                 <FieldGroup
                   label='Access Key'
                   type='text'
-                  name='awsKey'
-                  value={settings.awsKey}
+                  name='aws.accessKey'
+                  defaultValue={_.get(this.state, 'aws.accessKey')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Secret Key'
                   type='text'
-                  name='awsSecret'
-                  value={settings.awsSecret}
+                  name='aws.secretKey'
+                  defaultValue={_.get(this.state, 'aws.secretKey')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Region'
                   type='text'
-                  name='awsRegion'
-                  value={settings.awsRegion}
+                  name='aws.region'
+                  defaultValue={_.get(this.state, 'aws.region')}
                   onChange={this.handleStateChange}/>
 
                 <Row className='settings-group-heading'>
@@ -200,8 +189,8 @@ class SettingsPage extends Component {
                 <FieldGroup
                   label='Service'
                   componentClass='select'
-                  name='stripeMode'
-                  value={settings.stripeMode}
+                  name='stripe.mode'
+                  defaultValue={_.get(this.state, 'stripe.mode')}
                   onChange={this.handleStateChange}>
                   <option value=''>(Select One)</option>
                   <option value='Test'>Test</option>
@@ -210,26 +199,26 @@ class SettingsPage extends Component {
                 <FieldGroup
                   label='Test - Publishable Key'
                   type='text'
-                  name='stripeTestPublishableKey'
-                  value={settings.stripeTestPublishableKey}
+                  name='stripe.test.publishableKey'
+                  defaultValue={_.get(this.state, 'stripe.test.publishableKey')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Test - Secret Key'
                   type='text'
-                  name='stripeTestSecretKey'
-                  value={settings.stripeTestSecretKey}
+                  name='stripe.test.secretKey'
+                  defaultValue={_.get(this.state, 'stripe.test.secretKey')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Live - Publishable Key'
                   type='text'
-                  name='stripeLivePublishableKey'
-                  value={settings.stripeLivePublishableKey}
+                  name='stripe.live.publishableKey'
+                  defaultValue={_.get(this.state, 'stripe.live.publishableKey')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Live - Secret Key'
                   type='text'
-                  name='stripeLiveSecretKey'
-                  value={settings.stripeLiveSecretKey}
+                  name='stripe.live.secretKey'
+                  defaultValue={_.get(this.state, 'stripe.live.secretKey')}
                   onChange={this.handleStateChange}/>
 
                 <Row className='settings-group-heading'>
@@ -238,14 +227,14 @@ class SettingsPage extends Component {
                 <FieldGroup
                   label='App ID'
                   type='text'
-                  name='intercomAppId'
-                  value={settings.intercomAppId}
+                  name='intercom.appId'
+                  defaultValue={_.get(this.state, 'intercom.appId')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='API Key'
                   type='text'
-                  name='intercomApiKey'
-                  value={settings.intercomApiKey}
+                  name='intercom.apiKey'
+                  defaultValue={_.get(this.state, 'intercom.apiKey')}
                   onChange={this.handleStateChange}/>
 
                 <Row className='settings-group-heading'>
@@ -254,14 +243,14 @@ class SettingsPage extends Component {
                 <FieldGroup
                   label='App ID'
                   type='text'
-                  name='kadiraAppId'
-                  value={settings.kadiraAppId}
+                  name='kadira.appId'
+                  defaultValue={_.get(this.state, 'kadira.appId')}
                   onChange={this.handleStateChange}/>
                 <FieldGroup
                   label='Secret'
                   type='text'
-                  name='kadiraAppSecret'
-                  value={settings.kadiraAppSecret}
+                  name='kadira.appSecret'
+                  defaultValue={_.get(this.state, 'kadira.appSecret')}
                   onChange={this.handleStateChange}/>
 
                 <Row className='settings-group-heading'>
@@ -270,8 +259,8 @@ class SettingsPage extends Component {
                 <FieldGroup
                   label='API Key'
                   type='text'
-                  name='segmentKey'
-                  value={settings.segmentKey}
+                  name='segment.writeKey'
+                  defaultValue={_.get(this.state, 'segment.writeKey')}
                   onChange={this.handleStateChange}/>
 
                 <Row className='settings-group-heading'>
@@ -280,8 +269,8 @@ class SettingsPage extends Component {
                 <FieldGroup
                   label='Webhook URL'
                   type='text'
-                  name='slackWebhookUrl'
-                  value={settings.slackWebhookUrl}
+                  name='slack.webhookUrl'
+                  defaultValue={_.get(this.state, 'slack.webhookUrl')}
                   onChange={this.handleStateChange}/>
 
                 <Row>
