@@ -36,11 +36,7 @@ const startEventsStream = () => {
 
   socket.on('open', Meteor.bindEnvironment(() => {
     Logger.info('Rancher events websocket opened');
-    Settings.update(s._id, {
-      $set: {
-        rancherConnected: true
-      }
-    });
+    Settings.set('rancher.connected', true);
     // reset the error limit if we successfully connect
     socketErrors = 0;
   }));
@@ -108,11 +104,7 @@ const startEventsStream = () => {
   socket.on('close', Meteor.bindEnvironment(() => {
     Logger.warn('Rancher events websocket closed!');
 
-    Settings.update(s._id, {
-      $set: {
-        rancherConnected: false
-      }
-    });
+    Settings.set('rancher.connected', false);
 
     socketErrors++;
 

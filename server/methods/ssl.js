@@ -23,7 +23,7 @@ export default function () {
 
       const rancher = new Rancher();
 
-      const defaultCert = Settings.get('rancherDefaultCert');
+      const defaultCert = Settings.get('rancher.defaultCert');
 
       if (defaultCert) {
         const cert = rancher.get('certificates', defaultCert);
@@ -72,11 +72,7 @@ export default function () {
       logger.info({ data: newCert.data }, 'Created new default cert on Rancher');
 
       // update local settings with new cert
-      Settings.update({ _id: s._id }, {
-        $set: {
-          rancherDefaultCert: newCert.id
-        }
-      });
+      Settings.set('rancher.defaultCert', newCert.id);
 
       return newCert.data.id;
     },
@@ -129,7 +125,7 @@ export default function () {
       }
 
       // TODO: balancers to be managed in Launchdock
-      const balancerId = Settings.get('rancherDefaultBalancer');
+      const balancerId = Settings.get('rancher.defaultBalancer');
 
       if (!balancerId) {
         const err = 'No default load balancer configured.';
@@ -236,7 +232,7 @@ export default function () {
 
       const rancher = new Rancher();
 
-      const balancerId = Settings.get('rancherDefaultBalancer');
+      const balancerId = Settings.get('rancher.defaultBalancer');
 
       // get the load balancer for this stack
       let lb;

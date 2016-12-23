@@ -91,11 +91,7 @@ export default function () {
         state: lb.data.state
       });
 
-      Settings.update({ _id: s._id }, {
-        $set: {
-          rancherDefaultBalancer: lb.data.id
-        }
-      });
+      Settings.set('rancher.defaultBalancer', lb.data.id);
 
       return true;
     }

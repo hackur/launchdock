@@ -141,7 +141,7 @@ export default class DockerMachine {
 
     args.push(name);
 
-    DockerMachine.command(args, function (err, stdout) {
+    DockerMachine.command(args, (err, stdout) => {
       if (err) {
         return done(err);
       }

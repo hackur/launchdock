@@ -9,10 +9,12 @@ import { Logger } from '/server/api';
 export default class Rancher {
 
   constructor(apiKey, secret, env) {
-    this.apiKey = apiKey || Settings.get('rancherApiKey');
-    this.apiSecret = secret || Settings.get('rancherApiSecret');
-    this.apiBaseUrl = Settings.get('rancherApiUrl');
-    this.env = env || Settings.get('rancherDefaultEnv');
+    const rancher = Settings.get('rancher', {});
+
+    this.apiKey = apiKey || rancher.apiKey;
+    this.apiSecret = secret || rancher.apiSecret;
+    this.apiBaseUrl = rancher.url;
+    this.env = env || rancher.defaultEnv;
 
     if (!this.apiKey || !this.apiSecret) {
       throw new Meteor.Error('Missing Rancher API credentials.');

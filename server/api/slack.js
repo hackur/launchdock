@@ -10,10 +10,10 @@ const Slack = {
    * @return {Object} response from Slack API
    */
   message(text) {
-    const slackWebhookUrl = Settings.get('slackWebhookUrl');
+    const slackWebhookUrl = Settings.get('slack.webhookUrl');
 
     if (process.env.SLACK_ENABLED && slackWebhookUrl) {
-      const siteTitle = _.startCase(Settings.get('siteTitle', 'Launchdock'));
+      const siteTitle = _.startCase(Settings.get('app.title', 'Launchdock'));
       const username = _.words(siteTitle).join('');
 
       return HTTP.call('POST', slackWebhookUrl, {

@@ -10,10 +10,10 @@ const analytics = initAnalytics();
 export default function () {
 
   Meteor.methods({
-    'rancher/createStack'(doc, userId) {
+    'stacks/create'(doc, userId) {
 
       const logger = Logger.child({
-        meteor_method: 'rancher/createStack',
+        meteor_method: 'stacks/create',
         meteor_method_args: doc,
         userId: userId || this.userId
       });
@@ -57,7 +57,7 @@ export default function () {
         throw new Meteor.Error(err);
       }
 
-      const appImage = doc.appImage || Settings.get('defaultAppImage');
+      const appImage = doc.appImage || Settings.get('docker.defaultApp');
 
       if (!appImage) {
         const err = 'No default app image specified.';
@@ -65,7 +65,7 @@ export default function () {
         throw new Meteor.Error(err);
       }
 
-      const wildcardDomain = Settings.get('wildcardDomain');
+      const wildcardDomain = Settings.get('ssl.wildcardDomain');
 
       if (!doc.domainName && !wildcardDomain) {
         const err = 'Wildcard domain not configured on settings page.';
@@ -137,7 +137,7 @@ export default function () {
       const mongoUrl = mongoBaseUrl + mongoDatabase + '?replicaSet=' + mongoRepSetId;
       const mongoOplogUrl = mongoBaseUrl + 'local?authSource=' + mongoDatabase;
 
-      const mongoImage = Settings.get('mongoImage', 'launchdock/mongo-rep-set:latest');
+      const mongoImage = Settings.get('docker.mongoImage', 'launchdock/mongo-rep-set:latest');
 
       // mongo - primary config
       const mongo1 = {
@@ -397,7 +397,7 @@ export default function () {
                 }
 
                 // TODO: balancers to be managed in Launchdock
-                const balancerId = Settings.get('rancherDefaultBalancer');
+                const balancerId = Settings.get('rancher.defaultBalancer');
 
                 if (!balancerId) {
                   const e = 'No default load balancer configured.';
@@ -448,14 +448,14 @@ export default function () {
         const text = `User: ${userInfo} \n Shop: https://${siteUrl}`;
 
         // send the email to all users with admin role
-        emailAdmins(subject, text);
+        Email.notifyUsersInRole('admin', subject, text);
       }
 
       return stackId;
     },
 
 
-    'rancher/createTrial'(doc, userId) {
+    'stacks/createTrial'(doc, userId) {
 
       const logger = Logger.child({
         meteor_method: 'rancher/createTrial',
@@ -502,7 +502,7 @@ export default function () {
         throw new Meteor.Error(err);
       }
 
-      const appImage = doc.appImage || Settings.get('defaultAppImage');
+      const appImage = doc.appImage || Settings.get('docker.defaultApp');
 
       if (!appImage) {
         const err = 'No default app image specified.';
@@ -510,7 +510,7 @@ export default function () {
         throw new Meteor.Error(err);
       }
 
-      const wildcardDomain = Settings.get('wildcardDomain');
+      const wildcardDomain = Settings.get('ssl.wildcardDomain');
 
       if (!doc.domainName && !wildcardDomain) {
         const err = 'Wildcard domain not configured on settings page.';
@@ -632,7 +632,7 @@ export default function () {
       }
 
       // TODO: balancers to be managed in Launchdock
-      const balancerId = Settings.get('rancherDefaultBalancer');
+      const balancerId = Settings.get('rancher.defaultBalancer');
 
       if (!balancerId) {
         const e = 'No default load balancer configured.';

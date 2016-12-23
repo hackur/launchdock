@@ -71,8 +71,7 @@ export default function () {
           LAUNCHDOCK_USERNAME: launchdockUsername,
           LAUNCHDOCK_AUTH: launchdockAuth,
           LAUNCHDOCK_URL: Meteor.absoluteUrl(),
-          MAIL_URL: process.env.MAIL_URL,
-          NODE: 'node'
+          MAIL_URL: Email.getMailUrl()
         },
         token: doc.token
       };

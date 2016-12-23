@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Helmet from 'react-helmet';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 
-const Dashboard = ({ settings }) => (
+const Dashboard = ({ rancher }) => (
   <Grid>
     <Helmet title='Dashboard' />
     <Row>
@@ -11,11 +11,11 @@ const Dashboard = ({ settings }) => (
           <div>
             <h3 style={{ textAlign: 'center' }}>Rancher Status</h3>
             <hr/>
-            {settings.rancherConnected ?
+            {rancher.connected ?
               <div>
                 <h5 style={{ color: 'green' }}>Connected</h5>
-                <p>URL: <a href={settings.rancherApiUrl} target='_blank'>{settings.rancherApiUrl}</a></p>
-                <p>API Key: {settings.rancherApiKey}</p>
+                <p>URL: <a href={rancher.url} target='_blank'>{rancher.url}</a></p>
+                <p>API Key: {rancher.apiKey}</p>
                 <p>API Secret: ***********</p>
               </div>
               :

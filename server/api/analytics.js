@@ -4,7 +4,7 @@ import { Settings } from '/lib/collections';
 
 export default function initAnalytics() {
 
-  const segmentKey = Settings.get('segmentKey');
+  const segmentKey = Settings.get('segment.writeKey');
 
   let analytics;
 

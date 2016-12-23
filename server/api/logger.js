@@ -49,7 +49,7 @@ if (Launchdock.isProduction()) {
 // streams.push(mongoStream);
 
 
-const name = Settings.get('siteTitle', 'Launchdock');
+const name = Settings.get('app.title', 'Launchdock');
 
 // create default logger instance
 const Logger = bunyan.createLogger({

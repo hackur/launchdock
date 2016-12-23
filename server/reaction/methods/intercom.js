@@ -32,8 +32,7 @@ export default function () {
         sort: Match.Optional(String)  // 'created_at', 'updated_at', or 'signed_up_at'
       });
 
-      const appId = Settings.get('intercomAppId');
-      const apiKey = Settings.get('intercomApiKey');
+      const { appId, apiKey } = Settings.get('intercom', {});
 
       if (!appId || !apiKey) {
         const err = 'Missing Intercom credentials.';
@@ -100,8 +99,7 @@ export default function () {
         throw new Meteor.Error(err);
       }
 
-      const appId = Settings.get('intercomAppId');
-      const apiKey = Settings.get('intercomApiKey');
+      const { appId, apiKey } = Settings.get('intercom', {});
 
       if (!appId || !apiKey) {
         const err = 'Missing Intercom credentials.';

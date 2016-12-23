@@ -91,6 +91,7 @@ export default function () {
   // invite link landing page
   Meteor.publish('invite', function (token) {
     check(token, String);
+
     return Invitations.find({ token }, {
       fields: {
         email: 1,
@@ -103,7 +104,7 @@ export default function () {
 
   Meteor.publish('api-keys', function () {
     if (Roles.userIsInRole(this.userId, 'admin')) {
-      return Users.find({ roles: { $in: ['api'] }}, {
+      return Users.find({ roles: { $in: ['api'] } }, {
         fields: {
           createdAt: 1,
           createdBy: 1,

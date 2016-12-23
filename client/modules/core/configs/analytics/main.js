@@ -8,7 +8,7 @@ Meteor.startup(() => {
 
   // initialize Segment libs and identify the user (once they're logged in)
   FlowRouter.subsReady('settings', () => {
-    const segmentKey = Settings.get('segmentKey');
+    const segmentKey = Settings.get('segment.writeKey');
 
     if (segmentKey) {
       analytics.load(segmentKey);

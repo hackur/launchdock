@@ -15,7 +15,7 @@ export default function () {
     'util/slackMessage'(message) {
       check(message, String);
 
-      const slackWebhookUrl = Settings.get('slackWebhookUrl');
+      const slackWebhookUrl = Settings.get('slack.webhookUrl');
 
       if (process.env.SLACK_ENABLED && slackWebhookUrl) {
         return HTTP.call('POST', slackWebhookUrl, {

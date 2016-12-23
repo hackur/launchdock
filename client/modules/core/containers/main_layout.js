@@ -10,7 +10,7 @@ export const composer = ({ context }, onData) => {
   const settingsSub = Meteor.subscribe('settings');
 
   if (userSub.ready() && settingsSub.ready()) {
-    const siteTitle = Settings.get('siteTitle', 'Launchdock');
+    const siteTitle = Settings.get('app.title', 'Launchdock');
     const user = Meteor.user();
     if (!user && !Meteor.loggingIn()) {
       return FlowRouter.redirect('/login');

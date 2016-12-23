@@ -6,8 +6,8 @@ export const composer = ({ context }, onData) => {
   const { Meteor, Settings } = context();
 
   if (Meteor.subscribe('settings').ready()) {
-    const settings = Settings.findOne();
-    onData(null, { settings });
+    const rancher = Settings.get('rancher', {});
+    onData(null, { rancher });
   }
 };
 

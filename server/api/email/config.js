@@ -17,12 +17,10 @@ import { Logger } from '/server/api';
  * @return {String} returns an SMTP url if one of the settings have been set
  */
 export function getMailUrl() {
-  const settings = Settings.get('mail', {});
-
   // get all possible mail settings
   const processUrl = process.env.MAIL_URL;
   const settingsUrl = Meteor.settings.MAIL_URL;
-  const { service, user, pass, host, port } = settings;
+  const { service, user, pass, host, port } = Settings.get('mail', {});
 
   let mailString;
 
@@ -91,10 +89,8 @@ export function getMailConfig() {
     };
   }
 
-  // check for mail settings in the database
-  const settings = Settings.get('mail', {});
-
-  const { service, user, pass, host, port } = settings;
+  // check for mail settings
+  const { service, user, pass, host, port } = Settings.get('mail', {});
 
   // if a service provider preset was chosen, return a Nodemailer config for it
   // https://github.com/nodemailer/nodemailer-wellknown

@@ -180,8 +180,8 @@ export default function () {
       SSR.compileTemplate('user-invite', Assets.getText(emailHtml));
       const content = SSR.render('user-invite', { url });
 
-      const siteTitle = Settings.get('siteTitle', 'Launchdock');
-      const adminEmail = Settings.get('adminEmail', 'no-reply@launchdock.io');
+      const siteTitle = Settings.get('app.title', 'Launchdock');
+      const adminEmail = Settings.get('app.adminEmail', 'no-reply@launchdock.io');
 
       const emailOpts = {
         to: options.email,

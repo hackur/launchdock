@@ -4,7 +4,7 @@ import Layout from '../layouts/frontend_layout';
 
 export const composer = ({ context }, onData) => {
   const { Settings } = context();
-  const siteTitle = Settings.get('siteTitle');
+  const siteTitle = Settings.get('app.title');
   onData(null, { siteTitle });
 };
 
