@@ -1,13 +1,12 @@
 
 // sidebar color configs
-
-$sidenav-width: 250px;
-$sidenav-bg-color: #224067;
-$sidenav-brand-bg-color: darken($sidenav-bg-color, 5%);
-$sidenav-logo-text: #f6f6f6;
-$sidenav-link-text: #f6f6f6;
-$sidenav-link-text-hover: #fff;
-$sidenav-link-text-hover-bg: rgba(255, 255, 255, .2);
+$sidenav-width: 250px !default;
+$sidenav-bg-color: #415570 !default;
+$sidenav-brand-bg-color: darken($sidenav-bg-color, 5%) !default;
+$sidenav-logo-text: #f6f6f6 !default;
+$sidenav-link-text: #f6f6f6 !default;
+$sidenav-link-text-hover: #fff !default;
+$sidenav-link-text-hover-bg: rgba(255, 255, 255, .2) !default;
 
 
 #dash-wrapper {

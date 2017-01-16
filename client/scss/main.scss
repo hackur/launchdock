@@ -1,10 +1,14 @@
+// NPM Packages
+@import "{}/node_modules/ladda/css/ladda.scss";
+
+@import "vars";
+@import "{}/node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 ///////////////////
-// Global Styles //
+// Custom Styles //
 ///////////////////
 
-@import "vars",
-        "modules/colors",
+@import "modules/colors",
         "modules/accounts",
         "modules/api",
         "modules/badges",
