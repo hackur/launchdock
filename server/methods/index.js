@@ -1,4 +1,5 @@
 import api from './api';
+import email from './email';
 import jobs from './jobs';
 import balancers from './balancers';
 import hosts from './hosts';
@@ -10,6 +11,7 @@ import utils from './utils';
 
 export default function () {
   api();
+  email();
   jobs();
   balancers();
   hosts();

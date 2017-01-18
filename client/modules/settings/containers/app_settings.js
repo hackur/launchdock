@@ -1,10 +1,9 @@
 import { useDeps } from 'react-simple-di';
 import { composeWithTracker, merge } from '/client/api';
-import SettingsPage from '../components/settings_page';
+import AppSettings from '../components/app_settings';
 
 export const composer = ({ context }, onData) => {
-  const { Meteor, Collections } = context();
-  const { Settings } = Collections;
+  const { Meteor, Settings } = context();
 
   if (Meteor.subscribe('settings').ready()) {
     const settings = Settings.findOne();
@@ -20,4 +19,4 @@ export const depsMapper = (context, actions) => ({
 export default merge(
   composeWithTracker(composer),
   useDeps(depsMapper)
-)(SettingsPage);
+)(AppSettings);
