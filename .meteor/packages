@@ -19,7 +19,7 @@ standard-minifier-js@1.2.1
 tracker@1.1.1
 
 alanning:roles
-aldeed:collection2-core@2.0.0
+aldeed:collection2-core
 aldeed:schema-index
 aldeed:schema-deny
 aslagle:reactive-table
