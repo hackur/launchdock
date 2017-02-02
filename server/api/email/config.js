@@ -29,6 +29,8 @@ export function getMailUrl() {
   if (service && service !== 'custom' && user && pass) {
     const conf = getServiceConfig(service);
 
+    Logger.debug(conf, 'Using custom mail config to create a MAIL_URL');
+
     if (conf) {
       // account for local test providers like Maildev
       if (!conf.host) {
@@ -80,7 +82,7 @@ export function getMailConfig() {
     return {
       host: parsedUrl.hostname,
       port: parsedUrl.port,
-      secure: parsedUrl.port === 465 || parsedUrl.port === 587,
+      secure: parsedUrl.port === 465,
       auth: {
         user: creds[0],
         pass: creds[1]
@@ -119,7 +121,7 @@ export function getMailConfig() {
     return {
       host,
       port,
-      secure: port === 465 || port === 587,
+      secure: port === 465,
       auth: { user, pass },
       logger: process.env.EMAIL_DEBUG === 'true'
     };
