@@ -1,0 +1,16 @@
+# Usage:
+# docker-compose up -d
+
+reaction:
+  image: reactioncommerce/launchdock:latest
+  links:
+    - mongo
+  ports:
+    - "3000:3000"
+  environment:
+    ROOT_URL: "http://localhost"
+    MONGO_URL: "mongodb://mongo:27017/launchdock"
+
+mongo:
+  image: mongo:latest
+  command: mongod --storageEngine=wiredTiger
