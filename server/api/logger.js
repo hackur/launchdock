@@ -1,45 +1,45 @@
+import { includes } from 'lodash';
 import bunyan from 'bunyan';
 import bunyanFormat from 'bunyan-format';
 import { Bunyan2Loggly } from 'bunyan-loggly';
-import BunyanMongo from './logger-mongo';
-import Launchdock from './core';
 import { Settings } from '/lib/collections';
 
 /**
  * Global logging config
  */
 
-const logLevel = process.env.LAUNCHDOCK_LOG_LEVEL || 'INFO';
+const levels = ['FATAL', 'ERROR', 'WARN', 'INFO', 'DEBUG', 'TRACE'];
 
-// console output formatting
-const formatOut = bunyanFormat({
-  outputMode: 'short'
-});
+let level = process.env.LAUNCHDOCK_LOG_LEVEL || 'INFO';
 
-// default console config
+level = level.toUpperCase();
+
+if (!includes(levels, level)) {
+  level = 'INFO';
+}
+
+// default console config (stdout)
 const streams = [{
-  level: 'info',
-  stream: formatOut
+  level,
+  stream: bunyanFormat({ outputMode: 'short' })
 }];
 
 
-// Loggly config (only used in production)
-if (Launchdock.isProduction()) {
-  const logglyToken = process.env.LOGGLY_TOKEN;
-  const logglySubdomain = process.env.LOGGLY_SUBDOMAIN;
+// Loggly config (service only used if configured)
+const logglyToken = process.env.LOGGLY_TOKEN;
+const logglySubdomain = process.env.LOGGLY_SUBDOMAIN;
 
-  if (logglyToken && logglySubdomain) {
-    const logglyStream = {
-      type: 'raw',
-      stream: new Bunyan2Loggly({
-        token: logglyToken,
-        subdomain: logglySubdomain
-      })
-    };
-    streams.push(logglyStream);
-  }
+if (logglyToken && logglySubdomain) {
+  const logglyStream = {
+    type: 'raw',
+    level: process.env.LOGGLY_LOG_LEVEL || 'DEBUG',
+    stream: new Bunyan2Loggly({
+      token: logglyToken,
+      subdomain: logglySubdomain
+    })
+  };
+  streams.push(logglyStream);
 }
-
 
 // Mongo logger config
 // const mongoStream = {
@@ -49,15 +49,10 @@ if (Launchdock.isProduction()) {
 // streams.push(mongoStream);
 
 
-const name = Settings.get('app.title', 'Launchdock');
-
 // create default logger instance
 const Logger = bunyan.createLogger({
-  name,
+  name: Settings.get('app.name', 'Launchdock'),
   streams
 });
-
-// set default level
-Logger.level(logLevel);
 
 export default Logger;
