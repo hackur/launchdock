@@ -1,71 +1,30 @@
-# Launchdock 
-[![Code Climate](https://codeclimate.com/github/reactioncommerce/launchdock/badges/gpa.svg)](https://codeclimate.com/github/reactioncommerce/launchdock)
+# Launchdock
 
-Launchdock is an automated [Docker](https://docker.com) orchestration tool built with [Meteor.js](https://meteor.com) that uses either [Docker Cloud](https://cloud.docker.com/) or [Rancher](https://rancher.com) to configure and launch Meteor application container stacks that consist of a Meteor app, MongoDB replica set, and HaProxy load balancer(s) - all on your own infrastructure with any major cloud provider.
+Launchdock is an automated [Docker](https://docker.com) orchestration tool built with [Meteor.js](https://meteor.com) that uses [Rancher](https://rancher.com) to configure and launch Meteor application container stacks that consist of a Meteor app, MongoDB replica set, and HaProxy load balancer(s) - all on your own infrastructure with any major cloud provider.
 
+[![CircleCI](https://circleci.com/gh/reactioncommerce/launchdock.svg?style=svg)](https://circleci.com/gh/reactioncommerce/launchdock)
 
 ## Setup
-The first thing you will need to do is deploy Launchdock itself. Any standard Meteor deployment method is supported, but the recommended approach is to use [the Docker family of tools](https://www.docker.com/docker-toolbox). Specifically, we'll be using Docker to build a container image of Launchdock, then use [Docker Machine](https://docs.docker.com/machine/) to set up a server on AWS and deploy the container to it. ([Most major providers are an option](https://docs.docker.com/machine/drivers/), but we'll be using AWS for the duration of these docs). Ok, let's get started!
+The first thing you will need to do is deploy Launchdock itself. Any standard Meteor deployment method is supported, but the recommended approach is to use [the Docker family of tools](https://www.docker.com/products/overview). Specifically, we'll be using Docker to build a container image of Launchdock, then use [Docker Machine](https://docs.docker.com/machine/) to set up a server on AWS and deploy the container to it. ([Most major providers are an option](https://docs.docker.com/machine/drivers/), but we'll be using AWS for the duration of these docs). Ok, let's get started!
 
-First, you will need to install the [Docker Toolbox](https://www.docker.com/docker-toolbox) and grab your AWS credentials. Once you have Docker, Docker Compose, and Docker Machine installed, you can launch/manage servers and deploy Dockerized apps to them.
-
-### Build
-Before you can deploy Launchdock, you will need to build a Docker image and push it out to Docker Hub.  First, clone this repo:
-
-```sh
-git clone https://github.com/reactioncommerce/launchdock.git
-
-cd launchdock
-```
-
-Now build an image
-
-```sh
-docker build -t yourname/launchdock:latest .
-```
-
-And push to Docker Hub
-
-```sh
-docker push yourname/launchdock:latest .
-```
+First, you will need to [install Docker](https://www.docker.com/products/overview) and grab your AWS credentials. Once you have Docker, Docker Compose, and Docker Machine installed, you can launch/manage servers and deploy Dockerized apps to them.
 
 ### Deploy
+
 [Docker Machine Documentation](https://docs.docker.com/machine/)
 
-For convenience, set local environment variables for your AWS credentials so you don't have to worry about copy/pasting them regularly (and so anyone can use the same commands below while using their own credentials).
-
-Open your `.bashrc` in a text editor and add your AWS credentials like so:
-
-```sh
-# ~/.bashrc
-
-export AWS_KEY='your key here'
-export AWS_SECRET='your secret here'
-```
-
-If your terminal is already open, you'll now need to `source` that `.bashrc` file before the new exports will be available in your shell environment.
-
-```sh
-source ~/.bashrc
-```
-
-(simply opening a new terminal window accomplishes the same thing)
-
-Now you're ready to use Docker Machine to manage servers on AWS. The command below shows how to create an AWS machine with all of the required options defined.  See the docs for the rest of the [available options for the AWS driver](https://docs.docker.com/machine/drivers/aws/#options). Log into your AWS dashboard and pick the region, availability zone, VPC ID, and instance type that works best for you.
+The command below shows how to create an AWS machine with all of the required options defined.  See the docs for the rest of the [available options for the AWS driver](https://docs.docker.com/machine/drivers/aws/#options). Log into your AWS dashboard and pick the region, availability zone, VPC ID, and instance type that works best for you.
 
 ```sh
 docker-machine create --driver amazonec2 \
   --amazonec2-access-key $AWS_KEY \
   --amazonec2-secret-key $AWS_SECRET \
-  --amazonec2-region us-east-1 \
-  --amazonec2-zone b \
-  --amazonec2-vpc-id vpc-123456 \
+  --amazonec2-region $AWS_REGION \
   --amazonec2-instance-type t2.medium \
   launchdock
 ```
 
-The final line (`launchdock`) can be set to anything you want and is the name that will be referenced when using Docker Machine to manage the server.  It is also the name that will be assigned to the server in the EC2 dashboard.  So do yourself a favor and be obvious with your naming choices.  ;)
+The final line (`launchdock`) can be set to anything you want.  This is just the name that will be referenced when using Docker Machine to manage the server.  It is also the name that will be assigned to the server in the EC2 dashboard.  So do yourself a favor and be obvious with your naming choices.  ;)
 
 Now you should be able to see your available machines by running:
 
@@ -77,10 +36,9 @@ which should output a table like this...
 
 Name       | Active | Driver     | State   | URL
 ---------- | ------ | ---------- | ------- | --------------------------
-default    |        | virtualbox | Running | tcp://192.168.99.101:2376
 launchdock | *      | amazonec2  | Running | tcp://101.123.145.132:2376
 
-If you were setting up a domain name to point at this server, the IP address for `launchdock` (101.123.145.132) would be the one you'd want.  The `*` in the ACTIVE column means that your Docker environment is currently pointed at that server (instead of your local Kitematic virtualbox instance, for example).  If that particular machine wasn't active, you'd select it by running:
+If you were setting up a domain name to point at this server, the IP address for `launchdock` (101.123.145.132) would be the one you'd want.  The `*` in the ACTIVE column means that your Docker environment is currently pointed at that server (instead of your local default Docker instance, for example).  If that particular machine wasn't active, you'd select it by running:
 
 ```sh
 eval "$(docker-machine env launchdock)"
@@ -89,13 +47,11 @@ eval "$(docker-machine env launchdock)"
 Now any docker commands you use (build, run, etc.) will be run on that new server.  So the next step will be to start up the Launchdock container you built above (assumes you've got Mongo convered elsewhere):
 
 ```sh
-docker run -p 80:80 \
-  --name "launchdock" \
+docker run -p 80:3000 \
   -e ROOT_URL="http://example.com/" \
   -e MONGO_URL="mongodb://user:pw@mongo_url:27017/dbName" \
-  -e MONGO_OPLOG_URL="mongodb://user:pw@mongo_url:27017/local" \
   -e MAIL_URL="smtp://user:pw@smtp.org:587" \
-  yourname/launchdock:latest
+  reactioncommerce/launchdock:latest
 ```
 
 Or you can optionally run your Mongo database in another container on the same server and link it with [Docker Compose](https://docs.docker.com/compose).
@@ -104,32 +60,27 @@ Or you can optionally run your Mongo database in another container on the same s
 # docker-compose.yml
 
 launchdock:
-  image: ongoworks/launchdock2:latest
+  image: reactioncommerce/launchdock:latest
   links:
     - mongo
   ports:
-    - "80:80"
+    - "80:3000"
   environment:
     ROOT_URL: "http://example.com"
-    MONGO_URL: "mongodb://mongo-launchdock:27017/dbName"
+    MONGO_URL: "mongodb://mongo:27017/dbName"
     MAIL_URL: "smtp://user:pw@smtp.org:587"
 
-mongo-launchdock:
+mongo:
   image: mongo:latest
   command: mongod --storageEngine=wiredTiger
 ```
 
-Note: If you're familiar with the Docker tool set, you may consider a more advanced setup across multiple servers using [Docker Swarm](https://docs.docker.com/swarm/) so you can have a replica set and make use of the MongoDB oplog.
-
 Launchdock should now be running and you can sign in with the default user with username `admin` and password `admin`.  (Obviously, you should change this).
 
-Default `LD_EMAIL`, `LD_USERNAME`, `LD_PASSWORD` can be configured with [Meteor.settings](http://docs.meteor.com/#/full/meteor_settings).
-
-### Tutum
-Before you can use Launchdock, you'll have to set up a few services and configs that it depends on. If you don't have a [Docker Hub](https://hub.docker.com/) account already, go sign up there and then use those credentials to log into [Tutum](https://www.tutum.co/).  The next several steps will all take place in Tutum's dashboard.  
+Default `LAUNCHDOCK_EMAIL`, `LAUNCHDOCK_USERNAME`, `LAUNCHDOCK_PASSWORD` can be configured with [Meteor.settings](http://docs.meteor.com/#/full/meteor_settings).
 
 #### Nodes
-There are a few things you need to set up in Tutum before Launchdock will be able to start launching Meteor stacks. The first is to [start up some nodes](https://support.tutum.co/support/solutions/articles/5000523221-your-first-node) (servers) on your provider of choice (AWS, Digital Ocean, etc) using Tutum's dashboard. Launchdock doesn't care which provider you're using, so feel free to use any supported provider that you prefer. (Note that we've experienced some network performance issues with Microsoft Azure and [Tutum's overlay network](http://www.weave.works/products/weave-net/), so Azure is currently not recommended for use with Launchdock).
+There are a few things you need to set up before Launchdock will be able to start launching stacks. The first is to [start up some nodes](https://support.tutum.co/support/solutions/articles/5000523221-your-first-node) (servers) on your provider of choice (AWS, Digital Ocean, etc) using Tutum's dashboard. Launchdock doesn't care which provider you're using, so feel free to use any supported provider that you prefer. (Note that we've experienced some network performance issues with Microsoft Azure and [Tutum's overlay network](http://www.weave.works/products/weave-net/), so Azure is currently not recommended for use with Launchdock).
 
 The only required configuration for your servers will be that you need the following [deploy tags](https://support.tutum.co/support/solutions/articles/5000508859-deploy-tags) set on at least one server: `app`, `mongo1`, `mongo2`, `mongo3`, `lb`. Deploy tags are how Tutum and Launchdock choose which server each type of container gets deployed on. The table below outlines what service will be deployed on a given server that contains the specified tag.
 
