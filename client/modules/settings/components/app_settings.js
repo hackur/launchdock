@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import Helmet from 'react-helmet';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import { Row, Panel } from 'react-bootstrap';
 import _ from 'lodash';
 import { FieldGroup } from '/client/modules/core/components';
 
@@ -71,6 +70,29 @@ class AppSettings extends Component {
             defaultValue={_.get(this.state, 'loadBalancerEndpoint')}
             onChange={this.handleStateChange}
             info='(where users will point their custom CNAME)'/>
+
+          <Row className='settings-group-heading'>
+            <h3>Deis</h3>
+          </Row>
+          <FieldGroup
+            label='Controller URL'
+            type='text'
+            name='deis.url'
+            defaultValue={_.get(this.state, 'deis.url')}
+            onChange={this.handleStateChange}
+            info='(Must include http:// or https:// and no trailing slash)'/>
+          <FieldGroup
+            label='Admin User'
+            type='text'
+            name='deis.username'
+            defaultValue={_.get(this.state, 'deis.username')}
+            onChange={this.handleStateChange}/>
+          <FieldGroup
+            label='Admin Password'
+            type='password'
+            name='deis.password'
+            defaultValue={_.get(this.state, 'deis.password')}
+            onChange={this.handleStateChange}/>
 
           <Row className='settings-group-heading'>
             <h3>Rancher</h3>

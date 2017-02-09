@@ -1,4 +1,5 @@
 import AWS from './aws';
+import Deis from './deis';
 import DockerMachine from './docker-machine';
 import * as Email from './email';
 import initAnalytics from './analytics';
@@ -9,6 +10,7 @@ import Slack from './slack';
 
 export {
   AWS,
+  Deis,
   DockerMachine,
   Email,
   initAnalytics,

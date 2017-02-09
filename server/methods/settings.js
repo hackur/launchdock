@@ -18,7 +18,7 @@ export default function () {
 
       const logger = Logger.child({
         meteor_method: 'settings/update',
-        meteor_method_args: settings,
+        meteor_method_args: [settings],
         userId: this.userId
       });
 
