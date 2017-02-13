@@ -1,14 +1,22 @@
-import React from 'react';
+import React, { Component, PropTypes } from 'react';
 import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import LaddaButton from 'react-ladda';
 
-class StackNew extends React.Component {
+class StackNew extends Component {
+
+  static propTypes = {
+    create: PropTypes.func.isRequired,
+    error: PropTypes.string
+  }
 
   constructor(props) {
     super(props);
+
     this.state = {
       submitted: false
     };
+
+    this.createStack = this.createStack.bind(this);
   }
 
   createStack(e) {
@@ -31,14 +39,14 @@ class StackNew extends React.Component {
   }
 
   render() {
-    const { context, error } = this.props;
+    const { error } = this.props;
 
     return (
       <Grid>
         <Row>
           <Col sm={6} smOffset={3}>
             <Panel>
-              <form className='new-stack' onSubmit={this.createStack.bind(this)}>
+              <form className='new-stack' onSubmit={this.createStack}>
                 <h3 className='text-center'>Create New Stack</h3>
                 {error ? <p style={{ color: 'red' }}>{error}</p> : null}
                 <div className='form-group'>
