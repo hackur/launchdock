@@ -29,15 +29,6 @@ export default function (injectDeps, { FlowRouter }) {
     }
   });
 
-  FlowRouter.route('/users/:_id/edit', {
-    name: 'user_edit',
-    action({ id }) {
-      mount(MainLayoutCtx, {
-        content: () => (<UserEdit id={id} />)
-      });
-    }
-  });
-
   FlowRouter.route('/invite/:token', {
     name: 'invite_accept',
     action({ token }) {
