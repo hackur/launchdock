@@ -2,7 +2,6 @@ import api from './api';
 import email from './email';
 import jobs from './jobs';
 import balancers from './balancers';
-import hosts from './hosts';
 import settings from './settings';
 import ssl from './ssl';
 import stacks from './stacks';
@@ -14,7 +13,6 @@ export default function () {
   email();
   jobs();
   balancers();
-  hosts();
   settings();
   ssl();
   stacks();

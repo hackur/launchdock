@@ -14,7 +14,6 @@ const SideNav = ({ siteTitle, user }) => (
       <Link label='Dashboard' link='/' user={user} roles={['admin', 'manager']} />
       <Link label='Users' link='/users' user={user} roles={['admin', 'manager']} />
       <Link label='API' link='/api' user={user} roles='admin' />
-      <Link label='Hosts' link='/hosts' user={user} roles='superuser' />
       <Link label='Stacks' link='/stacks' user={user} roles='admin' />
       <Link label='Jobs' link='/jobs' user={user} roles='admin' />
       <Link label='Settings' link='/settings' user={user} roles='admin' />
