@@ -1,6 +1,6 @@
 {
   "name": "launchdock",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "A Docker deployment platform for Meteor.",
   "scripts": {
     "test": "echo \"Error: no test specified\""
