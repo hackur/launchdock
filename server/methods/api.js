@@ -10,8 +10,8 @@ export default function () {
     'api/addKey'(options) {
 
       const logger = Logger.child({
-        meteor_method: 'api/saveKey',
-        meteor_method_args: options,
+        meteor_method: 'api/addKey',
+        meteor_method_args: [options],
         userId: this.userId
       });
 
@@ -60,7 +60,7 @@ export default function () {
 
       const logger = Logger.child({
         meteor_method: 'api/deleteKey',
-        meteor_method_args: apiKeyId,
+        meteor_method_args: [apiKeyId],
         userId: this.userId
       });
 
