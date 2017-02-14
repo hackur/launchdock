@@ -122,21 +122,25 @@ const startEventsStream = () => {
 };
 
 export default function () {
-  Settings.find().observe({
-    // If the default settings doc has the credentials, try to connect.
-    // This will always fire on app startup if credentials are already there.
-    added(doc) {
-      if (doc.rancherApiKey && doc.rancherApiSecret) {
-        startEventsStream();
+  if (process.env.RANCHER_WEBSOCKET_ENABLED === 'true') {
+    Settings.find().observe({
+      // If the default settings doc has the credentials, try to connect.
+      // This will always fire on app startup if credentials are already there.
+      added(doc) {
+        if (doc.rancherApiKey && doc.rancherApiSecret) {
+          startEventsStream();
+        }
+      },
+      // if the API credentials have changed, try to connect
+      changed(newDoc, oldDoc) {
+        if (newDoc.rancherApiKey !== oldDoc.rancherApiKey ||
+            newDoc.rancherApiSecret    !== oldDoc.rancherApiSecret) {
+          Logger.info('Rancher API credentials changed.');
+          startEventsStream();
+        }
       }
-    },
-    // if the API credentials have changed, try to connect
-    changed(newDoc, oldDoc) {
-      if (newDoc.rancherApiKey !== oldDoc.rancherApiKey ||
-          newDoc.rancherApiSecret    !== oldDoc.rancherApiSecret) {
-        Logger.info('Rancher API credentials changed.');
-        startEventsStream();
-      }
-    }
-  });
+    });
+  } else {
+    Logger.debug('RANCHER_WEBSOCKET_ENABLED not set. Not connecting to Rancher.');
+  }
 }
