@@ -1,6 +1,6 @@
 {
   "name": "launchdock",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "A Docker deployment platform for Meteor.",
   "scripts": {
     "test": "echo \"Error: no test specified\""
@@ -69,7 +69,7 @@
     "react-simple-di": "^1.2.0",
     "run-parallel-limit": "^1.0.3",
     "shelljs": "^0.7.6",
-    "simpl-schema": "^0.1.1",
+    "simpl-schema": "^0.2.2",
     "stripe": "^4.15.0",
     "sweetalert2": "^6.4.0",
     "tracker-component": "^1.3.21",
