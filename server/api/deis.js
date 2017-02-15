@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { HTTP } from 'meteor/http';
 import { Settings } from '/lib/collections';
 import { Logger } from '/server/api';
@@ -8,14 +7,13 @@ class Deis {
 
   constructor(options = {}) {
 
-    const { url, username, password, token } = Settings.get('deis', {});
+    const { url, username, password } = Settings.get('deis', {});
 
     const defaults = {
       apiVersion: 'v2',
       url: process.env.DEIS_URL || url,
       username: process.env.DEIS_USERNAME || username,
       password: process.env.DEIS_PASSWORD || password,
-      token: process.env.DEIS_TOKEN || token,
       secure: true
     };
 
@@ -31,27 +29,43 @@ class Deis {
       throw new Error(msg);
     }
 
-    if (!this.options.username || !this.options.password) {
-      const msg = 'Missing Deis credentials.';
-      Logger.error(msg);
-      throw new Error(msg);
+    if (!options.token) {
+      if (!this.options.username || !this.options.password) {
+        const msg = 'Missing Deis credentials.';
+        Logger.error(msg);
+        throw new Error(msg);
+      }
+
+      try {
+        const result = this.login();
+        this.options.token = result.data.token;
+      } catch (e) {
+        const msg = 'Failed to authenticate with Deis';
+        Logger.error(e, msg);
+        throw new Error(msg);
+      }
     }
   }
 
 
   register(data) {
-    const { apiBaseUrl } = this.options;
+    const { apiBaseUrl, token } = this.options;
 
     const url = `${apiBaseUrl}/auth/register/`;
 
-    Logger.info({ data }, `[Deis API] POST ${url}`);
+    Logger.debug({ data }, `[Deis API] POST ${url}`);
 
-    return HTTP.call('POST', url, {
+    const result = HTTP.call('POST', url, {
       headers: {
+        Authorization: `token ${token}`,
         'Content-Type': 'application/json'
       },
       data
     });
+
+    Logger.info(`Username '${data.username}' successfully registered with Deis`);
+
+    return result;
   }
 
 
@@ -60,35 +74,16 @@ class Deis {
 
     const url = `${apiBaseUrl}/auth/login/`;
 
-    Logger.info({ data }, `[Deis API] POST ${url}`);
+    Logger.debug({ data }, `[Deis API] POST ${url}`);
 
-    let result;
-    try {
-      result = HTTP.call('POST', url, {
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        data: data || { username, password }
-      });
-    } catch(err) {
-      Logger.error(err);
-      throw new Error(err);
-    }
+    const result = HTTP.call('POST', url, {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: data || { username, password }
+    });
 
-    const settings = Settings.findOne();
-    const update = _.set(settings, 'deis.token', result.data.token);
-
-    try {
-      Settings.update({ _id: settings._id }, {
-        $set: update
-      });
-    } catch(e) {
-      const msg = 'Deis token update failed';
-      Logger.error(e, msg);
-      throw new Error(msg);
-    }
-
-    Logger.info('Successfully authenticated with Deis');
+    Logger.info(`Username '${data.username || username}' successfully authenticated with Deis`);
 
     return result;
   }
