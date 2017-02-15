@@ -1,11 +1,13 @@
 import 'babel-polyfill';
 import publications from './publications';
 import methods from './methods';
+import deis from './deis';
 import startup from './startup';
 
 publications();
 methods();
-Meteor.startup(() => startup());
+deis();
+Meteor.startup(startup);
 
 
 // Reaction Commerce module
