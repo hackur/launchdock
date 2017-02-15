@@ -153,8 +153,8 @@ class Deis {
   }
 
 
-  getEnv(id) {
-    const url = `${this.options.apiBaseUrl}/apps/${id}/config/`;
+  getEnv(appId) {
+    const url = `${this.options.apiBaseUrl}/apps/${appId}/config/`;
     Logger.debug(`[Deis API] GET ${url}`);
     return HTTP.call('GET', url, {
       headers: {
@@ -165,8 +165,8 @@ class Deis {
   }
 
 
-  setEnv(id, values) {
-    const url = `${this.options.apiBaseUrl}/apps/${id}/config/`;
+  setEnv(appId, values) {
+    const url = `${this.options.apiBaseUrl}/apps/${appId}/config/`;
     Logger.debug({ values }, `[Deis API] POST ${url}`);
     return HTTP.call('POST', url, {
       headers: {
@@ -178,14 +178,14 @@ class Deis {
   }
 
 
-  unsetEnv(id, keysToUnset = []) {
+  unsetEnv(appId, keysToUnset = []) {
     const values = {};
 
     keysToUnset.forEach((key) => {
       values[key] = null;
     });
 
-    const url = `${this.options.apiBaseUrl}/apps/${id}/config/`;
+    const url = `${this.options.apiBaseUrl}/apps/${appId}/config/`;
     Logger.debug({ data: values }, `[Deis API] POST ${url}`);
     return HTTP.call('POST', url, {
       headers: {
