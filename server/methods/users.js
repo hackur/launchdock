@@ -158,7 +158,9 @@ export default function () {
 
       check(options, {
         email: String,
-        role: String
+        role: String,
+        api: Match.Optional(Boolean),
+        appName: Match.Optional(String)
       });
 
       this.unblock();
@@ -169,22 +171,30 @@ export default function () {
         throw new Meteor.Error(err);
       }
 
-      options.token = Random.hexString(32);
-      options.invitedBy = this.userId;
+      const { email, role, api, appName } = options;
+      const token = Random.hexString(32);
 
-      Invitations.insert(options);
+      const invitation = {
+        email,
+        role,
+        token,
+        invitedBy: this.userId
+      };
 
-      const url = Meteor.absoluteUrl() + 'invite/' + options.token;
-      const emailHtml = 'email/templates/admin-invitation.html';
+      Invitations.insert(invitation);
+
+      const emailHtml = `email/templates/${api ? 'api' : 'admin'}-invitation.html`;
+      const url = Meteor.absoluteUrl() + 'invite/' + token;
+      const emailData = api ? { token } : { url };
 
       SSR.compileTemplate('user-invite', Assets.getText(emailHtml));
-      const content = SSR.render('user-invite', { url });
+      const content = SSR.render('user-invite', emailData);
 
-      const siteTitle = Settings.get('app.title', 'Launchdock');
+      const siteTitle = appName || Settings.get('app.title', 'Launchdock');
       const adminEmail = Settings.get('app.adminEmail', 'no-reply@launchdock.io');
 
       const emailOpts = {
-        to: options.email,
+        to: email,
         from: `${siteTitle} <${adminEmail}>`,
         subject: `You're invited to ${siteTitle}!`,
         html: content
@@ -192,9 +202,9 @@ export default function () {
 
       Email.send(emailOpts);
 
-      Slack.message(`${options.email} has been invited to be an admin.`);
+      Slack.message(`${email} has been invited to be an admin.`);
 
-      logger.info(`New user invited: ${options.email}`);
+      logger.info(`New user invited: ${email}`);
 
       return true;
     },

@@ -83,7 +83,7 @@ class Deis {
       data: data || { username, password }
     });
 
-    Logger.info(`Username '${data.username || username}' successfully authenticated with Deis`);
+    Logger.info(`Username '${data && data.username || username}' successfully authenticated with Deis`);
 
     return result;
   }

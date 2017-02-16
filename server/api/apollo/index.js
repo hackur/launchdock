@@ -10,7 +10,7 @@ import resolvers from './resolvers';
 // Load all accounts related resolvers and type definitions into graphql-loader
 initAccounts({});
 
-// Load all your resolvers and type definitions into graphql-loader
+// Load all resolvers and type definitions into graphql-loader
 loadSchema({ typeDefs, resolvers });
 
 // Gets all the resolvers and type definitions loaded in graphql-loader
