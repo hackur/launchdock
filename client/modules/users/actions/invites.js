@@ -1,15 +1,25 @@
 export default {
 
-  sendInvite({ Meteor, Roles, Notify }, email, role) {
-    const isManager = Roles.userIsInRole(Meteor.userId(), 'manager');
-
+  sendInvite({ Meteor, Roles, Notify }, { email, role, api, appName }) {
     const options = {
       email,
-      role: isManager ? 'customer' : role
+      role: Roles.userIsInRole(Meteor.userId(), 'admin') ? role : 'customer',
+      api,
+      appName
     };
 
+    console.log(options);
+
     if (options.email && options.role) {
-      if (options.role === 'customer') {
+      if (api) {
+        Meteor.call('sendUserInvite', options, (err) => {
+          if (err) {
+            Notify.error(err.error);
+          } else {
+            Notify.success('Invitation sent!');
+          }
+        });
+      } else if (options.role === 'customer') {
         Meteor.call('sendReactionInvite', options, (err) => {
           if (err) {
             Notify.error(err.error);
