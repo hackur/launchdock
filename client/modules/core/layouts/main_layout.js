@@ -1,7 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import Alert from 'react-s-alert';
+import ApolloClient from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
+import { meteorClientConfig } from 'meteor/apollo';
 import Head from '../components/head';
 import SideNav from '../containers/side_nav';
+
+const client = new ApolloClient(meteorClientConfig());
 
 class MainLayout extends Component {
 
@@ -34,20 +39,22 @@ class MainLayout extends Component {
     const { siteTitle } = this.props;
 
     return (
-      <div id='dash-wrapper' className={this.state.sidebarToggled ? 'toggled' : null}>
-        <Head title={siteTitle} />
-        <SideNav/>
-        <main id='dash-content-wrapper' className='main-content'>
-          <button
-            id='sidenav-toggle'
-            className='btn btn-default'
-            onClick={this.toggleSidebar}>
-            Menu
-          </button>
-          {this.props.content()}
-        </main>
-        <Alert {...alertsConfig}/>
-      </div>
+      <ApolloProvider client={client}>
+        <div id='dash-wrapper' className={this.state.sidebarToggled ? 'toggled' : null}>
+          <Head title={siteTitle} />
+          <SideNav/>
+          <main id='dash-content-wrapper' className='main-content'>
+            <button
+              id='sidenav-toggle'
+              className='btn btn-default'
+              onClick={this.toggleSidebar}>
+              Menu
+            </button>
+            {this.props.content()}
+          </main>
+          <Alert {...alertsConfig}/>
+        </div>
+      </ApolloProvider>
     );
   }
 }
