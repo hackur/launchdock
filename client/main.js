@@ -3,6 +3,7 @@ import { App } from '/client/api';
 import initContext from './configs/context';
 
 // import modules
+import appsModule from './modules/apps';
 import coreModule from './modules/core';
 import jobsModule from './modules/jobs';
 import settingsModule from './modules/settings';
@@ -14,6 +15,7 @@ const context = initContext();
 
 // create app
 const app = new App(context);
+app.loadModule(appsModule);
 app.loadModule(coreModule);
 app.loadModule(jobsModule);
 app.loadModule(settingsModule);

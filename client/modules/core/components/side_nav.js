@@ -14,7 +14,7 @@ const SideNav = ({ siteTitle, user }) => (
       <Link label='Dashboard' link='/' user={user} roles={['admin', 'manager']} />
       <Link label='Users' link='/users' user={user} roles={['admin', 'manager']} />
       <Link label='API' link='/api' user={user} roles='admin' />
-      <Link label='Stacks' link='/stacks' user={user} roles='admin' />
+      <Link label='Apps' link='/apps' user={user} roles={['admin', 'manager']} />
       <Link label='Jobs' link='/jobs' user={user} roles='admin' />
       <Link label='Settings' link='/settings' user={user} roles='admin' />
       <li><div className='sidebar-spacer'/></li>
