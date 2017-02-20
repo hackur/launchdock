@@ -1,0 +1,16 @@
+
+type Cert {
+  id: ID!,
+  owner: String!,
+  san: [String],
+  domains: [String]!,
+  created: Date!,
+  updated: Date!,
+  name: String!,
+  common_name: String!,
+  fingerprint: String!,
+  expires: Date,
+  starts: Date,
+  issuer: String!,
+  subject: String!
+}

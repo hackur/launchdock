@@ -1,0 +1,10 @@
+type Mutation {
+  createApp(
+    name: String!
+    image: String
+  ): App
+
+  deleteApp(
+    name: String!
+  ): SuccessResponse
+}

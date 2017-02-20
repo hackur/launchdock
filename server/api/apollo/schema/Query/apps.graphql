@@ -1,0 +1,5 @@
+
+type Query {
+  apps: [App]
+  app (id: ID, _id: ID, name: String): App
+}

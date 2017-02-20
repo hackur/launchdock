@@ -1,4 +1,5 @@
-import { Users } from '/lib/collections';
+import { Roles } from 'meteor/alanning:roles';
+import { Apps } from '/lib/collections';
 import { Logger } from '/server/api';
 
 export default function (root, { _id }, context) {
@@ -8,5 +9,5 @@ export default function (root, { _id }, context) {
     throw new Error(msg);
   }
 
-  return Users.findOne(_id);
+  return Apps.findOne({ _id });
 }

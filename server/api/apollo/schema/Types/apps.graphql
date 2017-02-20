@@ -1,0 +1,17 @@
+
+type App {
+  uuid: ID
+  id: ID
+  _id: ID
+  image: String
+  name: String
+  owner: String!
+  structure: AppStructure
+  created: Date
+  createdAt: Date
+  updated: Date
+}
+
+type AppStructure {
+  cmd: Int
+}

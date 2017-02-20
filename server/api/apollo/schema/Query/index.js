@@ -1,5 +1,7 @@
-import User from './User';
+import Users from './users';
+import Apps from './apps';
 
 export default [
-  User
+  Users,
+  Apps
 ];

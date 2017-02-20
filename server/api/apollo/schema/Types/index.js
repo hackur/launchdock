@@ -1,5 +1,11 @@
-import User from './User';
+import Users from './users';
+import Apps from './apps';
+import Certs from './certs';
+import Configs from './configs';
 
 export default [
-  User
+  Users,
+  Apps,
+  Certs,
+  Configs
 ];

@@ -1,0 +1,17 @@
+type Config {
+  owner: String!
+  app: String!
+  values: [ConfigValue]
+  memory: String
+  cpu: String
+  tags: String
+  healthcheck: String
+  created: Date
+  updated: Date
+  uuid: ID!
+}
+
+type ConfigValue {
+  key: String!
+  value: String!
+}
