@@ -1,4 +1,3 @@
-import 'babel-polyfill';
 import publications from './publications';
 import methods from './methods';
 import deis from './deis';
