@@ -39,8 +39,8 @@ export default function () {
 
   // create default settings if none exist
   if (Settings.find().count() < 1) {
-    if (!defaultSettings.app || defaultSettings.app.title) {
-      defaultSettings = _.set(defaultSettings, 'app.title', 'Launchdock');
+    if (!defaultSettings.app || defaultSettings.app.name) {
+      defaultSettings = _.set(defaultSettings, 'app.name', 'Launchdock');
     }
 
     Settings.insert(defaultSettings);
